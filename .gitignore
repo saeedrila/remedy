@@ -1,3 +1,28 @@
-# django
+# secret keys
 .env
 
+# Python-specific files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+Pipfile.lock
+
+# Database
+db.sqlite3
+
+# IDE and editor files
+.vscode/
+.idea/
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Miscellaneous
+*.log
+*.swp
+.DS_Store

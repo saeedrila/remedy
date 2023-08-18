@@ -28,41 +28,65 @@ This module deals with all chat related APIs, settings, keys, etc.
 
 ## Initial setup
 Create a project directory with name 'Remedy_v1' using terminal
-```mkdir Remedy_v1```
+```
+mkdir Remedy_v1
+```
 
 Navigate into the newly created directory
-```cd Remedy_v1```
+```
+cd Remedy_v1
+```
 
 Open VSCode
-```code .```
+```
+code .
+```
 
 Open the terminal inside VSCode and you should be able to see something like:
-local-machine's-name Remedy_v1 %
+```local-machine's-name Remedy_v1 %```
+
+## Django installation
 
 Now install pipenv, a virual environment manager
-```pip install pipenv```
+```
+pip install pipenv
+```
 
 Activate the virtual environment
-```pipenv shell```
+```
+pipenv shell
+```
 
 Install django
-```pip install django```
+```
+pip install django
+```
 
 Initialize a new git repository
-```git init```
+```
+git init
+```
 
 Create two file named '.env' and .gitignore
-```touch .env```
-```touch .gitignore```
+```
+touch .env
+```
+```
+touch .gitignore
+```
 
 Add .env to the gitignore file
 
 Install 'Python-decouple' package
-```pip install python-decouple```
+```
+pip install python-decouple
+```
 
 Now copy the 'secret key from settings.py to .env file.
 In the .env file it should be something like the following:
-```SECRET_KEY = 'the_secret_key'```
+```
+SECRET_KEY = 'the_secret_key'
+```
 In the settings.py file, add the following lines:
 ```
 from decouple import config
@@ -70,10 +94,14 @@ SECRET_KEY = config("SECRET_KEY")
 ```
 
 Create a django project called backend. This will contain all backend files
-```django-admin startproject backend```
+```
+django-admin startproject backend
+```
 
 Navigate into the backend directory
-```cd backend```
+```
+cd backend
+```
 
 Start new app for all modules
 ```
@@ -85,17 +113,46 @@ python manage.py startapp appointments; \
 python manage.py startapp payments; \
 python manage.py startapp reports; \
 python manage.py startapp video_call; \
-python manage.py startapp chat
+python manage.py startapp chat;\
+python manage.py startapp api_v1
 ```
 
 Now add all the apps into settings.py > installed apps section
 
 Install psycopg to interact with PostgreSQL
-```pip install psycopg```
+```
+pip install psycopg
+```
 
 Create a new db in PSQL
 add the credentials into the settings.
 
 Add the following lines into settings.py to make the custom usermodel to be used for authentication.
 
-AUTH_USER_MODEL = 'authentication.Account'
+```
+AUTH_USER_MODEL = 'authentication.Account
+'```
+
+Migrate the model to the database
+```
+python manage.py makemigrations
+```
+```
+python manage.py migrate
+```
+Install REST and CORS for django
+```
+pipenv install djangorestframework django-cors-headers
+```
+
+To whitelist the frontend request, add the following lines to the backend/settings.py
+
+```
+CORS_ORIGIN_WHITELIST = [
+     'http://localhost:3000'
+]
+```
+
+Create serializer for Account.
+
+Create sample API to check whether they are working or not 'GET' and 'POST' views. This can be confirmed using REST's default page.
