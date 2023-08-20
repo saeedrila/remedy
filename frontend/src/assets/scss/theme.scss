@@ -1,0 +1,668 @@
+@import "./icons.scss";
+
+// Light Theme
+@import "./bootstrap.scss";
+@import "./app.scss";
+
+// RTL Mode
+// @import "./rtl/bootstrap-rtl";
+// @import "./rtl/components-rtl";
+// @import "./rtl/float-rtl";
+// @import "./rtl/general-rtl";
+// @import "./rtl/pages-rtl";
+// @import "./rtl/plugins-rtl";
+// @import "./rtl/spacing-rtl";
+// @import "./rtl/structure-rtl";
+// @import "./rtl/text-rtl";
+
+body {
+  * {
+    outline: none;
+  }
+}
+
+#sidebar-menu {
+  ul {
+    li {
+      a {
+        i {
+          min-width: 2rem;
+        }
+      }
+    }
+  }
+}
+
+.leaflet-pane {
+  z-index: 1;
+}
+
+svg > rect:first-child {
+  fill-opacity: 0 !important;
+}
+
+.dataTables_filter,
+.dataTables_paginate {
+  float: right;
+}
+
+.rdw-editor-main {
+  border: 1px solid $gray-300;
+  height: 239px;
+  padding-left: 15px;
+}
+
+.dz-message {
+  text-align: center;
+  padding: 30px;
+}
+
+// kanban board
+.react-kanban-board {
+  display: inherit !important;
+
+  .react-kanban-column {
+    background-color: $white;
+    padding: 1.25rem;
+
+    [data-rbd-draggable-context-id] {
+      > div {
+        display: block !important;
+      }
+    }
+  }
+
+  > div {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+
+    @media (max-width: 991.98px) {
+      flex-direction: column;
+
+      .react-kanban-column {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.react-kanban-column {
+  width: 33.33%;
+}
+
+.react-kanban-column > div {
+  display: block !important;
+}
+
+.fcYNFc,
+.sc-AxmLO.gmtmqV {
+  background-color: $card-bg !important;
+  margin: 0 20px 0 0 !important;
+}
+
+.task-box {
+  border: 1px solid $border-color;
+}
+
+.react-datepicker-wrapper {
+  width: 100% !important;
+}
+
+.ReactModal__Overlay {
+  z-index: 1001 !important;
+}
+
+.external-event {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+.rating-container {
+  background-color: transparent !important;
+}
+
+.input-group-append {
+  z-index: 0;
+}
+
+.input-color {
+  color: $input-color !important;
+}
+
+.sketch-picker {
+  position: absolute;
+  z-index: 1;
+}
+
+.rangeslider__fill {
+  background-color: $primary !important;
+}
+
+.dropdown-menu-end {
+  left: auto !important;
+  right: 0 !important;
+}
+
+.flatpickr-months .flatpickr-month {
+  background: $primary !important;
+}
+
+.flatpickr-weekdays {
+  background: $primary !important;
+}
+
+span.flatpickr-weekday {
+  background: $primary !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  background: $primary !important;
+}
+
+span.flatpickr-weekday {
+  color: $white !important;
+}
+
+.flatpickr-day.selected {
+  background: $primary !important;
+}
+
+.bs-select select {
+  width: auto !important;
+}
+
+//File-manager
+.file-manager {
+  .table td {
+    padding: 0.35rem;
+  }
+}
+
+//Authenication carousel
+.slider_css {
+  .slide {
+    background: none !important;
+  }
+
+  .carousel-status,
+  .control-next,
+  .control-prev {
+    display: none !important;
+  }
+}
+
+.carousel {
+  .control-dots {
+    margin: -5px 0px;
+  }
+
+  .dot {
+    background: #556ee6 !important;
+    width: 9px !important;
+    height: 9px !important;
+  }
+}
+
+//Two verification Page
+.verification {
+  input {
+    &:focus {
+      border: none;
+      outline: none !important;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .verification {
+    input {
+      width: 40px !important;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .verification {
+    input {
+      width: 30px !important;
+      height: 30px !important;
+      font-size: 15px !important;
+    }
+  }
+}
+
+//Two verification Page - 2
+.verification-2 {
+  input {
+    &:focus {
+      border: none;
+      outline: none !important;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .verification-2 {
+    input {
+      width: 40px !important;
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .verification-2 {
+    input {
+      width: 30px !important;
+      height: 35px !important;
+      font-size: 15px !important;
+    }
+  }
+}
+
+//Calendar
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+  padding: 5px !important;
+  font-size: 12px !important;
+  margin-right: 2px;
+}
+
+@include media-breakpoint-down(sm) {
+  .fc-toolbar {
+    display: block !important;
+    text-align: center;
+
+    .fc-left,
+    .fc-right,
+    .fc-center {
+      float: none;
+      display: block;
+      clear: both;
+      margin: 10px 0;
+    }
+  }
+
+  .fc {
+    .fc-toolbar {
+      > * {
+        > * {
+          float: none;
+        }
+      }
+    }
+  }
+
+  .fc-today-button {
+    display: none;
+  }
+}
+
+//Chat Scrollbar
+.ps__rail-y {
+  z-index: 999999 !important;
+}
+
+.close {
+  background: transparent;
+  border: 0;
+  font-size: 10px;
+  padding: 1.35rem 1.25rem;
+  background: transparent escape-svg($btn-close-bg) center / $btn-close-width
+    auto no-repeat;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.5;
+  width: 1em;
+  height: 1em;
+  z-index: 2;
+
+  span {
+    display: none;
+  }
+}
+
+//
+// Columns
+//
+
+.card-columns {
+  .card {
+    margin-bottom: $grid-gutter-width;
+  }
+
+  @include media-breakpoint-up(sm) {
+    column-count: 3;
+    column-gap: 1.25rem;
+    orphans: 1;
+    widows: 1;
+
+    .card {
+      display: inline-block; // Don't let them vertically span multiple columns
+      width: 100%; // Don't let their width change
+    }
+  }
+}
+
+/* drawer */
+.react-drawer-drawer {
+  z-index: 9999;
+  background: #fff;
+}
+
+.drawer-main-menu {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.drawer-menu a i {
+  min-width: 2rem;
+  display: inline-block;
+  min-width: 1.75rem;
+  padding-bottom: 0.125em;
+  font-size: 1.25rem;
+  line-height: 1.40625rem;
+  vertical-align: middle;
+  color: #7f8387;
+  transition: all 0.4s;
+}
+
+.drawer-menu a {
+  display: block;
+  padding: 0.625rem 1.5rem;
+  color: #545a6d;
+  position: relative;
+  font-size: 13px;
+  transition: all 0.4s;
+}
+
+.drawer-close {
+  padding: 0.5rem 0.5rem;
+  margin: -0.5rem -0.5rem -0.5rem auto;
+}
+
+.ReactModal__Overlay {
+  z-index: 5000 !important;
+}
+
+.rangeslider__handle:focus {
+  outline: none;
+}
+
+// React Table next css
+.react-bootstrap-table-page-btns-ul {
+  float: right !important;
+}
+
+.search-label {
+  float: right;
+}
+
+.react-drawer-overlay {
+  z-index: 9999;
+}
+
+// datatable
+
+.react-bs-table-sizePerPage-dropdown {
+  .dropdown-menu {
+    .dropdown-item {
+      a {
+        display: block;
+      }
+    }
+  }
+}
+
+.rightbar-title .right-bar-toggle {
+  background-color: #444c54 !important;
+  height: 24px !important;
+  width: 24px !important;
+  line-height: 24px !important;
+  display: block !important;
+  color: #eff2f7 !important;
+  text-align: center !important;
+  border-radius: 50% !important;
+}
+
+//rightbar drawer
+.css-sourceMap-modules-importLoaders-1-localIdentName-animate__animated___2O131 {
+  animation-duration: 0.6s !important;
+}
+
+.css-sourceMap-modules-importLoaders-1-localIdentName-ReactDrawer__overlay___2QFmC-sass {
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+
+//react-table
+.custom-header-css {
+  thead {
+    tr {
+      th {
+        div:last-child {
+          min-height: 38px;
+        }
+      }
+    }
+
+    td:nth-last-child(2) {
+      width: 150px !important;
+    }
+  }
+}
+
+.editor_email .ck-content {
+  height: 200px;
+}
+
+// .my-masonry-grid {
+//   display: -webkit-box;
+//   /* Not needed if autoprefixing */
+//   display: -ms-flexbox;
+//   /* Not needed if autoprefixing */
+//   display: flex;
+//   margin-left: -25px;
+//   /* gutter size offset */
+//   width: auto;
+// }
+
+// .my-masonry-grid_column {
+//   padding-left: 25px;
+//   /* gutter size */
+//   background-clip: padding-box;
+// }
+
+// /* Style your items */
+// .my-masonry-grid_column>div {
+//   /* change div to reference your elements you put in <Masonry> */
+//   background: transparent;
+//   margin-bottom: 20px;
+// }
+
+.jobs-categories .card-body a:last-child {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 991.98px) {
+  .search-box {
+    display: block !important;
+    .search-label {
+      float: none;
+      width: 100%;
+      .form-control {
+        border-radius: 0.25rem !important;
+      }
+    }
+  }
+}
+
+// select
+
+.css-1s2u09g-control, .css-1pahdxg-control {
+  background-color: $input-bg !important;
+  border-color: $input-border-color !important;
+}
+
+.css-14el2xx-placeholder {
+  color: $input-placeholder-color !important;
+}
+
+.css-26l3qy-menu {
+  box-shadow: none !important;
+  border: 1px solid $input-border-color !important;
+}
+
+.css-4ljt47-MenuList {
+  background-color: var(--#{$prefix}custom-white) !important;
+  border-radius: 4px !important;
+}
+
+.css-319lph-ValueContainer .css-qc6sy-singleValue {
+  color: $input-color !important;
+}
+.select2-selection .css-b62m3t-container {
+  color: $input-color !important;
+}
+.css-1n7v3ny-option, .css-9gakcf-option {
+  background-color: $primary !important;
+  color: $white !important;
+}
+
+
+// rdw-editor
+
+.rdw-editor-toolbar,
+.rdw-option-wrapper,
+.rdw-editor-main {
+  border-color: $input-border-color !important;
+  background-color: var(--#{$prefix}custom-white) !important;
+}
+
+.rdw-option-wrapper {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.rdw-dropdown-wrapper {
+  background-color: $input-bg !important;
+  border-color: $input-border-color !important;
+  box-shadow: none !important;
+}
+
+.rdw-dropdown-selectedtext {
+  color: var(--#{$prefix}body-color) !important;
+}
+
+[data-layout-mode="dark"] {
+  .rdw-option-wrapper,
+  .rdw-dropdown-selectedtext {
+    img {
+      filter: invert(1) !important;
+    }
+  }
+}
+
+// ck editor
+
+.ck.ck-toolbar {
+  background-color: var(--#{$prefix}light) !important;
+  border: 1px solid $input-border-color !important;
+}
+
+.ck-reset_all :not(.ck-reset_all-excluded *),
+.ck.ck-reset_all {
+  color: var(--#{$prefix}body-color) !important;
+}
+
+.ck.ck-editor__main > .ck-editor__editable {
+  background-color: var(--#{$prefix}custom-white) !important;
+  color: var(--#{$prefix}body-color) !important;
+  height: 300px !important;
+}
+
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+  border-color: $input-border-color !important;
+}
+
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover,
+.ck.ck-button.ck-on,
+a.ck.ck-button.ck-on {
+  background-color: var(--#{$prefix}light) !important;
+}
+
+.ck.ck-toolbar .ck.ck-toolbar__separator {
+  background: $input-border-color !important;
+}
+
+.selectall.checkbox-wrapper-mail label:before{
+  margin-top: 0;
+}
+
+// scroll
+.ps__rail-y, .ps__rail-x{
+  z-index: 999 !important;
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--#{$prefix}custom-white) inset !important;
+    background-color: var(--#{$prefix}custom-white) !important;
+    color: var(--#{$prefix}body-color) !important;
+    -webkit-text-fill-color: var(--#{$prefix}body-color) !important;
+} 
+
+
+
+// Select2
+
+.select2-selection__control, .select__control, .select2-selection .css-13cymwt-control, .css-t3ipsp-control{
+  background-color: $input-bg !important;
+  border-color: $input-border-color !important;
+}
+
+.select2-selection__menu, .select__menu, .css-1nmdiq5-menu{
+  background-color: var(--#{$prefix}card-bg) !important;
+  box-shadow: 0 0 0 1px var(--#{$prefix}border-color) , 0 4px 11px var(--#{$prefix}border-color)  !important;
+}
+
+.select2-selection__option--is-focused, .select__option--is-focused,  .css-d7l1ni-option{
+  background-color: $primary !important;
+  color: $white !important;
+}
+
+.select__multi-value, .select2-selection__multi-value, .css-1p3m7a8-multiValue{
+  background-color: var(--#{$prefix}light) !important;
+}
+
+.select__multi-value__label, .select2-selection__multi-value__label, .css-qbdosj-Input, .css-1dimb5e-singleValue, .css-wsp0cs-MultiValueGeneric{
+  color: var(--#{$prefix}body-color) !important;
+}
+
+.select__multi-value__remove, .select2-selection__multi-value__remove{
+  background-color: var(--#{$prefix}light) !important;
+  color: var(--#{$prefix}body-color) !important;
+}
+
+// auth-logo
+
+[data-layout-mode="dark"]{
+  .auth-logo{
+    .auth-logo-light{
+      display: block;
+    }
+    .auth-logo-dark{
+      display: none;
+    }
+  }
+}

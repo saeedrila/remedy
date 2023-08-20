@@ -156,3 +156,27 @@ CORS_ORIGIN_WHITELIST = [
 Create serializer for Account.
 
 Create sample API to check whether they are working or not 'GET' and 'POST' views. This can be confirmed using REST's default page.
+
+
+# React
+Created a new react app using:
+```
+npx create-react-app frontend
+```
+Then deleted .git file from the frontend directory, added necessory lines into the project's global .gitignore file.
+
+Created assets, components, pages, routes, and store directories inside src directory. Another 'Common' directory inside the newly created componenets directory.
+
+From frontend directory, install react-redux, redux, react router dom, reactstrap, bootstrap.
+```
+npm install react-redux redux react-router-dom reactstrap bootstrap
+```
+Install SASS related dependencies, formik and yup for form state management
+```
+npm install sass-loader node-sass css-loader style-loader postcss-loader formik yup
+```
+
+
+
+
+Thanks to:

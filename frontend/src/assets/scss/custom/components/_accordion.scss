@@ -1,0 +1,70 @@
+
+//
+// accordion.scss
+//
+
+.custom-accordion {
+    .accordion-list {
+        display: flex;
+        border-radius: 7px;
+        background-color: var(--#{$prefix}gray-300);
+        padding: 12px 20px;
+        color: var(--#{$prefix}body-color);
+        font-weight: $font-weight-semibold;
+        align-items: center;
+        justify-content: space-between;
+        &.collapsed {
+            i.accor-plus-icon {
+                &:before {
+                    content: "\F0415";
+                }
+            }
+        }
+
+        .accor-plus-icon{
+            display: inline-block;
+            font-size: 16px;
+            height: 24px;
+            width: 24px;
+            line-height: 22px;
+            background-color: var(--#{$prefix}custom-white);
+            text-align: center;
+            border-radius: 50%;
+        }
+    }
+
+    
+    a {
+
+        &.collapsed {
+            i.accor-down-icon {
+                &:before {
+                    content: "\F0140";
+                }
+            }
+        }
+    }
+
+
+    .card-body {
+        color: $text-muted;
+    }
+}
+
+// theme dark
+
+[data-layout-mode="dark"] {
+    .accordion-button {
+        &:not(.collapsed) {
+            color: var(--#{$variable-prefix}accordion-button-active-color);
+
+            &:after {
+                background-image: escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$white}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>"));
+            }
+        }
+
+        &:after {
+            background-image: escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$gray-500}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>"));
+        }
+    }
+}

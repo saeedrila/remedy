@@ -1,0 +1,176 @@
+//
+// Form editors.scss
+//
+
+// Tinymce
+
+.tox-tinymce {
+    border: 1px solid $input-border-color !important;
+}
+
+.tox :not(svg):not(rect) {
+    color: var(--#{$prefix}body-color);
+}
+
+.tox {
+    color: var(--#{$prefix}body-color);
+    .tox-collection__item {
+        color: $dropdown-link-color !important;
+    }
+
+    .tox-menu.tox-collection.tox-collection--list.tox-selected-menu,
+    .tox-collection--toolbar.tox-collection--toolbar-lg.tox-selected-menu,
+    .tox-swatches-menu.tox-selected-menu {
+        box-shadow: $box-shadow-sm !important;
+        animation-name: DropDownSlide !important;
+        animation-duration: 0.3s !important;
+        animation-fill-mode: both !important;
+        margin: 0 !important;
+        position: absolute !important;
+        z-index: 1000 !important;
+        padding: 0.5rem 0 !important;
+        background-color: var(--#{$prefix}custom-white) !important;
+        border: $dropdown-border-width solid var(--#{$prefix}border-color) !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .tox-collection--list .tox-collection__group {
+        border-color: var(--#{$prefix}border-color) !important;
+    }
+
+    .tox-collection--list {
+        .tox-collection__item--active {
+            color: $dropdown-link-hover-color !important;
+            background-color: $dropdown-link-hover-bg !important;
+        }
+    }
+
+    .tox-collection__group-heading {
+        color: $dropdown-link-hover-color !important;
+        background-color: $dropdown-link-hover-bg !important;
+    }
+
+    .tox-statusbar {
+        border-top: 1px solid var(--#{$prefix}border-top) !important;
+    }
+
+    .tox-menubar,
+    .tox-edit-area__iframe,
+    .tox-statusbar {
+        background-color: var(--#{$prefix}custom-white) !important;
+        background: none !important;
+    }
+
+    .tox-mbtn {
+        color: var(--#{$prefix}gray-600) !important;
+
+        &:hover:not(:disabled):not(.tox-mbtn--active) {
+            background-color: var(--#{$prefix}light) !important;
+        }
+    }
+
+    .tox-tbtn {
+        &:hover {
+            background-color: transparent !important;
+        }
+    }
+
+    .tox-toolbar,
+    .tox-toolbar__overflow,
+    .tox-toolbar__primary {
+        background: var(--#{$prefix}light) !important;
+    }
+
+    .tox-toolbar__primary {
+        border-top-color: var(--#{$prefix}light) !important;
+    }
+    .tox-tbtn--enabled {
+        background: transparent !important;
+    }
+    tox-split-button:focus {
+        background: transparent !important;
+    }
+    .tox-tbtn {
+        color: transparent !important;
+
+        svg {
+            fill: var(--#{$prefix}gray-700) !important;
+        }
+    }
+
+    .tox-edit-area__iframe {
+        background-color: var(--#{$prefix}custom-white) !important;
+    }
+
+    .tox-statusbar a,
+    .tox-statusbar__path-item,
+    .tox-statusbar__wordcount {
+        color: var(--#{$prefix}gray-700) !important;
+    }
+
+    &:not([dir="rtl"]) .tox-toolbar__group:not(:last-of-type) {
+        border-right: 1px solid var(--#{$prefix}border-color) !important;
+    }
+
+    .tox-dialog {
+        background-color: var(--#{$prefix}custom-white) !important;
+    }
+    .tox-button {
+        &:hover {
+            background-color: $primary !important;
+            background-image: none !important;
+            border-color: $primary !important;
+            box-shadow: none !important;
+        }
+    }
+
+    .tox-collection--toolbar {
+        .tox-collection__item--active {
+            background-color: var(--#{$prefix}gray-300) !important;
+        }
+    }
+
+    .tox-dialog__header {
+        background-color: var(--#{$prefix}custom-white) !important;
+    }
+    .tox-dialog__footer {
+        background-color: var(--#{$prefix}custom-white) !important;
+    }
+    .tox-icon {
+        color: var(--#{$prefix}dark) !important;
+    }
+    .tox-dialog__title {
+        color: $card-title-desc !important;
+    }
+    .tox-dialog__body-nav-item {
+        color: $card-title-desc !important;
+    }
+    .tox-label {
+        color: $card-title-desc !important;
+    }
+    .tox-textfield {
+        background-color: $input-bg !important;
+        color: $input-color !important;
+    }
+}
+
+.tox .tox-collection__item-checkmark svg,
+.tox .tox-collection__item-icon svg {
+    color: var(--#{$prefix}gray-800);
+}
+
+// x editable
+
+.editable-input {
+    .form-control {
+        display: inline-block;
+    }
+}
+
+.editable-buttons {
+    margin-left: 7px;
+
+    .editable-cancel {
+        margin-left: 7px;
+    }
+}

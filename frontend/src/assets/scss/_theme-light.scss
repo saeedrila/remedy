@@ -1,0 +1,25 @@
+:root {
+    //topbar 
+    --#{$prefix}heading-bg:              #{$white};
+    --#{$prefix}topbar-search-bg:        #f3f3f9;
+    --#{$prefix}header-item-color:       #555b6d;
+
+
+    --#{$prefix}boxed-body-bg:           #ebebf4;
+
+    --#{$prefix}topnav-bg:               #{$white};
+    --#{$prefix}menu-item-color:         #545a6d;
+    --#{$prefix}heading-dark-bg:          #2a3042;
+
+    --#{$prefix}input-border-color:             #{$gray-400};
+    --#{$prefix}input-focus-border-color:       #{darken($gray-400, 10%)};
+    --#{$variable-prefix}form-check-input-border:  #{rgba($black, 0.1)};
+
+    //footer
+    --#{$prefix}footer-bg:               #f2f2f5;
+    --#{$prefix}footer-color:            #74788d;
+
+    --#{$prefix}custom-white:            #{$white};
+    --#{$prefix}hr-border-color:         #{gray-400};
+
+}

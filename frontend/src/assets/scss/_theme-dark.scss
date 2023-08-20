@@ -1,0 +1,182 @@
+// :root CSS dark variables
+
+[data-layout-mode="dark"] {
+
+    // Color system - Dark Mode only
+    $gray-100: #212529;
+    $gray-200: #2a3042;
+    $gray-300: #32394e;
+    $gray-400: #a6b0cf;
+    $gray-500: #bfc8e2;
+    $gray-600: #c3cbe4;
+    $gray-700: #f6f6f6;
+    $gray-800: #eff2f7;
+    $gray-900: #f8f9fa;
+
+    $grays: (
+        "100": $gray-100,
+        "200": $gray-200,
+        "300": $gray-300,
+        "400": $gray-400,
+        "500": $gray-500,
+        "600": $gray-600,
+        "700": $gray-700,
+        "800": $gray-800,
+        "900": $gray-900 
+    );
+
+    // Prefix for :root CSS variables
+    @each $color,
+    $value in $grays {
+        --#{$prefix}gray-#{$color}: #{$value};
+    }
+
+    --#{$prefix}body-bg:                                    #222736;
+    --#{$prefix}body-bg-rgb:                                rgb(34, 39, 54);
+    --#{$prefix}body-color-rgb:                             #{to-rgb($gray-400)};
+    --#{$prefix}body-color:                                 #{$gray-400};
+    --#{$prefix}heading-color:                              #{$gray-700};
+    --#{$prefix}border-color:                               #{$gray-300};
+    --#{$prefix}custom-white:                               #{$gray-200};
+
+    --#{$prefix}input-border-color:                         #{$gray-300};
+    --#{$prefix}input-focus-border-color:                   #{lighten($gray-300, 4%)};
+    --#{$prefix}hr-border-color:                            #{$gray-300};
+    --#{$variable-prefix}form-check-input-border:           #{lighten($gray-300, 4%)};
+
+    // component variable
+    --#{$prefix}light:                                      #{$gray-300};
+    --#{$prefix}light-rgb:                                  #{to-rgb($gray-300)};
+    --#{$prefix}dark:                                       #{$gray-700};
+    --#{$prefix}dark-rgb:                                   #{to-rgb($gray-700)};
+
+    //topbar
+    --#{$prefix}heading-bg:                                 #fff;
+    --#{$prefix}header-item-color:                          #{$gray-400};
+    --#{$prefix}topbar-search-bg:                           #{$gray-200};
+
+    --#{$prefix}heading-dark-bg:                            #262b3c;
+
+    --#{$prefix}boxed-body-bg:                              #32394f;
+
+    --#{$prefix}topnav-bg:                                  #282e3f;
+    --#{$prefix}menu-item-color:                            #a6b0cf;
+
+    //footer
+    --#{$prefix}footer-bg:                                  #262b3c;
+    --#{$prefix}footer-color:                               #{$gray-400};
+
+    .card{
+        --#{$prefix}card-bg:                                    #{$gray-200};
+    }
+
+    .list-group {
+        --#{$prefix}list-group-bg:                                     #{$gray-200};
+        --#{$prefix}list-group-color:                                  #{$gray-900};
+        --#{$prefix}list-group-border-color:                           #{$gray-300};
+    }
+
+    .btn-light {
+        --#{$prefix}btn-color:                                         #{$gray-600};
+        --#{$prefix}btn-bg:                                            #{$gray-300};
+        --#{$prefix}btn-border-color:                                  #{$gray-300};
+    }
+
+    .btn-outline-light {
+        --#{$prefix}btn-color:                                         #{$gray-600};
+        --#{$prefix}btn-border-color:                                  #{$gray-300};
+    }
+
+    .btn-light,
+    .btn-outline-light {
+        --#{$prefix}btn-hover-color:                        #{$gray-600};
+        --#{$prefix}btn-hover-bg:                           #{$gray-300};
+        --#{$prefix}btn-hover-border-color:                 #{$gray-300};
+        --#{$prefix}btn-active-color:                       #{$gray-600};
+        --#{$prefix}btn-active-bg:                          #{$gray-300};
+        --#{$prefix}btn-active-border-color:                #{$gray-300};
+        --#{$prefix}btn-focus-shadow-rgb:                   #{to-rgb($gray-300)};
+    }
+
+    .btn-dark {
+        --#{$prefix}btn-bg:                                 #{$gray-400};
+        --#{$prefix}btn-border-color:                       #{$gray-400};
+        --#{$prefix}btn-hover-bg:                           #{$gray-400};
+    }
+
+    .btn-outline-dark {
+        --#{$prefix}btn-color:                              #{$gray-400};
+        --#{$prefix}btn-border-color:                       #{$gray-400};
+    }
+    
+    .btn-dark,
+    .btn-outline-dark {
+        --#{$prefix}btn-hover-bg:                           #{$gray-400};
+        --#{$prefix}btn-hover-border-color:                 #{$gray-400};
+        --#{$prefix}btn-active-bg:                          #{$gray-400};
+        --#{$prefix}btn-active-border-color:                #{$gray-400};
+        --#{$prefix}btn-focus-shadow-rgb:                   #{to-rgb($gray-600)};
+    }
+
+    .dropdown-menu {
+        --#{$prefix}dropdown-bg:                            #{$gray-200};
+        --#{$prefix}dropdown-link-color:                    #{$gray-400};
+        --#{$prefix}dropdown-border-color:                  #{$gray-300};
+        --#{$prefix}dropdown-border-width:                  1px;
+        --#{$prefix}dropdown-divider-bg:                    #{$gray-300};
+        --#{$prefix}dropdown-link-hover-bg:                 #{$gray-300};
+        --#{$prefix}dropdown-link-hover-color:              #e9ecef;
+        --#{$prefix}dropdown-link-active-bg:                #{$gray-300};
+        --#{$prefix}dropdown-link-active-color:             #e9ecef;
+    }
+
+    
+    .modal {
+        --#{$prefix}modal-bg:                                           #{$gray-200};
+    }
+    
+    .offcanvas,
+    .offcanvas-lg,
+    .offcanvas-md,
+    .offcanvas-sm,
+    .offcanvas-xl,
+    .offcanvas-xxl{
+        --#{$prefix}offcanvas-bg:                                       #{$gray-200};
+    }
+    
+    .nav-tabs {
+        --#{$prefix}nav-tabs-link-active-bg:                            #{$gray-200};
+        --#{$prefix}nav-tabs-link-active-border-color:                  #{lighten($gray-300, 4%)};
+        --#{$prefix}nav-tabs-border-color:                              #{lighten($gray-300, 4%)};
+        --#{$prefix}nav-tabs-link-hover-border-color:                   #{lighten($gray-300, 4%)};
+        --#{$prefix}nav-tabs-link-active-color:                         #{$primary};
+    }
+    
+    .accordion {
+        --#{$prefix}accordion-active-bg:                                #{rgba($primary, 0.1)};
+    }
+    
+    .toast{
+        --#{$prefix}toast-header-bg:                                    #{$gray-200};
+        --#{$prefix}toast-header-color:                                 #{$gray-600};
+        --#{$prefix}toast-bg:                                           #{$gray-200};
+    }
+    
+    .table {
+        --#{$prefix}table-striped-bg:                                   #{rgba($gray-500, .05)};
+        --#{$prefix}table-hover-bg:                                     #{rgba($gray-500, .05)};
+        --#{$prefix}table-active-bg:                                    #{rgba($gray-500, .05)};
+    }
+
+    .table-light {
+        --#{$prefix}table-color:                                        #{$gray-400};
+        --#{$prefix}table-bg:                                           #{$gray-300};
+        --#{$prefix}table-border-color:                                 #{$gray-300};
+    }
+    
+    .table-dark {
+        --#{$prefix}table-color:                                        #{$gray-400};
+        --#{$prefix}table-bg:                                           #{$gray-300};
+        --#{$prefix}table-border-color:                                 #{lighten($gray-300, 4%)};
+    }
+}
