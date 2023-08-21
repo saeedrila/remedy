@@ -66,8 +66,8 @@ const ExecutiveLogin = ({ history }) => {
                   <Row>
                     <Col>
                       <div className="text-primary p-4">
-                        <h3 className="text-primary  text-center">Welcome Executive !</h3>
-                        <p className=' text-center'>Sign in as an Executive to continue to Remedy.</p>
+                        <h3 className="text-primary  text-center">Welcome Doctor !</h3>
+                        <p className=' text-center'>Sign in as an Doctor to continue to Remedy.</p>
                       </div>
                     </Col>
                   </Row>
