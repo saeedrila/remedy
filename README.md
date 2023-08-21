@@ -131,7 +131,7 @@ Add the following lines into settings.py to make the custom usermodel to be used
 
 ```
 AUTH_USER_MODEL = 'authentication.Account
-'```
+```
 
 Migrate the model to the database
 ```
