@@ -19,7 +19,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 
-const ExecutiveLogin = ({ history }) => {
+const PatientRegister = ({ history }) => {
   const [validation, setValidation] = useState({
     values: {},
     touched: {},
@@ -66,8 +66,8 @@ const ExecutiveLogin = ({ history }) => {
                   <Row>
                     <Col>
                       <div className="text-primary p-4">
-                        <h3 className="text-primary  text-center">Welcome Executive !</h3>
-                        <p className=' text-center'>Sign in as an Executive to continue to Remedy.</p>
+                        <h3 className="text-primary  text-center">Registr as a Patient</h3>
+                        <p className=' text-center'>Register now!</p>
                       </div>
                     </Col>
                   </Row>
@@ -90,7 +90,7 @@ const ExecutiveLogin = ({ history }) => {
                           placeholder="Enter email"
                           type="email"
                           onChange={validation.handleChange}
-                          value={ExecutiveLogin.email}
+                          value={PatientRegister.email}
                         />
                       </div>
 
@@ -101,37 +101,28 @@ const ExecutiveLogin = ({ history }) => {
                           type="password"
                           placeholder="Enter Password"
                           onChange={validation.handleChange}
-                          value={ExecutiveLogin.email}
+                          value={PatientRegister.password}
                         />
                       </div>
 
-                      <div className="form-check">
-                        <input
-                          type="checkbox"
-                          className="form-check-input"
-                          id="customControlInline"
+                      <div className="mb-3">
+                        <Label className="form-label">Confirm Password</Label>
+                        <Input
+                          name="password1"
+                          type="password"
+                          placeholder="Confirm Password"
+                          onChange={validation.handleChange}
+                          value={PatientRegister.password1}
                         />
-                        <label
-                          className="form-check-label"
-                          htmlFor="customControlInline"
-                        >
-                          Remember me
-                        </label>
                       </div>
 
-                      <div className="mt-3 d-grid">
+                      <div className="mt-4 d-grid">
                         <button
                           className="btn btn-primary btn-block"
                           type="submit"
                         >
-                          Log In
+                          Register
                         </button>
-                      </div>
-                      <div className="mt-4 text-center">
-                        <Link to="/forgot-password" className="text-muted">
-                          <i className="mdi mdi-lock me-1" />
-                          Forgot your password?
-                        </Link>
                       </div>
                     </Form>
                   </div>
@@ -139,10 +130,10 @@ const ExecutiveLogin = ({ history }) => {
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  Don&#39;t have an account ?{" "}
-                  <Link to="/executive-register" className="fw-medium text-primary">
+                  Have an account ?{" "}
+                  <Link to="/" className="fw-medium text-primary">
                     {" "}
-                    Signup now{" "}
+                    Login now{" "}
                   </Link>{" "}
                 </p>
                 <p>
@@ -158,8 +149,8 @@ const ExecutiveLogin = ({ history }) => {
   );
 };
 
-export default withRouter(ExecutiveLogin);
+export default withRouter(PatientRegister);
 
-ExecutiveLogin.propTypes = {
+PatientRegister.propTypes = {
   history: PropTypes.object,
 };

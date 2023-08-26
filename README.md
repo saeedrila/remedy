@@ -176,6 +176,10 @@ Install SASS related dependencies, formik and yup for form state management
 npm install sass-loader node-sass css-loader style-loader postcss-loader formik yup
 ```
 
+For all 4 types of users,
+Login pages were added
+Register pages were added
+OTP pages were added
 
 
 

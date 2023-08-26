@@ -140,7 +140,7 @@ const ExecutiveLogin = ({ history }) => {
               <div className="mt-5 text-center">
                 <p>
                   Don&#39;t have an account ?{" "}
-                  <Link to="/register" className="fw-medium text-primary">
+                  <Link to="/doctor-register" className="fw-medium text-primary">
                     {" "}
                     Signup now{" "}
                   </Link>{" "}

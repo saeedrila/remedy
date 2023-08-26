@@ -1,5 +1,5 @@
 import React from 'react'
-import ExecutiveLogin from '../components/Authentication/ExecutiveLogin'
+import ExecutiveLogin from '../../components/Authentication/ExecutiveLogin'
 
 const ExecutiveLoginPage = () => {
   return (

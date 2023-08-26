@@ -1,5 +1,5 @@
 import React from 'react'
-import DoctorLogin from '../components/Authentication/DoctorLogin'
+import DoctorLogin from '../../components/Authentication/DoctorLogin'
 
 const DoctorLoginPage = () => {
   return (

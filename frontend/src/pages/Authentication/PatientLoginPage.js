@@ -1,5 +1,5 @@
 import React from 'react'
-import PatientLogin from '../components/Authentication/PatientLogin'
+import PatientLogin from '../../components/Authentication/PatientLogin'
 
 function PatientLoginPage() {
   return (
