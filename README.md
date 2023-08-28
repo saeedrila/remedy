@@ -181,6 +181,11 @@ Login pages were added
 Register pages were added
 OTP pages were added
 
+Header has been made. This will be used througout the patient facing pages.
+
 
 
 Thanks to:
+
+Attribution:
+<a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik - Flaticon</a>

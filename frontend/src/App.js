@@ -13,6 +13,8 @@ import DoctorRegisterPage from './pages/Authentication/DoctorRegisterPage';
 import LabRegisterPage from './pages/Authentication/LabRegisterPage';
 import PatientRegisterPage from './pages/Authentication/PatientRegisterPage';
 
+import Home from './pages/Landing/Home';
+
 
 function App() {
   return (
@@ -25,11 +27,17 @@ function App() {
           <Route path="/lab-login" element={<LabLoginPage />} />
           <Route path="/" element={<PatientLoginPage />} />
 
+          {/* Account registration */}
           <Route path='/executive-register' element={<ExecutiveRegisterPage />} />
           <Route path='/doctor-register' element={<DoctorRegisterPage />} />
           <Route path='/lab-register' element={<LabRegisterPage />} />
           <Route path='/register' element={<PatientRegisterPage />} />
 
+          {/* Landing pages */}
+          <Route path='home' element={<Home />} />
+
+          <Route path='' element />
+          <Route path='' element />
           <Route path='' element />
         </Routes>
       </Router>
