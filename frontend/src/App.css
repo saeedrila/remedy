@@ -44,3 +44,11 @@
 #page-footer {
   background-color: white;
 }
+
+.big-card-container {
+  margin: 0 auto;
+}
+
+.small-cards{
+  background-color: white;
+}

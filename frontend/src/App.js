@@ -14,6 +14,11 @@ import LabRegisterPage from './pages/Authentication/LabRegisterPage';
 import PatientRegisterPage from './pages/Authentication/PatientRegisterPage';
 
 import Home from './pages/Landing/Home';
+import DoctorSpecialties from './components/DoctorSpecialties';
+import SelectDoctor from './components/SelectDoctor';
+
+import LabTests from './components/LabTests';
+
 
 
 function App() {
@@ -33,10 +38,14 @@ function App() {
           <Route path='/lab-register' element={<LabRegisterPage />} />
           <Route path='/register' element={<PatientRegisterPage />} />
 
-          {/* Landing pages */}
+          {/* Landing page */}
           <Route path='home' element={<Home />} />
 
-          <Route path='' element />
+          {/* Appointment selection */}
+          <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
+          <Route path='lab-tests' element={<LabTests/>} />
+          <Route path='doctor-specialty/1/select-doctor' element={<SelectDoctor/>} />
+          
           <Route path='' element />
           <Route path='' element />
         </Routes>

@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import withRouter from '../Common/withRouter';
+import React from 'react';
 import {
   Container,
   Row,
@@ -13,7 +10,7 @@ const Footer = () => {
 
   return (
     <React.Fragment>
-      <div id="page-footer">
+      <div id="page-footer" className="mt-3">
       <Container>
           <Row className="justify-content-center">
             <Col xs={12} md={3}>

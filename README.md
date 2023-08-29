@@ -167,9 +167,10 @@ Then deleted .git file from the frontend directory, added necessory lines into t
 
 Created assets, components, pages, routes, and store directories inside src directory. Another 'Common' directory inside the newly created componenets directory.
 
-From frontend directory, install react-redux, redux, react router dom, reactstrap, bootstrap.
+From frontend directory, install react-redux, redux, react router dom, react-bootstrap reactstrap, bootstrap. I have installed reactstrap and react-bootstrap. This is not necessory. I have started with reactstrap, at one point of time, I felt it was limiting and installed react-bootstrap. 
+
 ```
-npm install react-redux redux react-router-dom reactstrap bootstrap
+npm install react-redux redux react-router-dom reactstrap react-bootstrap bootstrap
 ```
 Install SASS related dependencies, formik and yup for form state management
 ```
@@ -181,11 +182,34 @@ Login pages were added
 Register pages were added
 OTP pages were added
 
-Header has been made. This will be used througout the patient facing pages.
+Header,Footer has been made. This will be used througout the patient facing pages.
+
+Big cards and small cards were made. This will be shown in the landing page.
+
+Doctor Specialties are hardcoded as of now.
+
+
 
 
 
 Thanks to:
 
-Attribution:
+Attributions:
+Profile icon:
 <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik - Flaticon</a>
+
+Doctor prescription:
+<a href="https://storyset.com/health">Health illustrations by Storyset</a>
+
+Lab test selection:
+<a href="https://storyset.com/analysis">Analysis illustrations by Storyset</a>
+
+Doctor :
+<a href="https://storyset.com/work">Work illustrations by Storyset</a>
+
+Lab test:
+<a href="https://storyset.com/analysis">Analysis illustrations by Storyset</a>
+
+Online Doctor:
+<a href="https://storyset.com/work">Work illustrations by Storyset</a>
+
