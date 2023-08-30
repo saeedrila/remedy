@@ -19,7 +19,8 @@ import SelectDoctor from './components/SelectDoctor';
 
 import LabTests from './components/LabTests';
 
-
+// Test
+import TestAccordion from './components/Test/TestAccordion';
 
 function App() {
   return (
@@ -48,6 +49,9 @@ function App() {
           
           <Route path='' element />
           <Route path='' element />
+
+          {/* Test */}
+          <Route path='test' element={<TestAccordion />} />
         </Routes>
       </Router>
     </div>
