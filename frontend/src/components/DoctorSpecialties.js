@@ -34,7 +34,7 @@ function DoctorSpecialties() {
         <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-3">
           {DoctorSpecialtiesData.map((data) => (
             <Col key={data.id}>
-              <Card className="border" onClick={() => navigate(`/doctor-specialty/${data.id}/select-doctor`)}>
+              <Card className="border" onClick={() => navigate(`/doctor-specialties/${data.id}/select-doctor`)}>
                 <Card.Img variant="top" src={data.img} />
                 <Card.Body>
                   <Card.Title className="justify-content-center" >{data.title}</Card.Title>

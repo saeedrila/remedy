@@ -21,6 +21,7 @@ import LabTests from './components/LabTests';
 
 // Test
 import TestAccordion from './components/Test/TestAccordion';
+import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
 
 function App() {
   return (
@@ -44,14 +45,17 @@ function App() {
 
           {/* Appointment selection */}
           <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
+          <Route path='doctor-specialties/1/select-doctor' element={<SelectDoctor/>} />
+          <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
+
           <Route path='lab-tests' element={<LabTests/>} />
-          <Route path='doctor-specialty/1/select-doctor' element={<SelectDoctor/>} />
-          
+
+
           <Route path='' element />
           <Route path='' element />
 
           {/* Test */}
-          <Route path='test' element={<TestAccordion />} />
+          <Route path='test' element={<DoctorAppointmentConfirmation />} />
         </Routes>
       </Router>
     </div>
