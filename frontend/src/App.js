@@ -22,6 +22,7 @@ import LabTests from './components/LabTests';
 // Test
 import TestAccordion from './components/Test/TestAccordion';
 import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
+import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
 
 function App() {
   return (
@@ -47,6 +48,8 @@ function App() {
           <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
           <Route path='doctor-specialties/1/select-doctor' element={<SelectDoctor/>} />
           <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
+          <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+
 
           <Route path='lab-tests' element={<LabTests/>} />
 
@@ -56,6 +59,7 @@ function App() {
 
           {/* Test */}
           <Route path='test' element={<DoctorAppointmentConfirmation />} />
+          <Route path='test2' element={<DoctorAppointmentPaymentConfirmation />} />
         </Routes>
       </Router>
     </div>

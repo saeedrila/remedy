@@ -1,11 +1,10 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import {
   Card,
   Col,
   Row,
   Button,
-  Nav,
 } from 'react-bootstrap';
 
 import Header from '../components/Common/Header';
@@ -15,10 +14,12 @@ import pic1 from '../assets/images/medical/online-doctor.svg'
 
 function DoctorAppointmentConfirmation() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const { doctor, timing } = location.state;
 
   const handleProceedToPaymentClick = () => {
-    console.log('clicked handleProceedToPaymentClick')
+    navigate('payment-confirmation')
   }
 
   return (
