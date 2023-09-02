@@ -8,10 +8,8 @@ import {
 } from "reactstrap";
 
 
-// Redux
-//import { connect } from "react-redux";
+
 import { Link } from "react-router-dom";
-//import withRouter from "components/Common/withRouter";
 
 // users
 import user1 from "../../assets/images/users/avatar-1.png";
@@ -65,17 +63,9 @@ const ProfileMenu = props => {
           </DropdownItem>
           <DropdownItem tag="a" href="/crypto-wallet">
             <i className="bx bx-wallet font-size-16 align-middle me-1" />
-            {"My Wallet"}
+            {"Dashboard"}
           </DropdownItem>
-          <DropdownItem tag="a" href="#">
-            <span className="badge bg-success float-end">11</span>
-            <i className="bx bx-wrench font-size-16 align-middle me-1" />
-            {"Settings"}
-          </DropdownItem>
-          <DropdownItem tag="a" href="auth-lock-screen">
-            <i className="bx bx-lock-open font-size-16 align-middle me-1" />
-            {"Lock screen"}
-          </DropdownItem>
+
           <div className="dropdown-divider" />
           <Link to="/logout" className="dropdown-item">
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />

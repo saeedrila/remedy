@@ -51,8 +51,8 @@ const ExecutiveLogin = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your validation and login logic here
-    // For simplicity, this example just redirects after submission
-    history.push('/dashboard'); // Replace with your desired route
+    // Redirects after submission
+    history.push('/dashboard');
   };
 
   return (

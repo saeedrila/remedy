@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from 'prop-types';
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 // Import menuDropdown
@@ -9,6 +9,7 @@ import ProfileMenu from "../Common/ProfileMenu"
 
 const Header = (props) => {
   const [isSearch, setSearch] = useState(false);
+  const navigate = useNavigate()
   
   
   return (
@@ -18,7 +19,7 @@ const Header = (props) => {
           <div className="d-flex align-items-center">
             <div className="navbar-brand-box">
               <div className="position-relative">
-                <h1 >Remedy</h1>
+                <h1 onClick={() => navigate('/home')}>Remedy</h1>
               </div>
             </div>
 

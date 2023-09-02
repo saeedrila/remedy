@@ -4,6 +4,7 @@ import ExecutiveLoginPage from './pages/Authentication/ExecutiveLoginPage';
 import DoctorLoginPage from './pages/Authentication/DoctorLoginPage';
 import LabLoginPage from './pages/Authentication/LabLoginPage';
 import PatientLoginPage from './pages/Authentication/PatientLoginPage';
+import ProfileDoctor from './pages/Profile/ProfileDoctor';
 
 
 // Import scss
@@ -50,9 +51,10 @@ function App() {
           <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
           <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
 
+          {/* Profile section */}
+          <Route path='profile-doctor' element={<ProfileDoctor/>} />
 
           <Route path='lab-tests' element={<LabTests/>} />
-
 
           <Route path='' element />
           <Route path='' element />
