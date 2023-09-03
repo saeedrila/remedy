@@ -18,13 +18,13 @@ The payments module deals with the processing of payments for appointments. It s
 The reports module deals with the generation of reports, especially creating lab reports, prescriptions, other relevant data storage as well.
 ### Module 8: Video call
 This module deals with all video call related APIs, settings, keys, etc.
-### Module 9 Chat
+### Module 9: Chat
 This module deals with all chat related APIs, settings, keys, etc.
 
 
 ## Prerequisites:
-### I am using VSCode for my development and its integrated terminal. Any IDE and command prompt is enough.
-### I have enabled 'autosave features'. So, 'save' won't be mentioned in the follwing instructions.
+I am using VSCode for my development and its integrated terminal. Any IDE and command prompt is enough.
+I have enabled 'autosave features'. So, 'save' won't be mentioned in the follwing instructions.
 
 ## Initial setup
 Create a project directory with name 'Remedy_v1' using terminal
@@ -215,4 +215,10 @@ Online Doctor:
 
 Green successful tick:
 <a href="https://www.flaticon.com/free-icons/correct" title="correct icons">Correct icons created by kliwir art - Flaticon</a>
+
+Linkedin logo:
+<a href="https://www.flaticon.com/free-icons/linkedin" title="linkedin icons">Linkedin icons created by riajulislam - Flaticon</a>
+
+Github logo:
+<a href="https://www.flaticon.com/free-icons/github" title="github icons">Github icons created by riajulislam - Flaticon</a>
 

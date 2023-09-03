@@ -56,3 +56,7 @@
 .time-selection-button{
   margin: 1px;
 }
+
+.hand-cursor{
+  cursor: pointer;
+}

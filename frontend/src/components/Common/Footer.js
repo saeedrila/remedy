@@ -6,6 +6,10 @@ import {
 } from 'reactstrap';
 
 
+import linkedin from '../../assets/images/medical/linkedin.png'
+import github from '../../assets/images/medical/github.png'
+
+
 const Footer = () => {
 
   return (
@@ -15,7 +19,7 @@ const Footer = () => {
           <Row className="justify-content-center">
             <Col xs={12} md={3}>
               <div className="mt-5 text-center">
-                <h1>
+                <h1 className='hand-cursor'>
                   Remedy
                 </h1>
               </div>
@@ -35,11 +39,25 @@ const Footer = () => {
               </div>
             </Col>
             <Col xs={12} md={3}>
-              <div className="mt-5 text-center">
-                <p>
-                  Social Media
-                </p>
+              <Row>
+                <div className="mt-5 text-center">
+                  <p>
+                    Social Media
+                  </p>
+                </div>
+              </Row>
+              <Row>
+              <div className="text-center">
+              <img
+                className="header-profile-user"
+                src={linkedin}
+                />
+              <img
+                className="header-profile-user"
+                src={github}
+              />
               </div>
+              </Row>
             </Col>
           </Row>
           <Row>
