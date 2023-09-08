@@ -48,14 +48,19 @@ const Footer = () => {
               </Row>
               <Row>
               <div className="text-center">
-              <img
-                className="header-profile-user"
-                src={linkedin}
+              <a href='https://www.linkedin.com/in/saeedrila/' target="_blank" rel="noopener noreferrer">
+                <img
+                  className="header-profile-user"
+                  src={linkedin}
                 />
-              <img
-                className="header-profile-user"
-                src={github}
-              />
+              </a>
+              <a href='https://github.com/saeedrila/remedy' target="_blank" rel="noopener noreferrer">
+                <img
+                  className="header-profile-user"
+                  src={github}
+                />
+              </a>
+
               </div>
               </Row>
             </Col>
