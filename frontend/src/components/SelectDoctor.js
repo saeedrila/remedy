@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { 
+  Container,
   Card,
   Col,
   Row,
@@ -186,78 +187,80 @@ function SelectDoctor() {
       {/* Header section */}
       <Header />
 
-      <div className="big-card-container">
-        <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-3">
-          {DoctorList.map((data, cardIndex) => (
-            <Col key={data.name}>
-              <Card className="border">
-                <Card.Img variant="top" src={data.img} />
-                <Card.Body>
-                  <Card.Title className="justify-content-center" >Dr. {data.name}</Card.Title>
-                  <Card.Title className="justify-content-center" >₹{data.fee}</Card.Title>
-                  <Nav variant="tabs">
-                    <Nav.Item>
-                    <Nav.Link
-                    eventKey={`#${data.name}_online`}
-                    active={activeInpersonTabs[cardIndex]}
-                    onClick={() => handleTabClick(cardIndex, 0)}
-                  >In person</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                    <Nav.Link
-                    eventKey={`#${data.name}_inPerson`}
-                    active={activeOnlineTabs[cardIndex]}
-                    onClick={() => handleTabClick(cardIndex, 1)}
-                  >Online</Nav.Link>
-                    </Nav.Item>
-                  </Nav>
-                  <div className="mt-3">
-                    {activeInpersonTabs[cardIndex]  && (
-                      <Card>
-                        <Card.Body>
-                          <Card.Title>Select timing:</Card.Title>
-                          {Object.keys(data.inPerson).map((id) => (
-                            <Button 
-                            key={id} 
-                            variant={data.inPerson[id].status === 'Y' ? 'primary' : 'secondary'} 
-                            className='time-selection-button'
-                            onClick={() => handleTimingClick(cardIndex, data.inPerson[id].time)} >{data.inPerson[id].time}</Button>
-                          ))}
-                        </Card.Body>
-                      </Card>
-                    )}
-                    {activeOnlineTabs[cardIndex] && (
-                      <Card>
-                        <Card.Body>
-                          <Card.Title>Select timing:</Card.Title>
-                          {Object.keys(data.online).map((id) => (
-                            <Button 
-                            key={id} 
-                            variant={data.online[id].status === 'Y' ? 'primary':'secondary'} 
-                            className='time-selection-button'
-                            onClick={() => handleTimingClick(cardIndex, data.inPerson[id].time)} >{data.online[id].time}</Button>
-                          ))}
-                        </Card.Body>
-                      </Card>
-                    )}
-                    {showProceedButton[cardIndex] && (
-                      <Button variant="success" 
-                      className="mt-3" 
-                      onClick={() => 
-                      handleProceedClick(
-                        cardIndex, 
-                        activeInpersonTabs[cardIndex] ? 'Inperson' : 'Online', 
-                        selectedTiming[cardIndex])}>
-                        Proceed with {activeInpersonTabs[cardIndex] ? 'In-person' : 'Online'} consultation at {selectedTiming[cardIndex].timing}
-                      </Button>
-                    )}
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </div>
+      <Container>
+        <div className="big-card-container">
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-3">
+            {DoctorList.map((data, cardIndex) => (
+              <Col key={data.name}>
+                <Card className="border">
+                  <Card.Img variant="top" src={data.img} />
+                  <Card.Body>
+                    <Card.Title className="justify-content-center" >Dr. {data.name}</Card.Title>
+                    <Card.Title className="justify-content-center" >₹{data.fee}</Card.Title>
+                    <Nav variant="tabs">
+                      <Nav.Item>
+                      <Nav.Link
+                      eventKey={`#${data.name}_online`}
+                      active={activeInpersonTabs[cardIndex]}
+                      onClick={() => handleTabClick(cardIndex, 0)}
+                    >In person</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                      <Nav.Link
+                      eventKey={`#${data.name}_inPerson`}
+                      active={activeOnlineTabs[cardIndex]}
+                      onClick={() => handleTabClick(cardIndex, 1)}
+                    >Online</Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                    <div className="mt-3">
+                      {activeInpersonTabs[cardIndex]  && (
+                        <Card>
+                          <Card.Body>
+                            <Card.Title>Select timing:</Card.Title>
+                            {Object.keys(data.inPerson).map((id) => (
+                              <Button 
+                              key={id} 
+                              variant={data.inPerson[id].status === 'Y' ? 'primary' : 'secondary'} 
+                              className='time-selection-button'
+                              onClick={() => handleTimingClick(cardIndex, data.inPerson[id].time)} >{data.inPerson[id].time}</Button>
+                            ))}
+                          </Card.Body>
+                        </Card>
+                      )}
+                      {activeOnlineTabs[cardIndex] && (
+                        <Card>
+                          <Card.Body>
+                            <Card.Title>Select timing:</Card.Title>
+                            {Object.keys(data.online).map((id) => (
+                              <Button 
+                              key={id} 
+                              variant={data.online[id].status === 'Y' ? 'primary':'secondary'} 
+                              className='time-selection-button'
+                              onClick={() => handleTimingClick(cardIndex, data.inPerson[id].time)} >{data.online[id].time}</Button>
+                            ))}
+                          </Card.Body>
+                        </Card>
+                      )}
+                      {showProceedButton[cardIndex] && (
+                        <Button variant="success" 
+                        className="mt-3" 
+                        onClick={() => 
+                        handleProceedClick(
+                          cardIndex, 
+                          activeInpersonTabs[cardIndex] ? 'Inperson' : 'Online', 
+                          selectedTiming[cardIndex])}>
+                          Proceed with {activeInpersonTabs[cardIndex] ? 'In-person' : 'Online'} consultation at {selectedTiming[cardIndex].timing}
+                        </Button>
+                      )}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </div>
+      </Container>
 
       {/* Footer section */}
       <Footer />

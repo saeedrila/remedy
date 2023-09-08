@@ -42,7 +42,7 @@ function Home() {
 
       {/* Top big cards */}
       <BigCard BigCardData ={BigCardData} />
-
+      
       {/* Doctor specialties selection */}
       <div className="small-cards mt-3">
         <Container>
