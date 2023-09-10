@@ -8,6 +8,7 @@ import {
   Input,
 } from 'react-bootstrap'
 import {
+  Button,
   Card,
   CardBody,
   CardTitle,
@@ -35,11 +36,7 @@ function ProfileDoctor() {
           </Row>
         </Container>
       </div>
-
-
       <div>Profile Picture</div>
-
-
       <div className='small-cards'>
         <Container>
           <Row>
@@ -52,50 +49,59 @@ function ProfileDoctor() {
                     dividers—add the base className <code>.table</code> to any
                     <code>&lt;table&gt;</code>.
                   </p>
-
                   <div className="table-responsive">
                     <Table className="table mb-0">
                       <tbody>
                         <tr>
-                          <th scope="row">1</th>
+                          <th scope="row">Name</th>
                           <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
                         </tr>
                         <tr>
-                          <th scope="row">2</th>
+                          <th scope="row">Email Address</th>
                           <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
                         </tr>
                         <tr>
-                          <th scope="row">3</th>
+                          <th scope="row">Phone Number</th>
                           <td>Larry</td>
-                          <td>the Bird</td>
-                          <td>@twitter</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Gender</th>
+                          <td>Larry</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Address</th>
+                          <td>Larry</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">State</th>
+                          <td>Larry</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Country</th>
+                          <td>Larry</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">PIN Code</th>
+                          <td>Larry</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Registration document</th>
+                          <td>Larry</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Specialty</th>
+                          <td>Larry</td>
                         </tr>
                       </tbody>
                     </Table>
                   </div>
                 </CardBody>
+                <Button className='m-4'>
+                  Edit
+                </Button>
               </Card>
             </Col>
           </Row>
-          Name
-          Email Address
-          Phone Number
-          Gender
-          House No.
-          Street
-          City
-          State
-          Country
-          PIN Code
-          Registration document
-          Specialty
-
-          Save Changes
-          Cancel
         </Container>
       </div>
 
