@@ -14,6 +14,8 @@ import {
   CardTitle,
   Table,
 } from 'reactstrap'
+import user1 from '../../assets/images/users/avatar-5.jpg'
+
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 
@@ -24,32 +26,23 @@ function ProfileDoctor() {
       {/* Header section */}
       <Header />
 
-      <div className='big-card-container'>
-        <Container>
-          <Row className='justify-content-center'>
-            <Col>
-              Welcome (name)
-              Update image
-              Save Changes
-              Cancel
-            </Col>
-          </Row>
-        </Container>
-      </div>
-      <div>Profile Picture</div>
-      <div className='small-cards'>
+      <div className='small-cards mt-3'>
         <Container>
           <Row>
             <Col>
               <Card>
                 <CardBody>
-                  <CardTitle className="h4">Basic example</CardTitle>
-                  <p className="card-title-desc">
-                    For basic styling—light padding and only horizontal
-                    dividers—add the base className <code>.table</code> to any
-                    <code>&lt;table&gt;</code>.
-                  </p>
-                  <div className="table-responsive">
+                  <Col>
+                      <img
+                        className="rounded-circle profile-image"
+                        src={user1}
+                        alt="Header Avatar"
+                      />
+                      <Button className='m-2'>
+                        Edit profile image
+                      </Button>
+                  </Col>
+                  <div className="table-responsive mt-3">
                     <Table className="table mb-0">
                       <tbody>
                         <tr>

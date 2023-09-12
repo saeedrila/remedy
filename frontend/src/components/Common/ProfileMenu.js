@@ -17,7 +17,7 @@ const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
 
-  const [username, setusername] = useState("Admin");
+  const [username, setusername] = useState("User");
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
@@ -60,7 +60,7 @@ const ProfileMenu = props => {
             <i className="bx bx-user font-size-16 align-middle me-1" />
             {"Profile"}{" "}
           </DropdownItem>
-          <DropdownItem tag="a" href="/crypto-wallet">
+          <DropdownItem tag="a" href="/dashboard-doctor">
             <i className="bx bx-wallet font-size-16 align-middle me-1" />
             {"Dashboard"}
           </DropdownItem>

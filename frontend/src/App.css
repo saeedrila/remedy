@@ -60,3 +60,11 @@
 .hand-cursor{
   cursor: pointer;
 }
+
+.profile-image{
+  width: 10vw;
+}
+
+.dashboard-icon{
+  width: 10vw;
+}

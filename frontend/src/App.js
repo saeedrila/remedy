@@ -24,6 +24,7 @@ import LabTests from './components/LabTests';
 import TestAccordion from './components/Test/TestAccordion';
 import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
 import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
+import DashboardDoctor from './pages/Dashboard/DashboardDoctor';
 
 function App() {
   return (
@@ -53,6 +54,9 @@ function App() {
 
           {/* Profile section */}
           <Route path='profile-doctor' element={<ProfileDoctor/>} />
+
+          {/* Dashboard section */}
+          <Route path='dashboard-doctor' element={<DashboardDoctor/>} />
 
           <Route path='lab-tests' element={<LabTests/>} />
 
