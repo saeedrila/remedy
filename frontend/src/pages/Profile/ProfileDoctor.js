@@ -3,15 +3,11 @@ import {
   Container,
   Row,
   Col,
-  Form,
-  FormLabel,
-  Input,
 } from 'react-bootstrap'
 import {
   Button,
   Card,
   CardBody,
-  CardTitle,
   Table,
 } from 'reactstrap'
 import user1 from '../../assets/images/users/avatar-5.jpg'

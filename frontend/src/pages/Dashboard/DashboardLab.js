@@ -17,16 +17,16 @@ import {
 
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
-import Dashboard from '../../components/Doctor/Dashboard'
-import Appointments from '../../components/Doctor/Appointments'
+import Dashboard from '../../components/Lab/Dashboard'
+import Appointments from '../../components/Lab/Appointments'
 
 import classnames from "classnames";
-import Availability from '../../components/Doctor/Availability'
-import Prescription from '../../components/Doctor/Prescription'
-import Payments from '../../components/Doctor/Payments'
+import Availability from '../../components/Lab/Availability'
+import Report from '../../components/Lab/Report'
+import Payments from '../../components/Lab/Payments'
 
-function DashboardDoctor(props) {
-  document.title = 'Doctors Dashboard'
+function DashboardLab(props) {
+  document.title = 'Labs Dashboard'
 
   const [verticalActiveTab, setverticalActiveTab] = useState("1");
   const toggleVertical = tab => {
@@ -50,9 +50,9 @@ function DashboardDoctor(props) {
 
                   <Row>
                     <Col md="3">
-                    <CardTitle className="h4">Doctor's Dashboard</CardTitle>
+                    <CardTitle className="h4">Lab's Dashboard</CardTitle>
                     <p className="card-title-desc">
-                      Doctor's Dashboard
+                      Lab's Dashboard
                     </p>
                       <Nav pills className="flex-column">
                         <NavItem>
@@ -148,9 +148,9 @@ function DashboardDoctor(props) {
                           <Availability />
                         </TabPane>
 
-                        {/* My prescription */}
+                        {/* My report */}
                         <TabPane tabId="4">
-                          <Prescription />
+                          <Report />
                         </TabPane>
 
                         {/* Payments */}
@@ -174,4 +174,4 @@ function DashboardDoctor(props) {
   )
 }
 
-export default DashboardDoctor
+export default DashboardLab

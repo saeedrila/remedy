@@ -21,10 +21,12 @@ import SelectDoctor from './components/SelectDoctor';
 import LabTests from './components/LabTests';
 
 // Test
-import TestAccordion from './components/Test/TestAccordion';
+
+//Dashboards
 import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
 import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
 import DashboardDoctor from './pages/Dashboard/DashboardDoctor';
+import DashboardLab from './pages/Dashboard/DashboardLab';
 
 function App() {
   return (
@@ -57,6 +59,7 @@ function App() {
 
           {/* Dashboard section */}
           <Route path='dashboard-doctor' element={<DashboardDoctor/>} />
+          <Route path='dashboard-lab' element={<DashboardLab/>} />
 
           <Route path='lab-tests' element={<LabTests/>} />
 
