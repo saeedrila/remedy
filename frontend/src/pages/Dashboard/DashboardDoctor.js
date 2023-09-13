@@ -112,6 +112,7 @@ function DashboardDoctor(props) {
                           <NavLink
                             style={{ cursor: "pointer" }}
                             className={classnames({
+                              "mb-2": true,
                               active: verticalActiveTab === "4",
                             })}
                             onClick={() => {
@@ -125,6 +126,7 @@ function DashboardDoctor(props) {
                           <NavLink
                             style={{ cursor: "pointer" }}
                             className={classnames({
+                              "mb-2": true,
                               active: verticalActiveTab === "5",
                             })}
                             onClick={() => {
@@ -161,7 +163,7 @@ function DashboardDoctor(props) {
                         <TabPane tabId="4">
                           <Prescription />
                         </TabPane>
-                        
+
                         {/* Payments */}
                         <TabPane tabId="5">
                           <Payments />

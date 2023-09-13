@@ -1,23 +1,56 @@
-import React from 'react'
+import React from "react";
+import {
+  Row,
+  Col,
+  Card,
+  Table,
+} from 'react-bootstrap'
+import {
+  CardBody,
+  CardTitle,
+} from 'reactstrap'
+
 
 function Prescription() {
   return (
     <>
-      <p>
-        Trust fund seitan letterpress, keytar raw denim
-        keffiyeh etsy art party before they sold out master
-        cleanse gluten-free squid scenester freegan cosby
-        sweater. Fanny pack portland seitan DIY, art party
-        locavore wolf cliche high life echo park Austin.
-        Cred vinyl keffiyeh DIY salvia PBR, banh mi before
-        they sold out farm-to-table.
-      </p>
-      <p className="mb-0">
-        Fanny pack portland seitan DIY, art party locavore
-        wolf cliche high life echo park Austin. Cred vinyl
-        keffiyeh DIY salvia PBR, banh mi before they sold
-        out farm-to-table.
-      </p>
+      <Row>
+        <Col md={12}>
+          <Card>
+            <CardBody>
+              <CardTitle className="h2">Prescriptions </CardTitle>
+              <div className="table-responsive">
+                <Table className="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Sl. No.</th>
+                      <th>ID</th>
+                      <th>Patient's Name</th>
+                      <th>Sharing Status</th>
+                      <th>Action</th>
+                      <th>Updated Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>id*</td>
+                      <td>Megan*</td>
+                      <td>Shared*</td>
+                      <td>
+                        <a href="#">View</a>{'  '}
+                        <a href="#">Edit</a>{'  '}
+                        <a href="#">Delete</a>
+                      </td>
+                      <td>Time*</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
     </>
   )
 }

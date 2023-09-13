@@ -189,7 +189,10 @@ Big cards and small cards were made. This will be shown in the landing page.
 Doctor Specialties are hardcoded as of now.
 
 
-
+Install react-table
+```
+npm i react-table
+```
 
 
 Thanks to:
