@@ -8,9 +8,11 @@ import {
 
 import linkedin from '../../assets/images/medical/linkedin.png'
 import github from '../../assets/images/medical/github.png'
+import { useNavigate } from 'react-router-dom';
 
 
 const Footer = () => {
+  const navigate = useNavigate()
 
   return (
     <React.Fragment>
@@ -19,22 +21,35 @@ const Footer = () => {
           <Row className="justify-content-center">
             <Col xs={12} md={3}>
               <div className="mt-5 text-center">
-                <h1 className='hand-cursor'>
-                  Remedy
-                </h1>
+              <h1 className="hand-cursor" onClick={() => navigate('/home')}>Remedy</h1>
               </div>
             </Col>
             <Col xs={12} md={3}>
               <div className="mt-5 text-center">
-                <p>
-                  Know Us
-                </p>
+                <u>
+                  Links
+                  <li className="hand-cursor" onClick={() => navigate('/dashboard-doctor')}>
+                    Doctor's Dashboard
+                  </li>
+                  <li className="hand-cursor" onClick={() => navigate('/dashboard-lab')}>
+                    Lab's Dashboard
+                  </li>
+                  <li className="hand-cursor" onClick={() => navigate('/dashboard-patient')}>
+                    Patient's Dashboard
+                  </li>
+                  <li className="hand-cursor" onClick={() => navigate('/dashboard-executive')}>
+                    Executive's Dashboard
+                  </li>
+                </u>
               </div>
             </Col>
             <Col xs={12} md={3}>
               <div className="mt-5 text-center">
                 <p>
                   Our Services
+                </p>
+                <p>
+                  Know us
                 </p>
               </div>
             </Col>

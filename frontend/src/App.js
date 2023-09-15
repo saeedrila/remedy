@@ -27,6 +27,8 @@ import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation
 import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
 import DashboardDoctor from './pages/Dashboard/DashboardDoctor';
 import DashboardLab from './pages/Dashboard/DashboardLab';
+import DashboardPatient from './pages/Dashboard/DashboardPatient';
+import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 
 function App() {
   return (
@@ -60,6 +62,8 @@ function App() {
           {/* Dashboard section */}
           <Route path='dashboard-doctor' element={<DashboardDoctor/>} />
           <Route path='dashboard-lab' element={<DashboardLab/>} />
+          <Route path='dashboard-patient' element={<DashboardPatient/>} />
+          <Route path='dashboard-executive' element={<DashboardExecutive/>} />
 
           <Route path='lab-tests' element={<LabTests/>} />
 
