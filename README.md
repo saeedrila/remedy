@@ -158,6 +158,7 @@ Create serializer for Account.
 Create sample API to check whether they are working or not 'GET' and 'POST' views. This can be confirmed using REST's default page.
 
 
+
 # React
 Created a new react app using:
 ```
