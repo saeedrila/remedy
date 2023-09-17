@@ -1,15 +1,16 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from authentication.models import Account
-from .serializers import AccountSerializer
+from .serializers import AccountSerializer, AllAccountSerializer
 from rest_framework import status
 
 
 @api_view(['GET'])
 def get_data(request):
     account = Account.objects.all()
-    serializer = AccountSerializer(account, many=True)
+    serializer = AllAccountSerializer(account, many=True)
     return Response(serializer.data)
+
 
 @api_view(['POST'])
 def add_account(request):

@@ -157,6 +157,8 @@ Create serializer for Account.
 
 Create sample API to check whether they are working or not 'GET' and 'POST' views. This can be confirmed using REST's default page.
 
+Postman is used to interact with the API from this point.
+
 
 
 # React

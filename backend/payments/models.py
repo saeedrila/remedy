@@ -1,9 +1,8 @@
 from django.db import models
-from appointments.models import Appointments
 from django.utils.timezone import now
 
 class Payments(models.Model):
-    appointment = models.ForeignKey(Appointments, on_delete=models.CASCADE)
+    appointment = models.CharField(max_length=12)
     amount = models.PositiveIntegerField(default=0)
     date = models.DateTimeField(default=now)
     mode_of_payment = models.CharField(max_length=20)

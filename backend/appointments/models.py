@@ -6,10 +6,10 @@ import uuid
 
 class Appointments(models.Model):
     appointment_id = models.CharField(max_length=12, unique=True, primary_key=True)
-    patient = models.ForeignKey(Account, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    patient = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='patient_appointments')
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, related_name='doctor_appointments')
     specialization = models.ForeignKey(DoctorSpecializationsAvailable, on_delete=models.CASCADE, null=True)
-    lab = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    lab = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, related_name='lab_appointments')
     labtest = models.ForeignKey(LabTestsAvailable, on_delete=models.CASCADE, null=True)
     date = models.DateField()
     time = models.TimeField()
@@ -17,7 +17,7 @@ class Appointments(models.Model):
     payment_id = models.ForeignKey(Payments, on_delete=models.CASCADE)
     slot_type = models.CharField(max_length=10)
     order_created = models.DateField(auto_now_add=True)
-    document = models.FieldFile(upload_to='appointment_documents/')
+    document = models.FileField(upload_to='appointment_documents/')
 
     def save(self, *args, **kwargs):
         if not self.appointment_id:
