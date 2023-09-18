@@ -10,14 +10,14 @@ class Appointments(models.Model):
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, related_name='doctor_appointments')
     specialization = models.ForeignKey(DoctorSpecializationsAvailable, on_delete=models.CASCADE, null=True)
     lab = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, related_name='lab_appointments')
-    labtest = models.ForeignKey(LabTestsAvailable, on_delete=models.CASCADE, null=True)
+    lab_test = models.ForeignKey(LabTestsAvailable, on_delete=models.CASCADE, null=True)
     date = models.DateField()
     time = models.TimeField()
     status = models.CharField(max_length=20)
-    payment_id = models.ForeignKey(Payments, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payments, on_delete=models.CASCADE)
     slot_type = models.CharField(max_length=10)
-    order_created = models.DateField(auto_now_add=True)
-    document = models.FileField(upload_to='appointment_documents/')
+    order_created = models.DateTimeField(auto_now_add=True)
+    document = models.FileField(upload_to='appointment_documents/', null=True)
 
     def save(self, *args, **kwargs):
         if not self.appointment_id:

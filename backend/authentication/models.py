@@ -31,7 +31,7 @@ class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name='email', max_length=60, unique=True)
     mobile = models.CharField(max_length=20, null=True, blank=True)
     gender = models.CharField(max_length=10, null=True, blank=True)
-    age = models.CharField(max_length=3, null=True, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
     blood_group = models.CharField(max_length=5, null=True, blank=True)
     profile_pic_url = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
