@@ -28,6 +28,11 @@ __pycache__/
 *.swp
 .DS_Store
 
+# Migrations related files
+*/migrations/
+
+
+
 
 #React
 
