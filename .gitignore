@@ -29,8 +29,7 @@ __pycache__/
 .DS_Store
 
 # Migrations related files
-*/migrations/
-
+migrations/
 
 
 

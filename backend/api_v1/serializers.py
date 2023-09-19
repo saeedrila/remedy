@@ -7,9 +7,16 @@ from authentication.models import Account
 class AllAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ('email', 'password')
+        fields = (
+            'id',
+            'username',
+            'email',
+            'is_executive',
+            'is_doctor',
+            'is_lab',
+            'is_patient')
 
-
+# Serializer for user registration
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
