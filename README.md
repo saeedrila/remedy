@@ -200,7 +200,10 @@ Install react-table
 ```
 npm i react-table
 ```
-
+Install axios to send http request to backend and collect data
+```
+npm install axios
+```
 
 Thanks to:
 

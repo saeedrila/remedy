@@ -357,3 +357,18 @@ def register_specialization(request):
             return Response({"details": "You are not authorized to add specialization"}, status=400)
     else:
         return Response(serializer.errors, status=400)
+
+# Doctor specialization for frontend
+@api_view(['GET'])
+def doctor_specialization_data(request):
+    specialization_data = DoctorSpecializationsAvailable.objects.all()
+    if not specialization_data:
+        return Response({"details": "No specialization data available"}, status=412)
+    serialized_data = [
+        {
+            'id': item.id,
+            'title': item.specialization_title
+        }
+        for item in specialization_data
+    ]
+    return Response(serialized_data)

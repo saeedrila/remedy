@@ -32,5 +32,8 @@ urlpatterns = [
 
 
     # Register specialization
-    path('register-specialization', views.register_specialization, name='register-specialization')
+    path('register-specialization', views.register_specialization, name='register-specialization'),
+
+    # Get doctor specialization details to frontend
+    path('doctor-specialization-data', views.doctor_specialization_data, name='doctor-specialization-data'),
 ]

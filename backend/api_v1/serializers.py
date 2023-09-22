@@ -79,3 +79,9 @@ class ProfileUpdate(serializers.Serializer):
 # Doctor specialization registration
 class RegisterSpecialization(serializers.Serializer):
     specialization = serializers.CharField(max_length=40)
+
+
+# Doctor specialization data for the frontend
+class DoctorSpecializationData(serializers.Serializer):
+    id = serializers.CharField()
+    specialization = serializers.CharField()
