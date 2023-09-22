@@ -144,6 +144,10 @@ Install REST and CORS for django
 ```
 pipenv install djangorestframework django-cors-headers
 ```
+Install Python magic to validate files
+```
+pip install python-magic
+```
 
 To whitelist the frontend request, add the following lines to the backend/settings.py
 

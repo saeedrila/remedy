@@ -5,8 +5,8 @@ from authentication.models import Account
 #Doctor related Models
 class DoctorProfile(models.Model):
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE)
-    fee_per_session = models.DecimalField(max_digits=6, decimal_places=2)
-    experience = models.PositiveIntegerField(default=0)
+    fee_per_session = models.DecimalField(max_digits=6, decimal_places=2, null=True)
+    experience = models.PositiveIntegerField(default=0, null=True)
     description = models.TextField(null=True)
     document = models.FileField(upload_to='doctor_documents/', null=True)
 
