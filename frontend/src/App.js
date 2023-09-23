@@ -52,7 +52,7 @@ function App() {
 
           {/* Appointment selection */}
           <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
-          <Route path='doctor-specialties/1/select-doctor' element={<SelectDoctor/>} />
+          <Route path='doctor-specialties/:specialyId' element={<SelectDoctor/>} />
           <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
           <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
 

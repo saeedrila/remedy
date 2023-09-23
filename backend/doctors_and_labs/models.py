@@ -16,8 +16,7 @@ class DoctorSpecializationsAvailable(models.Model):
 class DoctorAvailability(models.Model):
     date = models.DateField(db_index=True)
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, db_index=True)
-    slot_type = models.CharField(max_length=10)
-    slots_status = models.JSONField()
+    slots_status = models.JSONField(default=dict)
 
 class DoctorSpecializations(models.Model):
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE)

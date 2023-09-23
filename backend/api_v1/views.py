@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+import datetime
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from authentication.models import Account
@@ -6,7 +7,8 @@ from doctors_and_labs.models import (
     DoctorProfile, 
     LabProfile, 
     DoctorSpecializationsAvailable, 
-    DoctorSpecializations
+    DoctorSpecializations,
+    DoctorAvailability,
 )
 from executives.models import ExecutiveProfile
 from patients.models import PatientProfile
@@ -17,6 +19,7 @@ from .serializers import (
     UserActivationSerializer,
     ProfileUpdate,
     RegisterSpecialization,
+    DoctorAvailabilityRegistration,
 )
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
@@ -333,8 +336,6 @@ def register_specialization(request):
     serializer = RegisterSpecialization(data=request.data)
     if serializer.is_valid():
         specialization_title = serializer.validated_data.get('specialization')
-        print(request.user.is_executive)
-        print(request.user.is_doctor)
 
         if request.user.is_doctor:
             doctor = request.user
@@ -358,7 +359,9 @@ def register_specialization(request):
     else:
         return Response(serializer.errors, status=400)
 
-# Doctor specialization for frontend
+
+# Request from frontend
+# Doctor specialization
 @api_view(['GET'])
 def doctor_specialization_data(request):
     specialization_data = DoctorSpecializationsAvailable.objects.all()
@@ -372,3 +375,49 @@ def doctor_specialization_data(request):
         for item in specialization_data
     ]
     return Response(serialized_data)
+
+# Doctor time slots available
+@api_view(['GET'])
+def doctors_timings(request):
+    pass
+
+# Doctor's available timing registration
+@api_view(['POST'])
+def doctor_availability_registration(request):
+    serializer = DoctorAvailabilityRegistration(data=request.data)
+    if serializer.is_valid():
+        date = serializer.validated_data.get('date')
+        if request.user.is_doctor:
+            start_time = datetime.time(6, 0)
+            end_time = datetime.time(22, 00)
+            slots_data = {
+                "online": [],
+                "inPerson": []
+            }
+            time_interval = datetime.timedelta(minutes=15)
+            current_time = datetime.datetime.combine(datetime.date.today(), start_time)
+            slot_id = 1
+
+            while current_time.time() < end_time:
+                time_str = current_time.strftime("%I:%M %p")
+                time_slot = {
+                    "id": slot_id,
+                    "time": time_str,
+                    "status": "N"
+                }
+                slots_data["online"].append(time_slot.copy())
+                slots_data["inPerson"].append(time_slot)
+                current_time += time_interval
+                slot_id += 1
+        
+            doctor = request.user
+            specialization, created = DoctorAvailability.objects.get_or_create(doctor=doctor, date=date)
+
+            if created:
+                specialization.slots_status = slots_data
+                specialization.save()
+            return Response({"slots_data": slots_data})
+        else:
+            return Response({"details": "You are not authorized to submit availability"})
+    else:
+        return Response(serializer.errors, status=400)

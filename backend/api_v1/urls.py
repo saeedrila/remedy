@@ -34,6 +34,15 @@ urlpatterns = [
     # Register specialization
     path('register-specialization', views.register_specialization, name='register-specialization'),
 
-    # Get doctor specialization details to frontend
+
+
+    # Frontend
+    # Get doctor specialization details
     path('doctor-specialization-data', views.doctor_specialization_data, name='doctor-specialization-data'),
+
+    # Fetch Doctor's available timings on a particular specialization
+    path('doctors-timing/:specialyId', views.doctors_timings, name='doctors-timings'),
+
+    # Register doctor's available timing
+    path('doctor-availability-registration', views.doctor_availability_registration, name='doctor-availability-registration'),
 ]

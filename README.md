@@ -204,6 +204,11 @@ Install axios to send http request to backend and collect data
 ```
 npm install axios
 ```
+Install date fns for getting date related data
+```
+npm install date-fns
+```
+
 
 Thanks to:
 

@@ -13,12 +13,12 @@ import Footer from './Common/Footer'
 import pic1 from '../assets/images/medical/doctor-specialty.svg'
 import { useNavigate } from 'react-router-dom';
 
+
 function DoctorSpecialties() {
   const [specialties, setSpecialties] = useState([]);
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/doctor-specialization-data')
     .then(response => {
-      console.log('Fetched data:', response.data);
       setSpecialties(response.data);
     })
     .catch(error => {

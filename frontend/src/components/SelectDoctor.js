@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react';
+import  React, { useState, useEffect } from 'react';
 import { 
   Container,
   Card,
@@ -13,11 +12,23 @@ import Header from './Common/Header'
 import Footer from './Common/Footer'
 
 import pic1 from '../assets/images/medical/online-doctor.svg'
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 function SelectDoctor() {
+  const { specialtyId } = useParams();
+  const [timeSlots, setTimeSlots] = useState([]);
+  useEffect(() => {
+    axios.get('')
+    .then(response => {
+      setTimeSlots(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching data', error)
+    })
+  }, []);
+
   const DoctorList = [
     {
       "name": "Barny Crosthwaite",

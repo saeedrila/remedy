@@ -85,3 +85,7 @@ class RegisterSpecialization(serializers.Serializer):
 class DoctorSpecializationData(serializers.Serializer):
     id = serializers.CharField()
     specialization = serializers.CharField()
+
+# Doctor availability registration
+class DoctorAvailabilityRegistration(serializers.Serializer):
+    date = serializers.CharField(max_length=10)

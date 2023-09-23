@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import {
   Button,
   Row,
@@ -10,8 +11,40 @@ import {
   CardBody,
 
 } from 'reactstrap'
+import { format, addDays } from 'date-fns';
 
 function Availability() {
+  const axiosInstance = axios.create({
+    headers: {
+      'X-CSRFToken': 'E0XFgtVqx7TLnmUNzblQkfmJBJluv5oy'
+    },
+  });
+  // Today's date
+  const currentDate = new Date();
+  const formattedTodaysDate = format(currentDate, 'yyyy-MM-dd');
+  const [todayTimeSlot, setTodayTimeSlot] = useState([]);
+  useEffect(() => {
+    axiosInstance.post('http://127.0.0.1:8000/api/doctor-availability-registration', formattedTodaysDate)
+    .then(response => {
+      setTodayTimeSlot(response.data);
+    })
+    .catch(error => {
+      console.error('Error fetching data', error)
+    })
+  }, []);
+
+  const [tomorrowTimeSlot, setTomorrowTimeSlot] = useState([]);
+  const [dayAfterTomorrowTimeSlot, setDayAfterTomorrowTimeSlot] = useState([]);
+  const [secondDayAfterTomorrowTimeSlot, setSecondDayAfterTomorrowTimeSlot] = useState([]);
+  // Tomorrow's date
+  const tomorrowDate = addDays(currentDate, 1);
+  const formattedTomorrowDate = format(tomorrowDate, 'yyyy-MM-dd');
+  // Day after tomorrow's date
+  const dayAfterTomorrowDate = addDays(currentDate, 2);
+  const formattedDayAfterTomorrowDate = format(dayAfterTomorrowDate, 'yyyy-MM-dd');
+  // Second day after tomorrow's date
+  const secondDayAfterTomorrowDate = addDays(currentDate, 3);
+  const formattedSecondDayAfterTomorrowDate = format(secondDayAfterTomorrowDate, 'yyyy-MM-dd');
 
   const todayAvailabilityButtons = [];
   const tomorrowAvailabilityButtons = [];
@@ -50,13 +83,19 @@ function Availability() {
     );
 
     dayAfterTomorrowAvailabilityButtons.push(
-      <Button key={id} color={dayAfterTomorrowAvailabilityColor} className={`btn btn-${dayAfterTomorrowAvailabilityColor} waves-effect waves-light`}>
+      <Button 
+        key={id} 
+        color={dayAfterTomorrowAvailabilityColor} 
+        className={`btn btn-${dayAfterTomorrowAvailabilityColor} waves-effect waves-light`}>
         {timeString}
       </Button>
     );
 
     secondDayAfterTomorrowAvailabilityButtons.push(
-      <Button key={id} color={secondDayAfterTomorrowAvailabilityColor} className={`btn btn-${secondDayAfterTomorrowAvailabilityColor} waves-effect waves-light`}>
+      <Button 
+        key={id} 
+        color={secondDayAfterTomorrowAvailabilityColor} 
+        className={`btn btn-${secondDayAfterTomorrowAvailabilityColor} waves-effect waves-light`}>
         {timeString}
       </Button>
     );
@@ -69,7 +108,7 @@ function Availability() {
         <Col sm={6}>
           <Card>
             <CardTitle className='text-center'>
-              Today
+              Today: {formattedTodaysDate}
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
@@ -81,7 +120,7 @@ function Availability() {
         <Col sm={6}>
           <Card>
             <CardTitle className='text-center'>
-              Tomorrow
+              Tomorrow: {formattedTomorrowDate}
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
@@ -95,7 +134,7 @@ function Availability() {
         <Col sm={6}>
           <Card>
             <CardTitle className='text-center'>
-              Day after Tomorrow
+              Day after Tomorrow: {formattedDayAfterTomorrowDate}
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
@@ -107,7 +146,7 @@ function Availability() {
         <Col sm={6}>
           <Card>
             <CardTitle className='text-center'>
-              2nd day after Tomorrow
+              2nd day after Tomorrow: {formattedSecondDayAfterTomorrowDate}
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
