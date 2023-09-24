@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import withRouter from '../Common/withRouter';
@@ -19,41 +19,38 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 
+const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+const PWD_REGEX = /^.{4,23}$/;
+const REGISTER_URL = '/register'
+
+
 const PatientRegister = ({ history }) => {
+  const userRef = useRef();
+  const errRef = useRef();
+
+  const [user, setUser] = useState('');
+  const [validEmail, setValidEmail] = useState(false);
+  const [userFocus, setUserFocus] = useState(false);
+
+  const [pwd, setPwd] = useState('');
+  const [validPwd, setValidPwd] = useState(false);
+  const [pwdFocus, setPwdFocus] = useState(false);
+
+  const [matchPwd, setMatchPwd] = useState('');
+  const [validMatch, setValidMatch] = useState(false);
+  const [matchFocus, setMatchFocus] = useState(false);
+
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+
+
+
   const [validation, setValidation] = useState({
     values: {},
     touched: {},
     errors: {},
   });
 
-  const handleValidationChange = (e) => {
-    const { name, value } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      values: {
-        ...prevValidation.values,
-        [name]: value,
-      },
-    }));
-  };
-
-  const handleValidationBlur = (e) => {
-    const { name } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      touched: {
-        ...prevValidation.touched,
-        [name]: true,
-      },
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your validation and login logic here
-    // For simplicity, this example just redirects after submission
-    history.push('/dashboard'); // Replace with your desired route
-  };
 
   return (
     <React.Fragment>

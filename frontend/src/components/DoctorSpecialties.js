@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { 
   Container,
   Card,
   Col,
   Row,
 } from 'react-bootstrap';
-import axios from 'axios'
+import axios from '../api/axios'
 
+// Components
 import Header from './Common/Header'
 import Footer from './Common/Footer'
-
+// Picture
 import pic1 from '../assets/images/medical/doctor-specialty.svg'
-import { useNavigate } from 'react-router-dom';
 
 
 function DoctorSpecialties() {
   const [specialties, setSpecialties] = useState([]);
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/doctor-specialization-data')
+    axios.get('/doctor-specialization-data')
     .then(response => {
       setSpecialties(response.data);
     })
