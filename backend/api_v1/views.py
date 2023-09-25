@@ -54,6 +54,8 @@ def add_account(request):
 @api_view(['POST'])
 def patient_signup(request):
     serializer = AccountSerializer(data=request.data)
+    print(serializer)
+    print(serializer.is_valid())
     if serializer.is_valid():
         email = serializer.validated_data['email']
         password = serializer.validated_data.get('password')
@@ -68,7 +70,7 @@ def patient_signup(request):
             password = password,
             is_patient=is_patient)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Doctor signup

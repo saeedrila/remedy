@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import withRouter from '../Common/withRouter';
 import {
   Container,
   Row,
@@ -11,45 +9,61 @@ import {
   Form,
   Label,
   Input,
-  FormFeedback,
 } from 'reactstrap';
 
-// Formik validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
+import axios from '../../api/axios';
+
 
 
 const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const PWD_REGEX = /^.{4,23}$/;
-const REGISTER_URL = '/register'
+const REGISTER_URL = '/patient-signup'
 
-
-const PatientRegister = ({ history }) => {
-  const userRef = useRef();
+const PatientRegister = () => {
+  const emailRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState('');
-  const [validEmail, setValidEmail] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+  const [email, setEmail] = useState('');
 
   const [pwd, setPwd] = useState('');
   const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
 
   const [matchPwd, setMatchPwd] = useState('');
   const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
-
-
-  const [validation, setValidation] = useState({
-    values: {},
-    touched: {},
-    errors: {},
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // if button enabled with JS hack
+    const v1 = EMAIL_REGEX.test(email);
+    const v2 = PWD_REGEX.test(pwd);
+    if (!v1 || !v2) {
+        setErrMsg("Invalid Entry");
+        return;
+    }
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        { email: email, password: pwd }
+      );
+      console.log(response?.data);
+      console.log(response?.accessToken);
+      setSuccess(true);
+      setEmail('');
+      setPwd('');
+      setMatchPwd('');
+    } catch (err) {
+      if (!err?.response) {
+          setErrMsg('No Server Response');
+      } else if (err.response?.status === 409) {
+          setErrMsg('Email already exist');
+      } else {
+          setErrMsg('Registration Failed')
+      }
+    }
+  }
 
 
   return (
@@ -63,7 +77,7 @@ const PatientRegister = ({ history }) => {
                   <Row>
                     <Col>
                       <div className="text-primary p-4">
-                        <h3 className="text-primary  text-center">Registr as a Patient</h3>
+                        <h3 className="text-primary  text-center">Register as a Patient</h3>
                         <p className=' text-center'>Register now!</p>
                       </div>
                     </Col>
@@ -73,11 +87,7 @@ const PatientRegister = ({ history }) => {
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
+                      onSubmit={handleSubmit}
                     >
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
@@ -86,8 +96,11 @@ const PatientRegister = ({ history }) => {
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
-                          onChange={validation.handleChange}
-                          value={PatientRegister.email}
+                          ref={emailRef}
+                          autoComplete="off"
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
+                          required
                         />
                       </div>
 
@@ -97,19 +110,21 @@ const PatientRegister = ({ history }) => {
                           name="password"
                           type="password"
                           placeholder="Enter Password"
-                          onChange={validation.handleChange}
-                          value={PatientRegister.password}
+                          onChange={(e) => setPwd(e.target.value)}
+                          value={pwd}
+                          required
                         />
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Confirm Password</Label>
+                        <Label className="form-label">Confirm Password </Label>
                         <Input
                           name="password1"
                           type="password"
                           placeholder="Confirm Password"
-                          onChange={validation.handleChange}
-                          value={PatientRegister.password1}
+                          onChange={(e) => setMatchPwd(e.target.value)}
+                          value={matchPwd}
+                          required
                         />
                       </div>
 
@@ -146,8 +161,4 @@ const PatientRegister = ({ history }) => {
   );
 };
 
-export default withRouter(PatientRegister);
-
-PatientRegister.propTypes = {
-  history: PropTypes.object,
-};
+export default PatientRegister;
