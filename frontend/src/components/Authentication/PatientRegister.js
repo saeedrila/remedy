@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Container,
@@ -10,9 +10,7 @@ import {
   Label,
   Input,
 } from 'reactstrap';
-
 import axios from '../../api/axios';
-
 
 
 const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -20,16 +18,9 @@ const PWD_REGEX = /^.{4,23}$/;
 const REGISTER_URL = '/patient-signup'
 
 const PatientRegister = () => {
-  const emailRef = useRef();
-  const errRef = useRef();
-
   const [email, setEmail] = useState('');
-
   const [pwd, setPwd] = useState('');
-  const [validPwd, setValidPwd] = useState(false);
-
   const [matchPwd, setMatchPwd] = useState('');
-  const [validMatch, setValidMatch] = useState(false);
 
   const [errMsg, setErrMsg] = useState('');
   const [success, setSuccess] = useState(false);
@@ -56,11 +47,11 @@ const PatientRegister = () => {
       setMatchPwd('');
     } catch (err) {
       if (!err?.response) {
-          setErrMsg('No Server Response');
+        setErrMsg('No Server Response');
       } else if (err.response?.status === 409) {
-          setErrMsg('Email already exist');
+        setErrMsg('Email already exist');
       } else {
-          setErrMsg('Registration Failed')
+        setErrMsg('Registration Failed')
       }
     }
   }
@@ -96,7 +87,6 @@ const PatientRegister = () => {
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
-                          ref={emailRef}
                           autoComplete="off"
                           onChange={(e) => setEmail(e.target.value)}
                           value={email}

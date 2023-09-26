@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import withRouter from '../Common/withRouter';
 import {
   Container,
   Row,
@@ -11,49 +9,53 @@ import {
   Form,
   Label,
   Input,
-  FormFeedback,
 } from 'reactstrap';
-
-// Formik validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
+import axios from '../../api/axios';
 
 
-const ExecutiveRegister = ({ history }) => {
-  const [validation, setValidation] = useState({
-    values: {},
-    touched: {},
-    errors: {},
-  });
+const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+const PWD_REGEX = /^.{4,23}$/;
+const REGISTER_URL = '/patient-signup'
 
-  const handleValidationChange = (e) => {
-    const { name, value } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      values: {
-        ...prevValidation.values,
-        [name]: value,
-      },
-    }));
-  };
+const PatientRegister = () => {
+  const [email, setEmail] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [matchPwd, setMatchPwd] = useState('');
 
-  const handleValidationBlur = (e) => {
-    const { name } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      touched: {
-        ...prevValidation.touched,
-        [name]: true,
-      },
-    }));
-  };
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your validation and login logic here
-    // For simplicity, this example just redirects after submission
-    history.push('/dashboard'); // Replace with your desired route
-  };
+    // if button enabled with JS hack
+    const v1 = EMAIL_REGEX.test(email);
+    const v2 = PWD_REGEX.test(pwd);
+    if (!v1 || !v2) {
+        setErrMsg("Invalid Entry");
+        return;
+    }
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        { email: email, password: pwd }
+      );
+      console.log(response?.data);
+      console.log(response?.accessToken);
+      setSuccess(true);
+      setEmail('');
+      setPwd('');
+      setMatchPwd('');
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('No Server Response');
+      } else if (err.response?.status === 409) {
+        setErrMsg('Email already exist');
+      } else {
+        setErrMsg('Registration Failed')
+      }
+    }
+  }
+
 
   return (
     <React.Fragment>
@@ -66,7 +68,7 @@ const ExecutiveRegister = ({ history }) => {
                   <Row>
                     <Col>
                       <div className="text-primary p-4">
-                        <h3 className="text-primary  text-center">Register as Executive (Admin)</h3>
+                        <h3 className="text-primary  text-center">Register as a Patient</h3>
                         <p className=' text-center'>Register now!</p>
                       </div>
                     </Col>
@@ -76,11 +78,7 @@ const ExecutiveRegister = ({ history }) => {
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
+                      onSubmit={handleSubmit}
                     >
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
@@ -89,8 +87,10 @@ const ExecutiveRegister = ({ history }) => {
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
-                          onChange={validation.handleChange}
-                          value={ExecutiveRegister.email}
+                          autoComplete="off"
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
+                          required
                         />
                       </div>
 
@@ -100,19 +100,21 @@ const ExecutiveRegister = ({ history }) => {
                           name="password"
                           type="password"
                           placeholder="Enter Password"
-                          onChange={validation.handleChange}
-                          value={ExecutiveRegister.password}
+                          onChange={(e) => setPwd(e.target.value)}
+                          value={pwd}
+                          required
                         />
                       </div>
 
                       <div className="mb-3">
-                        <Label className="form-label">Confirm Password</Label>
+                        <Label className="form-label">Confirm Password </Label>
                         <Input
                           name="password1"
                           type="password"
                           placeholder="Confirm Password"
-                          onChange={validation.handleChange}
-                          value={ExecutiveRegister.password1}
+                          onChange={(e) => setMatchPwd(e.target.value)}
+                          value={matchPwd}
+                          required
                         />
                       </div>
 
@@ -131,7 +133,7 @@ const ExecutiveRegister = ({ history }) => {
               <div className="mt-5 text-center">
                 <p>
                   Have an account ?{" "}
-                  <Link to="/executive-login" className="fw-medium text-primary">
+                  <Link to="/" className="fw-medium text-primary">
                     {" "}
                     Login now{" "}
                   </Link>{" "}
@@ -149,8 +151,4 @@ const ExecutiveRegister = ({ history }) => {
   );
 };
 
-export default withRouter(ExecutiveRegister);
-
-ExecutiveRegister.propTypes = {
-  history: PropTypes.object,
-};
+export default PatientRegister;

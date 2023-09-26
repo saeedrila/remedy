@@ -1,4 +1,6 @@
 from rest_framework.response import Response
+from django.conf import settings
+from rest_framework_simplejwt.tokens import Token, RefreshToken
 import datetime
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
@@ -23,6 +25,10 @@ from .serializers import (
 )
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
+
+# Error logging
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Generic show all user accounts should be deleted before deploying
@@ -71,6 +77,12 @@ def patient_signup(request):
             is_patient=is_patient)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     print(serializer.errors)
+
+    for field, errors in serializer.errors.items():
+        for error in errors:
+            if 'unique' in error.code:
+                return Response({'error': 'Account with this email already exists.'}, status=status.HTTP_409_CONFLICT)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Doctor signup
@@ -140,6 +152,7 @@ def executive_signup(request):
 # Patinet Login
 @api_view(['POST'])
 def patient_login(request):
+    logger.debug("This is a debug message")
     serializer = LoginSerializer(data=request.data)
     if not serializer.is_valid():
         print("Invalid serializer data:", serializer.errors)
@@ -152,7 +165,28 @@ def patient_login(request):
     if user is not None:
         if user.is_patient:
             login(request, user)
-            return Response({'message': 'Patient login successful'}, status=status.HTTP_200_OK)
+
+            # Generate access token with the correct lifetime
+            access_token = RefreshToken.for_user(user)
+            access_token.access_token.set_exp(lifetime=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'])
+
+            # Generate refresh token with the correct lifetime
+            refresh_token = RefreshToken.for_user(user)
+            refresh_token.set_exp(lifetime=settings.SIMPLE_JWT['SLIDING_TOKEN_REFRESH_LIFETIME'])
+
+
+            # Determine user roles
+            roles = {
+                'is_patient': user.is_patient,
+                'is_doctor': user.is_doctor,
+                'is_executive': user.is_executive,
+                'is_lab': user.is_lab,
+            }
+            return Response({
+                'accessToken': str(access_token.access_token),
+                'refreshToken': str(refresh_token),
+                'roles': roles,
+            }, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'You are not authorized to log in as a patient'}, status=status.HTTP_403_FORBIDDEN)
     else:

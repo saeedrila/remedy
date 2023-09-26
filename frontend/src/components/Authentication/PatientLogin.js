@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import withRouter from '../Common/withRouter';
 import {
   Container,
   Row,
@@ -11,52 +9,64 @@ import {
   Form,
   Label,
   Input,
-  FormFeedback,
 } from 'reactstrap';
+import AuthContext from '../../Context/AuthProvider';
+import axios from '../../api/axios';
+const LOGIN_URL = '/patient-login'
 
-// Formik validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
+const PatientLogin = ({ history }) => {
+  const { setAuth } = useContext(AuthContext);
+  const [errMsg, setErrMsg] = useState('')
+
+  const [email, setEmail] = useState('')
+  const [pwd, setPwd] = useState('')
+  const [success, setSuccess] = useState('')
 
 
-const ExecutiveLogin = ({ history }) => {
-  const [validation, setValidation] = useState({
-    values: {},
-    touched: {},
-    errors: {},
-  });
-
-  const handleValidationChange = (e) => {
-    const { name, value } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      values: {
-        ...prevValidation.values,
-        [name]: value,
-      },
-    }));
-  };
-
-  const handleValidationBlur = (e) => {
-    const { name } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      touched: {
-        ...prevValidation.touched,
-        [name]: true,
-      },
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your validation and login logic here
-    // For simplicity, this example just redirects after submission
-    history.push('/dashboard'); // Replace with your desired route
+
+    try{
+      const response = await axios.post(
+        LOGIN_URL,
+        { email: email, password: pwd }
+        );
+      const accessToken = response?.data?.accessToken;
+      console.log('Access Token:', accessToken);
+      const refreshToken = response?.data?.refreshToken;
+      console.log('Refresh Token: ', refreshToken)
+      const roles = response?.data?.roles;
+      console.log('User Roles:', roles);
+
+      setAuth({email, pwd, roles, accessToken});
+      console.log(response.data)
+      setEmail('');
+      setPwd('');
+      setSuccess(true)
+    } catch (err){
+      if (!err?.response){
+        setErrMsg('No Server Response')
+      } else if (err.response?.status === 400){
+        setErrMsg('Email or Password missing');
+      } else if (err.response?. status === 401){
+        setErrMsg('Not authorized');
+      } else{
+        setErrMsg('Login Failed');
+      }
+    }
+
+    console.log(email, pwd);
+
+    // history.push('/dashboard'); 
   };
 
   return (
-    <React.Fragment>
+    <>
+      {success ? (
+        <section>
+          <h1>You are logged In</h1>
+        </section>
+      ):(
       <div className="account-pages my-5 pt-sm-5">
       <Container>
           <Row className="justify-content-center">
@@ -76,11 +86,7 @@ const ExecutiveLogin = ({ history }) => {
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
+                      onSubmit={handleSubmit}
                     >
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
@@ -89,8 +95,9 @@ const ExecutiveLogin = ({ history }) => {
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
-                          onChange={validation.handleChange}
-                          value={ExecutiveLogin.email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
+                          required
                         />
                       </div>
 
@@ -100,12 +107,13 @@ const ExecutiveLogin = ({ history }) => {
                           name="password"
                           type="password"
                           placeholder="Enter Password"
-                          onChange={validation.handleChange}
-                          value={ExecutiveLogin.email}
+                          onChange={(e) => setPwd(e.target.value)}
+                          value={pwd}
+                          required
                         />
                       </div>
 
-                      <div className="form-check">
+                      {/* <div className="form-check">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -117,7 +125,7 @@ const ExecutiveLogin = ({ history }) => {
                         >
                           Remember me
                         </label>
-                      </div>
+                      </div> */}
 
                       <div className="mt-3 d-grid">
                         <button
@@ -154,12 +162,9 @@ const ExecutiveLogin = ({ history }) => {
           </Row>
         </Container>
       </div>
-    </React.Fragment>
+      )}
+    </>
   );
 };
 
-export default withRouter(ExecutiveLogin);
-
-ExecutiveLogin.propTypes = {
-  history: PropTypes.object,
-};
+export default PatientLogin;

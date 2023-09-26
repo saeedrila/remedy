@@ -1,7 +1,12 @@
 from django.urls import path
 from .import views
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 urlpatterns = [
+    # Refresh and access tokens
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # for obtaining access tokens
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # for refreshing tokens
+
     # View all user data
     path('', views.get_data, name='get-data'),
 

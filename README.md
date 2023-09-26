@@ -142,7 +142,7 @@ python manage.py migrate
 ```
 Install REST and CORS for django
 ```
-pipenv install djangorestframework django-cors-headers
+pipenv install djangorestframework django-cors-headers 
 ```
 Install Python magic to validate files
 ```
@@ -162,6 +162,12 @@ Create serializer for Account.
 Create sample API to check whether they are working or not 'GET' and 'POST' views. This can be confirmed using REST's default page.
 
 Postman is used to interact with the API from this point.
+
+Install simple JWT for access and refresh tokens
+
+```
+pip install djangorestframework-simplejwt
+```
 
 
 
