@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Container,
   Row,
@@ -10,17 +11,22 @@ import {
   Label,
   Input,
 } from 'reactstrap';
-import AuthContext from '../../Context/AuthProvider';
 import axios from '../../api/axios';
-const LOGIN_URL = '/patient-login'
+
+const LOGIN_URL = '/token/'
+
 
 const PatientLogin = ({ history }) => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const [errMsg, setErrMsg] = useState('')
 
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
-  const [success, setSuccess] = useState('')
 
 
   const handleSubmit = async (e) => {
@@ -29,20 +35,24 @@ const PatientLogin = ({ history }) => {
     try{
       const response = await axios.post(
         LOGIN_URL,
-        { email: email, password: pwd }
+        { email: email, password: pwd },
+        {headers: 
+          {'Content-Type': 'application/json'}},
+           {withCredentials: true}
         );
-      const accessToken = response?.data?.accessToken;
+      const accessToken = response?.data?.access;
       console.log('Access Token:', accessToken);
-      const refreshToken = response?.data?.refreshToken;
+      const refreshToken = response?.data?.refresh;
       console.log('Refresh Token: ', refreshToken)
       const roles = response?.data?.roles;
       console.log('User Roles:', roles);
+      console.log('Response:',response)
 
-      setAuth({email, pwd, roles, accessToken});
-      console.log(response.data)
+      setAuth({email, pwd, roles, accessToken, refreshToken});
+      console.log('Response.data:',response.data)
       setEmail('');
       setPwd('');
-      setSuccess(true)
+      navigate(from, {replace: true})
     } catch (err){
       if (!err?.response){
         setErrMsg('No Server Response')
@@ -54,7 +64,6 @@ const PatientLogin = ({ history }) => {
         setErrMsg('Login Failed');
       }
     }
-
     console.log(email, pwd);
 
     // history.push('/dashboard'); 
@@ -62,13 +71,8 @@ const PatientLogin = ({ history }) => {
 
   return (
     <>
-      {success ? (
-        <section>
-          <h1>You are logged In</h1>
-        </section>
-      ):(
       <div className="account-pages my-5 pt-sm-5">
-      <Container>
+        <Container>
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
               <Card className="overflow-hidden">
@@ -162,7 +166,6 @@ const PatientLogin = ({ history }) => {
           </Row>
         </Container>
       </div>
-      )}
     </>
   );
 };

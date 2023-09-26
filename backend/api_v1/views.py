@@ -398,6 +398,7 @@ def register_specialization(request):
 
 # Request from frontend
 # Doctor specialization
+@csrf_exempt
 @api_view(['GET'])
 def doctor_specialization_data(request):
     specialization_data = DoctorSpecializationsAvailable.objects.all()

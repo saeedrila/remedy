@@ -1,14 +1,15 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import RequireAuth from './components/RequireAuth';
+import Layout from './components/Layout';
+import "./assets/scss/theme.scss";
+
 import ExecutiveLoginPage from './pages/Authentication/ExecutiveLoginPage';
 import DoctorLoginPage from './pages/Authentication/DoctorLoginPage';
 import LabLoginPage from './pages/Authentication/LabLoginPage';
 import PatientLoginPage from './pages/Authentication/PatientLoginPage';
 import ProfileDoctor from './pages/Profile/ProfileDoctor';
 
-
-// Import scss
-import "./assets/scss/theme.scss";
 import ExecutiveRegisterPage from './pages/Authentication/ExecutiveRegisterPage';
 import DoctorRegisterPage from './pages/Authentication/DoctorRegisterPage';
 import LabRegisterPage from './pages/Authentication/LabRegisterPage';
@@ -19,22 +20,22 @@ import DoctorSpecialties from './components/DoctorSpecialties';
 import SelectDoctor from './components/SelectDoctor';
 
 import LabTests from './components/LabTests';
-
-// Test
-
-//Dashboards
 import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
 import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
+
+//Dashboards
 import DashboardDoctor from './pages/Dashboard/DashboardDoctor';
 import DashboardLab from './pages/Dashboard/DashboardLab';
 import DashboardPatient from './pages/Dashboard/DashboardPatient';
 import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 
+
 function App() {
   return (
-    <div>
-      <Router>
-        <Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* Public pages */}
           {/* Logins */}
           <Route path="/executive-login" element={<ExecutiveLoginPage />} />
           <Route path="/doctor-login" element={<DoctorLoginPage />} />
@@ -50,11 +51,16 @@ function App() {
           {/* Landing page */}
           <Route path='home' element={<Home />} />
 
+          {/* Patient specific pages */}
           {/* Appointment selection */}
-          <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
-          <Route path='doctor-specialties/:specialyId' element={<SelectDoctor/>} />
-          <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
-          <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+          <Route element={<RequireAuth />}>
+            <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
+            <Route path='doctor-specialties/:specialyId' element={<SelectDoctor/>} />
+            <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
+            <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+            {/* Dashboard */}
+            <Route path='dashboard-patient' element={<DashboardPatient/>} />
+          </Route>
 
           {/* Profile section */}
           <Route path='profile-doctor' element={<ProfileDoctor/>} />
@@ -62,20 +68,16 @@ function App() {
           {/* Dashboard section */}
           <Route path='dashboard-doctor' element={<DashboardDoctor/>} />
           <Route path='dashboard-lab' element={<DashboardLab/>} />
-          <Route path='dashboard-patient' element={<DashboardPatient/>} />
+          
           <Route path='dashboard-executive' element={<DashboardExecutive/>} />
 
           <Route path='lab-tests' element={<LabTests/>} />
 
-          <Route path='' element />
-          <Route path='' element />
-
-          {/* Test */}
-          <Route path='test' element={<DoctorAppointmentConfirmation />} />
-          <Route path='test2' element={<DoctorAppointmentPaymentConfirmation />} />
-        </Routes>
-      </Router>
-    </div>
+          {/* 404 */}
+          <Route path='*' element='' />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
