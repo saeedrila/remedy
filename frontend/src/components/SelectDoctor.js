@@ -13,21 +13,35 @@ import Footer from './Common/Footer'
 
 import pic1 from '../assets/images/medical/online-doctor.svg'
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../api/axios';
 
+// Get doctor's list of selected specialization
+const DOCTORS_OF_SELECTED_SPECIALIZATION = 'doctors-timing'
 
 function SelectDoctor() {
   const { specialtyId } = useParams();
+  const [doctorList, setDoctorList] =useState([]);
+
   const [timeSlots, setTimeSlots] = useState([]);
   useEffect(() => {
-    axios.get('')
-    .then(response => {
-      setTimeSlots(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching data', error)
-    })
-  }, []);
+    const fetchData = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.get(`${DOCTORS_OF_SELECTED_SPECIALIZATION}/${specialtyId}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            specialtyId: specialtyId,
+          },
+        })
+        setDoctorList(response.data)
+        console.log('Doctors list of selected ID: ', response.data )
+      } catch (error){
+        console.error('Error fetching data', error)
+      }};
+      fetchData();
+  }, [specialtyId]);
 
   const DoctorList = [
     {

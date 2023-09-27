@@ -6,7 +6,7 @@ import {
   Col,
   Row,
 } from 'react-bootstrap';
-import axiosInstance from '../api/axios'
+import axios from '../api/axios'
 
 // Components
 import Header from './Common/Header'
@@ -14,17 +14,28 @@ import Footer from './Common/Footer'
 // Picture
 import pic1 from '../assets/images/medical/doctor-specialty.svg'
 
+// Get doctor specializations data from backend
+const SPECIALIZATION_DATA ='/doctor-specialization-data'
 
 function DoctorSpecialties() {
   const [specialties, setSpecialties] = useState([]);
+
   useEffect(() => {
-    axiosInstance.get('/doctor-specialization-data')
-    .then(response => {
-      setSpecialties(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching data', error)
-    })
+    const fetchData = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.get(SPECIALIZATION_DATA, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        setSpecialties(response.data);
+        console.log('Specialties data:', response.data)
+
+      } catch (error){
+        console.error('Error fetching data', error)
+      }};
+      fetchData();
   }, []);
 
   const navigate = useNavigate();

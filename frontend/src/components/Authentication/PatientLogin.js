@@ -13,7 +13,9 @@ import {
 } from 'reactstrap';
 import axios from '../../api/axios';
 
-const LOGIN_URL = '/token/'
+// const LOGIN_URL = '/token/'
+// Login URL for backend
+const LOGIN_URL = '/patient-login'
 
 
 const PatientLogin = ({ history }) => {
@@ -40,18 +42,23 @@ const PatientLogin = ({ history }) => {
           {'Content-Type': 'application/json'}},
            {withCredentials: true}
         );
-      const accessToken = response?.data?.access;
+      const accessToken = response?.data?.accessToken;
       console.log('Access Token:', accessToken);
-      const refreshToken = response?.data?.refresh;
+      const refreshToken = response?.data?.refreshToken;
       console.log('Refresh Token: ', refreshToken)
       const roles = response?.data?.roles;
       console.log('User Roles:', roles);
       console.log('Response:',response)
 
       setAuth({email, pwd, roles, accessToken, refreshToken});
+
+      localStorage.clear();
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
+      console.log('Authorization Bearer set-up')
+
       console.log('Response.data:',response.data)
-      setEmail('');
-      setPwd('');
       navigate(from, {replace: true})
     } catch (err){
       if (!err?.response){

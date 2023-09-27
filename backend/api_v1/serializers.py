@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from authentication.models import Account
+from doctors_and_labs.models import DoctorAvailability
 import magic
 
 
@@ -89,3 +90,9 @@ class DoctorSpecializationData(serializers.Serializer):
 # Doctor availability registration
 class DoctorAvailabilityRegistration(serializers.Serializer):
     date = serializers.CharField(max_length=10)
+
+
+class DoctorAvailabilitySerializer(serializers.Serializer):
+    class Meta:
+        model = DoctorAvailability
+        fields = '__all__'

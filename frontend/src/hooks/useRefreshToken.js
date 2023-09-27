@@ -5,8 +5,13 @@ const useRefreshToken = () => {
   const { setAuth } = useAuth();
 
   const refresh = async () => {
+
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) {
+      return null;
+    }
     const response = await axios.post('/token/refresh/', {
-      refresh: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NTg0NzE4MiwiaWF0IjoxNjk1NzYwNzgyLCJqdGkiOiI4YzFiMzk5OWYzYWY0ODk5YTI3YzUwZmYzNDZmZmVjZCIsInVzZXJfaWQiOjI1fQ.SCB5a_7TQ2RYUVQUQUgFjP9KH1jh_JcRyWvLcRAYOGw',
+      refresh: refreshToken,
     },
     {
       headers: {

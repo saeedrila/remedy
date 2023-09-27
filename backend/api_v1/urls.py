@@ -46,7 +46,7 @@ urlpatterns = [
     path('doctor-specialization-data', views.doctor_specialization_data, name='doctor-specialization-data'),
 
     # Fetch Doctor's available timings on a particular specialization
-    path('doctors-timing/:specialyId', views.doctors_timings, name='doctors-timings'),
+    path('doctors-timing/<int:specialtyId>', views.doctors_timings, name='doctors-timings'),
 
     # Register doctor's available timing
     path('doctor-availability-registration', views.doctor_availability_registration, name='doctor-availability-registration'),

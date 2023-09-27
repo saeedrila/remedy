@@ -22,6 +22,8 @@ from .serializers import (
     ProfileUpdate,
     RegisterSpecialization,
     DoctorAvailabilityRegistration,
+    DoctorAvailabilitySerializer,
+
 )
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
@@ -413,10 +415,34 @@ def doctor_specialization_data(request):
     ]
     return Response(serialized_data)
 
+
 # Doctor time slots available
 @api_view(['GET'])
-def doctors_timings(request):
-    pass
+def doctors_timings(request, specialtyId=None):
+    if specialtyId is None:
+        specialization_id = request.query_params.get('specialtyId')
+    else:
+        specialization_id = specialtyId
+    if specialization_id is not None:
+        doctor_availabilities = DoctorAvailability.objects.filter(doctor__doctorspecializations__specialization_id=specialization_id)
+        serializer = DoctorAvailabilitySerializer(doctor_availabilities, many=True)
+
+        availability_data = []
+
+        for availability in doctor_availabilities:
+            print(f"Availability ID: {availability.id}")
+            print(f"Doctor ID: {availability.doctor.id}")
+            serializer = DoctorAvailabilitySerializer(availability)
+            serialized_data = serializer.data
+            print("Serialized Data:", serialized_data)
+            availability_data.append(serialized_data)
+
+        for data in availability_data:
+            print(data)
+
+        return Response(serializer.data, status=200)
+    else:
+        return Response({'error': 'Missing or invalid "specialtyId" parameter'}, status=400)
 
 # Doctor's available timing registration
 @api_view(['POST'])

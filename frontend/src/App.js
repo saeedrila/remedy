@@ -29,6 +29,9 @@ import DashboardLab from './pages/Dashboard/DashboardLab';
 import DashboardPatient from './pages/Dashboard/DashboardPatient';
 import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 
+//Error 404
+import Error404 from './pages/Error404';
+
 
 function App() {
   return (
@@ -55,7 +58,7 @@ function App() {
           {/* Appointment selection */}
           <Route element={<RequireAuth />}>
             <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
-            <Route path='doctor-specialties/:specialyId' element={<SelectDoctor/>} />
+            <Route path='doctor-specialties/:specialtyId' element={<SelectDoctor/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
             {/* Dashboard */}
@@ -73,8 +76,8 @@ function App() {
 
           <Route path='lab-tests' element={<LabTests/>} />
 
-          {/* 404 */}
-          <Route path='*' element='' />
+          {/* Error 404 */}
+          <Route path='*' element={<Error404/>} />
         </Route>
       </Routes>
     </>
