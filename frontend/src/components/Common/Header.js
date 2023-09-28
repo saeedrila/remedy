@@ -19,7 +19,7 @@ const Header = (props) => {
           <div className="d-flex align-items-center">
             <div className="navbar-brand-box">
               <div className="position-relative">
-                <h1 className="hand-cursor" onClick={() => navigate('/home')}>Remedy</h1>
+                <h1 className="hand-cursor" onClick={() => navigate('/')}>Remedy</h1>
               </div>
             </div>
 

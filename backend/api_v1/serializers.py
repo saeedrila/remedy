@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from authentication.models import Account
-from doctors_and_labs.models import DoctorAvailability
+from doctors_and_labs.models import DoctorAvailability, DoctorProfile
 import magic
 
 
@@ -92,7 +92,18 @@ class DoctorAvailabilityRegistration(serializers.Serializer):
     date = serializers.CharField(max_length=10)
 
 
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorProfile
+        fields = ('fee_per_session',)
+
 class DoctorAvailabilitySerializer(serializers.Serializer):
+    doctorprofile = DoctorProfileSerializer(source='doctor', read_only=True)
+    availability_ids = serializers.SerializerMethodField()
+
     class Meta:
         model = DoctorAvailability
-        fields = '__all__'
+        fields = ('doctor_id', 'fee_per_session', 'availability_ids')
+
+    def get_availability_ids(self, obj):
+        return [availability.id for availability in obj]

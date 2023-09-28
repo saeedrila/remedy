@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 
 // Get doctor's list of selected specialization
-const DOCTORS_OF_SELECTED_SPECIALIZATION = 'doctors-timing'
+const DOCTORS_OF_SELECTED_SPECIALIZATION = 'doctors-at-specialization'
 
 function SelectDoctor() {
   const { specialtyId } = useParams();

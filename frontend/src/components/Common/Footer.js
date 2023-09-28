@@ -10,12 +10,7 @@ import linkedin from '../../assets/images/medical/linkedin.png'
 import github from '../../assets/images/medical/github.png'
 import { useNavigate } from 'react-router-dom';
 
-import useRefreshToken from '../../hooks/useRefreshToken';
-
 const Footer = () => {
-
-  const refresh = useRefreshToken();
-
   const navigate = useNavigate()
 
   return (
@@ -25,7 +20,7 @@ const Footer = () => {
           <Row className="justify-content-center">
             <Col xs={12} md={3}>
               <div className="mt-5 text-center">
-              <h1 className="hand-cursor" onClick={() => navigate('/home')}>Remedy</h1>
+              <h1 className="hand-cursor" onClick={() => navigate('/')}>Remedy</h1>
               </div>
             </Col>
             <Col xs={12} md={3}>
@@ -55,9 +50,6 @@ const Footer = () => {
                 <p>
                   Know us
                 </p>
-                <button onClick= {() => refresh()}>
-                  Refresh
-                </button>
                 <br/>
               </div>
             </Col>

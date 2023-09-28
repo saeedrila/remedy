@@ -7,17 +7,20 @@ import {
   DropdownItem,
 } from "reactstrap";
 
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // users
 import user1 from "../../assets/images/users/avatar-1.png";
 
 const ProfileMenu = props => {
-  // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);
-
   const [username, setusername] = useState("User");
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  }
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
@@ -66,7 +69,7 @@ const ProfileMenu = props => {
           </DropdownItem>
 
           <div className="dropdown-divider" />
-          <Link to="/logout" className="dropdown-item">
+          <Link to="/" onClick={handleLogout} className="dropdown-item">
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger" />
             <span>{"Logout"}</span>
           </Link>

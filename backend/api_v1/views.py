@@ -418,29 +418,70 @@ def doctor_specialization_data(request):
 
 # Doctor time slots available
 @api_view(['GET'])
-def doctors_timings(request, specialtyId=None):
+def doctors_at_specialization(request, specialtyId=None):
     if specialtyId is None:
         specialization_id = request.query_params.get('specialtyId')
     else:
         specialization_id = specialtyId
     if specialization_id is not None:
+        doctor_data = DoctorSpecializations.objects.filter(doctor__doctorspecializations__specialization_id=specialization_id)
+        doctor_ids = list(doctor_data.values_list('doctor_id', flat=True))
+        sending_data = {}
+        fee_per_session_list = []
+        for id in doctor_ids:
+            try:
+                fee_per_session_data = DoctorProfile.objects.filter(doctor = id)
+                fee_per_session_float = float(fee_per_session_data.values_list('fee_per_session', flat=True).first())
+                fee_per_session_list.append(fee_per_session_float)
+            except:
+                fee_per_session_list.append([])
+        print('Fee per session list: ',fee_per_session_list)
+
+        doctor_availability_list = []
+        timing_availability_list = []
+        for id in doctor_ids:
+            try:
+                doctor_availability_data = DoctorAvailability.objects.filter(doctor = id)
+                doctor_availability_ids = list(doctor_availability_data.values_list('id', flat=True))
+                doctor_slots = list(doctor_availability_data.values_list('slots_status', flat=True))
+                doctor_availability_list.append(doctor_availability_ids)
+                timing_availability_list.append(doctor_slots)
+            except:
+                pass
+
+        print('Doctor availability list: ', doctor_availability_list)
+        print('Timing availabilty list: ', timing_availability_list)
+
+        print('Sending_data: ', sending_data)
+
+        print('Doctor_ids: ', doctor_ids)
         doctor_availabilities = DoctorAvailability.objects.filter(doctor__doctorspecializations__specialization_id=specialization_id)
-        serializer = DoctorAvailabilitySerializer(doctor_availabilities, many=True)
+        
 
-        availability_data = []
+        # for availability in doctor_availabilities:
+        #     doctor_id = availability.doctor.id
+        #     availability_id = availability.id
+        #     try:
+        #         doctor_profile = DoctorProfile.objects.get(doctor=doctor_id)
+        #         fee_per_session = doctor_profile.fee_per_session
+        #     except DoctorProfile.DoesNotExist:
+        #         fee_per_session = None
+            
+            # doctor_info = {
+            #     'doctor_id': doctor_id,
+            #     'doctor_fee': fee_per_session,
+            #     'availability_ids': [availability_id],
+            # }
+            # existing_info = next((info for info in sending_data if info['doctor_id'] == doctor_id), None)
+            # if existing_info:
+            #     existing_info['availability_ids'].append(availability_id)
+            # else:
+            #     sending_data.append(doctor_info)
 
-        for availability in doctor_availabilities:
-            print(f"Availability ID: {availability.id}")
-            print(f"Doctor ID: {availability.doctor.id}")
-            serializer = DoctorAvailabilitySerializer(availability)
-            serialized_data = serializer.data
-            print("Serialized Data:", serialized_data)
-            availability_data.append(serialized_data)
-
-        for data in availability_data:
-            print(data)
-
-        return Response(serializer.data, status=200)
+            # print(f"Availability ID: {availability.id}")
+            # print(f"Doctor ID: {availability.doctor.id}")
+            # print('Doctor Data serialized?:', sending_data)
+        return Response(status=200)
     else:
         return Response({'error': 'Missing or invalid "specialtyId" parameter'}, status=400)
 

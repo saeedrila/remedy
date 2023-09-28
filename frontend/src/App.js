@@ -43,7 +43,7 @@ function App() {
           <Route path="/executive-login" element={<ExecutiveLoginPage />} />
           <Route path="/doctor-login" element={<DoctorLoginPage />} />
           <Route path="/lab-login" element={<LabLoginPage />} />
-          <Route path="/" element={<PatientLoginPage />} />
+          <Route path="/login" element={<PatientLoginPage />} />
 
           {/* Account registration */}
           <Route path='/executive-register' element={<ExecutiveRegisterPage />} />
@@ -52,7 +52,7 @@ function App() {
           <Route path='/register' element={<PatientRegisterPage />} />
 
           {/* Landing page */}
-          <Route path='home' element={<Home />} />
+          <Route path='/' element={<Home />} />
 
           {/* Patient specific pages */}
           {/* Appointment selection */}
