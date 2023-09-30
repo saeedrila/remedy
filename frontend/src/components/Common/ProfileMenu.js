@@ -58,12 +58,12 @@ const ProfileMenu = props => {
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <DropdownItem tag="a" href="/profile-doctor">
+          <DropdownItem tag="a" href="/profile-patient">
             {" "}
             <i className="bx bx-user font-size-16 align-middle me-1" />
             {"Profile"}{" "}
           </DropdownItem>
-          <DropdownItem tag="a" href="/dashboard-doctor">
+          <DropdownItem tag="a" href="/dashboard-patient">
             <i className="bx bx-wallet font-size-16 align-middle me-1" />
             {"Dashboard"}
           </DropdownItem>

@@ -168,7 +168,10 @@ Install simple JWT for access and refresh tokens
 ```
 pip install djangorestframework-simplejwt
 ```
-
+Install Razorpay for payment integration
+```
+pip install razorpay
+```
 
 
 # React

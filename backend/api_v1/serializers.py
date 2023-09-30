@@ -4,37 +4,6 @@ from doctors_and_labs.models import DoctorAvailability, DoctorProfile
 import magic
 
 
-# Serializer for getting all user data
-class AllAccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = (
-            'id',
-            'username',
-            'email',
-            'is_executive',
-            'is_doctor',
-            'is_lab',
-            'is_patient',
-            'is_verified',
-            'is_active',
-            'is_superuser')
-
-# Serializer for user registration
-class AccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = ('email', 'password')
-
-#Login serializer
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-
-# User activation/disable serializer
-class UserActivationSerializer(serializers.Serializer):
-    id = serializers.CharField()
-    is_active = serializers.BooleanField()
 
 # Executive profile updation serializer
 class ProfileUpdate(serializers.Serializer):
@@ -76,34 +45,4 @@ class ProfileUpdate(serializers.Serializer):
     experience = serializers.IntegerField(required=False, validators=[validate_experience])
     description = serializers.CharField(max_length=255, required=False)
     document = serializers.FileField(required=False, validators=[validate_document])
-
-# Doctor specialization registration
-class RegisterSpecialization(serializers.Serializer):
-    specialization = serializers.CharField(max_length=40)
-
-
-# Doctor specialization data for the frontend
-class DoctorSpecializationData(serializers.Serializer):
-    id = serializers.CharField()
-    specialization = serializers.CharField()
-
-# Doctor availability registration
-class DoctorAvailabilityRegistration(serializers.Serializer):
-    date = serializers.CharField(max_length=10)
-
-
-class DoctorProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DoctorProfile
-        fields = ('fee_per_session',)
-
-class DoctorAvailabilitySerializer(serializers.Serializer):
-    doctorprofile = DoctorProfileSerializer(source='doctor', read_only=True)
-    availability_ids = serializers.SerializerMethodField()
-
-    class Meta:
-        model = DoctorAvailability
-        fields = ('doctor_id', 'fee_per_session', 'availability_ids')
-
-    def get_availability_ids(self, obj):
-        return [availability.id for availability in obj]
+    

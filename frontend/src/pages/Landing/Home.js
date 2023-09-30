@@ -17,9 +17,11 @@ import pic2 from '../../assets/images/medical/blood-test-logo.svg'
 
 
 function Home() {
+  document.title = 'Remedy Home'
+
   const BigCardData =[
-    {title: "Book a consultation with Doctor", img: pic1},
-    {title: "Book a Laboratory test", img: pic2}]
+    {title: "Book a consultation with Doctor now", img: pic1},
+    {title: "Book a Laboratory appointment now", img: pic2}]
 
   const SpecialtiesSmallCardData =[
     {title: "General Medicine", img: pic1},

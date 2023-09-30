@@ -123,7 +123,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=7),
@@ -160,3 +160,7 @@ LOGGING = {
         },
     },
 }
+
+# Razorpay payment keys
+RAZORPAY_KEY = config("RAZORPAY_KEY")
+RAZORPAY_SECRET = config("RAZORPAY_SECRET")

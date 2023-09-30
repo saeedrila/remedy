@@ -4,12 +4,17 @@ import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
 import "./assets/scss/theme.scss";
 
+// Login pages
 import ExecutiveLoginPage from './pages/Authentication/ExecutiveLoginPage';
 import DoctorLoginPage from './pages/Authentication/DoctorLoginPage';
 import LabLoginPage from './pages/Authentication/LabLoginPage';
 import PatientLoginPage from './pages/Authentication/PatientLoginPage';
-import ProfileDoctor from './pages/Profile/ProfileDoctor';
 
+// Profile Pages
+import ProfileDoctor from './pages/Profile/ProfileDoctor';
+import ProfilePatient from './pages/Profile/ProfilePatient';
+
+// Registration Pages
 import ExecutiveRegisterPage from './pages/Authentication/ExecutiveRegisterPage';
 import DoctorRegisterPage from './pages/Authentication/DoctorRegisterPage';
 import LabRegisterPage from './pages/Authentication/LabRegisterPage';
@@ -23,13 +28,13 @@ import LabTests from './components/LabTests';
 import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
 import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
 
-//Dashboards
+// Dashboards
 import DashboardDoctor from './pages/Dashboard/DashboardDoctor';
 import DashboardLab from './pages/Dashboard/DashboardLab';
 import DashboardPatient from './pages/Dashboard/DashboardPatient';
 import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 
-//Error 404
+// Error 404
 import Error404 from './pages/Error404';
 
 
@@ -61,9 +66,13 @@ function App() {
             <Route path='doctor-specialties/:specialtyId' element={<SelectDoctor/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+          </Route>
+
             {/* Dashboard */}
             <Route path='dashboard-patient' element={<DashboardPatient/>} />
-          </Route>
+            {/* Profile */}
+            <Route path='profile-patient' element={<ProfilePatient/>} />
+
 
           {/* Profile section */}
           <Route path='profile-doctor' element={<ProfileDoctor/>} />

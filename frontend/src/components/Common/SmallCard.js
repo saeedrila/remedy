@@ -13,10 +13,10 @@ function SmallCard({SmallCardData}) {
         <Row xs={2} sm={3} md={4} lg={5} className="g-4 justify-content-center mt-3">
           {SmallCardData.map((data, idx) => (
             <Col key={idx}>
-              <Card className="border">
+              <Card className="border text-center">
                 <Card.Img variant="top" src={data.img} />
                 <Card.Body>
-                  <Card.Title className="justify-content-center" >{data.title}</Card.Title>
+                  <Card.Title>{data.title}</Card.Title>
                 </Card.Body>
               </Card>
             </Col>

@@ -31,8 +31,8 @@ const PatientRegister = () => {
     const v1 = EMAIL_REGEX.test(email);
     const v2 = PWD_REGEX.test(pwd);
     if (!v1 || !v2) {
-        setErrMsg("Invalid Entry");
-        return;
+      setErrMsg("Invalid Entry");
+      return;
     }
     try {
       const response = await axios.post(

@@ -4,7 +4,7 @@ from authentication.models import Account
 
 #Doctor related Models
 class DoctorProfile(models.Model):
-    doctor = models.ForeignKey(Account, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE) #Related name
     fee_per_session = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     experience = models.PositiveIntegerField(default=0, null=True)
     description = models.TextField(null=True)
