@@ -1,6 +1,5 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
 from authentication.models import Account
 from doctors_and_labs.models import (
     DoctorProfile, 

@@ -15,7 +15,7 @@ import axios from '../../api/axios';
 
 // const LOGIN_URL = '/token/'
 // Login URL for backend
-const LOGIN_URL = '/patient-login'
+const LOGIN_URL = '/account-login'
 
 
 const PatientLogin = ({ history }) => {
@@ -57,9 +57,9 @@ const PatientLogin = ({ history }) => {
       localStorage.setItem('refreshToken', refreshToken);
       axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
       console.log('Authorization Bearer set-up')
-
       console.log('Response.data:',response.data)
       navigate(from, {replace: true})
+
     } catch (err){
       if (!err?.response){
         setErrMsg('No Server Response')

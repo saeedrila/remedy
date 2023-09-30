@@ -8,21 +8,13 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # for refreshing tokens
 
     # View all user data
-    path('', views.get_data, name='get-data'),
+    path('', views.AllAccountListView.as_view(), name='all-account-list'),
 
     # Signup, Login, and Logout API endpoints
     # Add account, Patient, Doctor, Lab, Executive accounts
-    path('add/', views.add_account, name='add-account'),
-    path('patient-signup', views.patient_signup, name='patient-signup'),
-    path('doctor-signup', views.doctor_signup, name='doctor-signup'),
-    path('lab-signup', views.lab_signup, name='lab-signup'),
-    path('executive-signup', views.executive_signup, name='add-executive'),
-
-    # Login
-    path('patient-login', views.patient_login, name='patient-login'),
-    path('executive-login', views.executive_login, name='executive-login'),
-    path('doctor-login', views.doctor_login, name='doctor-login'),
-    path('lab-login', views.lab_login, name='lab-login'),
+    path('add/', views.AddAccount.as_view(), name='add-account'),
+    path('account-signup', views.AccountSignup.as_view(), name='account-signup'),
+    path('account-login', views.AccountLogin.as_view(), name='patient-login'),
 
     # Logout
     path('logout', views.logout_view, name='logout-view'),

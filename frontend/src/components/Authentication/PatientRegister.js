@@ -15,7 +15,7 @@ import axios from '../../api/axios';
 
 const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const PWD_REGEX = /^.{4,23}$/;
-const REGISTER_URL = '/patient-signup'
+const REGISTER_URL = '/account-signup'
 
 const PatientRegister = () => {
   const [email, setEmail] = useState('');
@@ -35,23 +35,26 @@ const PatientRegister = () => {
       return;
     }
     try {
-      const response = await axios.post(
-        REGISTER_URL,
-        { email: email, password: pwd }
-      );
-      console.log(response?.data);
-      console.log(response?.accessToken);
+      const response = await axios.post(REGISTER_URL, {
+        email,
+        pwd,
+        account_type: 'patient'
+      });
+      console.log(response.data);
+      console.log(response.accessToken);
       setSuccess(true);
       setEmail('');
       setPwd('');
       setMatchPwd('');
     } catch (err) {
-      if (!err?.response) {
-        setErrMsg('No Server Response');
-      } else if (err.response?.status === 409) {
-        setErrMsg('Email already exist');
+      if (err.response) {
+        if (err.response.status === 409) {
+          setErrMsg('Email already exists');
+        } else {
+          setErrMsg('Registration Failed');
+        }
       } else {
-        setErrMsg('Registration Failed')
+        setErrMsg('No Server Response');
       }
     }
   }
