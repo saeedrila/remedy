@@ -4,7 +4,7 @@ from authentication.models import Account
 
 #Doctor related Models
 class DoctorProfile(models.Model):
-    doctor = models.ForeignKey(Account, on_delete=models.CASCADE) #Related name
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_profiles') #Related name
     fee_per_session = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     experience = models.PositiveIntegerField(default=0, null=True)
     description = models.TextField(null=True)
@@ -15,12 +15,12 @@ class DoctorSpecializationsAvailable(models.Model):
 
 class DoctorAvailability(models.Model):
     date = models.DateField(db_index=True)
-    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, db_index=True)
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_availabilities', db_index=True)
     slots_status = models.JSONField(default=dict)
 
 class DoctorSpecializations(models.Model):
-    doctor = models.ForeignKey(Account, on_delete=models.CASCADE)
-    specialization = models.ForeignKey(DoctorSpecializationsAvailable, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_specializations')
+    specialization = models.ForeignKey(DoctorSpecializationsAvailable, on_delete=models.CASCADE, related_name='doctor_specializations_available')
 
 
 # Lab related Models

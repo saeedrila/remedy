@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from rest_framework_simplejwt.tokens import Token, RefreshToken
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
 
 # From files
@@ -119,40 +120,38 @@ class AccountLogin(APIView):
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-@csrf_exempt
-@api_view(['POST'])
-def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
-        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
-    else:
-        return Response({'error': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
-    
+@method_decorator(csrf_exempt, name='dispatch')
+class LogoutView(APIView):
+    def post(self, request):
+        if request.user.is_authenticated:
+            logout(request)
+            return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'User is not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 # Activate users
-@api_view(['PATCH'])
-def activate_user(request):
-    # Check whether this request is coming from an executive or not
-    # if not request.user.is_exective: 
-    #     return Response({"detail": "You are not authorized to do this operation"}, status=403)
+class ActivateUser(APIView):
+    def patch(self, request):
+        if not request.user.is_exective: 
+            return Response({"detail": "You are not authorized to do this operation"}, status=403)
 
-    # Second if the status to be updated is a superuser: 400. Else: proceed
-    serializer = UserActivationSerializer(data=request.data)
-    if not serializer.is_valid():
-        return Response(serializer.erros, status=400)
-    
-    user_id = serializer.validated_data['id']
-    is_active = serializer.validated_data['is_active']
-    
-    try:
-        account = Account.objects.get(id = user_id)
-    except Account.DoesNotExist:
-        return Response({"detail": "User with this ID does not exist."}, status=400)
+        serializer = UserActivationSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.erros, status=400)
+        
+        user_id = serializer.validated_data['id']
+        is_active = serializer.validated_data['is_active']
+        
+        try:
+            account = Account.objects.get(id = user_id)
+        except Account.DoesNotExist:
+            return Response({"detail": "User with this ID does not exist."}, status=400)
 
-    if account.is_superuser:
-        return Response({"detail": "Cannot update a Superuser account"}, status=400)
-     
-    account.is_active = is_active
-    account.save()
+        if account.is_superuser:
+            return Response({"detail": "Cannot update a Superuser account"}, status=400)
+        
+        account.is_active = is_active
+        account.save()
 
-    return Response({"detail": "User account updated successfully"}, status=200)
+        return Response({"detail": "User account updated successfully"}, status=200)

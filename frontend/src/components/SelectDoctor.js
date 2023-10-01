@@ -32,7 +32,6 @@ function SelectDoctor() {
             Authorization: `Bearer ${accessToken}`,
           },
           params: {
-            specialtyId: specialtyId,
           },
         })
         setDoctorList(response.data)

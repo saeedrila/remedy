@@ -4,5 +4,5 @@ from .import views
 
 urlpatterns = [
 # Razorpay payment testing
-    path('checkout-payment', views.checkout_payment, name='checkout-payment'),
+    path('checkout-payment', views.CheckoutPayment.as_view(), name='checkout-payment'),
 ]

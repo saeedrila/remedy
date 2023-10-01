@@ -15,11 +15,9 @@ urlpatterns = [
     path('add/', views.AddAccount.as_view(), name='add-account'),
     path('account-signup', views.AccountSignup.as_view(), name='account-signup'),
     path('account-login', views.AccountLogin.as_view(), name='patient-login'),
-
-    # Logout
-    path('logout', views.logout_view, name='logout-view'),
+    path('logout', views.LogoutView.as_view(), name='logout-view'),
 
 
     # Activate user by Executive
-    path('activate-user', views.activate_user, name='activate-user'),
+    path('activate-user', views.ActivateUser.as_view(), name='activate-user'),
 ]

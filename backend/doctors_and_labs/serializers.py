@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from authentication.models import Account
-from doctors_and_labs.models import DoctorAvailability, DoctorProfile
+from doctors_and_labs.models import DoctorAvailability, DoctorProfile, DoctorSpecializations
 
 
 
@@ -22,7 +22,10 @@ class DoctorAvailabilityRegistration(serializers.Serializer):
 class DoctorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorProfile
-        fields = ('fee_per_session',)
+        fields = ('fee_per_session', 'experience', 'description')
+
+
+
 
 class DoctorAvailabilitySerializer(serializers.Serializer):
     doctorprofile = DoctorProfileSerializer(source='doctor', read_only=True)
