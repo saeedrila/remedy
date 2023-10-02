@@ -37,6 +37,9 @@ import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 // Error 404
 import Error404 from './pages/Error404';
 
+// Sitemap
+import SiteMap from './pages/SiteMap';
+
 
 function App() {
   return (
@@ -87,6 +90,9 @@ function App() {
 
           {/* Error 404 */}
           <Route path='*' element={<Error404/>} />
+
+          {/* Sitemap */}
+          <Route path='sitemap' element={<SiteMap />} />
         </Route>
       </Routes>
     </>
