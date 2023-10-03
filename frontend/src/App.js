@@ -71,10 +71,10 @@ function App() {
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
           </Route>
 
-            {/* Dashboard */}
-            <Route path='dashboard-patient' element={<DashboardPatient/>} />
-            {/* Profile */}
-            <Route path='profile-patient' element={<ProfilePatient/>} />
+          {/* Dashboard */}
+          <Route path='dashboard-patient' element={<DashboardPatient/>} />
+          {/* Profile */}
+          <Route path='profile-patient' element={<ProfilePatient/>} />
 
 
           {/* Profile section */}

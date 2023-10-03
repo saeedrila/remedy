@@ -24,22 +24,8 @@ const Footer = () => {
               </div>
             </Col>
             <Col xs={12} md={3}>
-              <div className="mt-5 text-center">
-                <u>
-                  Links
-                  <li className="hand-cursor" onClick={() => navigate('/dashboard-doctor')}>
-                    Doctor's Dashboard
-                  </li>
-                  <li className="hand-cursor" onClick={() => navigate('/dashboard-lab')}>
-                    Lab's Dashboard
-                  </li>
-                  <li className="hand-cursor" onClick={() => navigate('/dashboard-patient')}>
-                    Patient's Dashboard
-                  </li>
-                  <li className="hand-cursor" onClick={() => navigate('/dashboard-executive')}>
-                    Executive's Dashboard
-                  </li>
-                </u>
+              <div className="mt-5 text-center hand-cursor" onClick={() => navigate('/sitemap')}>
+                Sitemap
               </div>
             </Col>
             <Col xs={12} md={3}>

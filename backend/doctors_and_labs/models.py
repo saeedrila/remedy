@@ -10,9 +10,6 @@ class DoctorProfile(models.Model):
     description = models.TextField(null=True)
     document = models.FileField(upload_to='doctor_documents/', null=True)
 
-class DoctorSpecializationsAvailable(models.Model):
-    specialization_title = models.CharField(max_length=40)
-
 class DoctorAvailability(models.Model):
     date = models.DateField(db_index=True)
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_availabilities', db_index=True)
@@ -20,7 +17,7 @@ class DoctorAvailability(models.Model):
 
 class DoctorSpecializations(models.Model):
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_specializations')
-    specialization = models.ForeignKey(DoctorSpecializationsAvailable, on_delete=models.CASCADE, related_name='doctor_specializations_available')
+    specialization_title = models.CharField(max_length=40, default='Default')
 
 
 # Lab related Models

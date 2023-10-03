@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DoctorProfile, DoctorSpecializationsAvailable
+from .models import DoctorProfile
 from .models import LabProfile, LabTestsAvailable
 
 # Doctor related
@@ -8,7 +8,6 @@ class DoctorDetailsAdmin(admin.ModelAdmin):
     list_filter = ('doctor', 'experience')
 
 admin.site.register(DoctorProfile, DoctorDetailsAdmin)
-admin.site.register(DoctorSpecializationsAvailable)
 
 
 # Lab related

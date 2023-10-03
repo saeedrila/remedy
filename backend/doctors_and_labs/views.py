@@ -17,8 +17,7 @@ from .serializers import (
 )
 from .models import (
     DoctorProfile, 
-    LabProfile, 
-    DoctorSpecializationsAvailable, 
+    LabProfile,
     DoctorSpecializations,
     DoctorAvailability,
 )
