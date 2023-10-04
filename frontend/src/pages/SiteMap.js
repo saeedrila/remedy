@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Container,
 } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
 import Header from '../components/Common/Header'
 import Footer from '../components/Common/Footer'
@@ -11,6 +12,28 @@ import Footer from '../components/Common/Footer'
 
 function SiteMap() {
   const navigate = useNavigate()
+  const handleClick = () => {
+    // window.alert('Clicked');
+    toast.success('Clicked', {
+      position: 'top-right',
+      autoClose: 3000, // Display for 3 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: 'light',
+    });
+    toast('Wow so easy!', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+  }
 
   return (
     <>
@@ -53,14 +76,15 @@ function SiteMap() {
                 <h4 className='hand-cursor' onClick={() => navigate('/profile-executive')}>Profile</h4>
                 <h4 className='hand-cursor' onClick={() => navigate('/dashboard-executive')}>Dashboard</h4>
               </div>
+            <button onClick={handleClick}>Click</button>
         </Container>
+        
       </div>
 
 
       {/* Footer section */}
       <Footer />
     </>
-    
   )
 }
 

@@ -49,7 +49,6 @@ const PatientLogin = ({ history }) => {
       const roles = response?.data?.roles;
       console.log('User Roles:', roles);
       console.log('Response:',response)
-
       setAuth({email, pwd, roles, accessToken, refreshToken});
 
       localStorage.clear();
@@ -58,6 +57,7 @@ const PatientLogin = ({ history }) => {
       axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
       console.log('Authorization Bearer set-up')
       console.log('Response.data:',response.data)
+
       navigate(from, {replace: true})
 
     } catch (err){

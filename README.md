@@ -217,6 +217,10 @@ Install date fns for getting date related data
 ```
 npm install date-fns
 ```
+Install react toastify for pop-up messages
+```
+npm install react-toastify
+```
 
 
 Thanks to:
