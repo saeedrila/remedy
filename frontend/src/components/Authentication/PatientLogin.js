@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   Container,
   Row,
@@ -43,19 +46,17 @@ const PatientLogin = ({ history }) => {
            {withCredentials: true}
         );
       const accessToken = response?.data?.accessToken;
-      console.log('Access Token:', accessToken);
       const refreshToken = response?.data?.refreshToken;
-      console.log('Refresh Token: ', refreshToken)
+      const username = response?.data?.username
       const roles = response?.data?.roles;
-      console.log('User Roles:', roles);
       console.log('Response:',response)
       setAuth({email, pwd, roles, accessToken, refreshToken});
 
       localStorage.clear();
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('username', username)
       axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
-      console.log('Authorization Bearer set-up')
       console.log('Response.data:',response.data)
 
       navigate(from, {replace: true})
@@ -65,11 +66,22 @@ const PatientLogin = ({ history }) => {
         setErrMsg('No Server Response')
       } else if (err.response?.status === 400){
         setErrMsg('Email or Password missing');
-      } else if (err.response?. status === 401){
+      } else if (err.response?.status === 401){
         setErrMsg('Not authorized');
+      } else if (err.response?.status === 404){
+        setErrMsg('Server Error');
       } else{
         setErrMsg('Login Failed');
       }
+      toast.error(errMsg, {
+        position: 'top-right',
+        autoClose: 5000, // Display for 5 seconds
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
     }
     console.log(email, pwd);
 
@@ -78,6 +90,18 @@ const PatientLogin = ({ history }) => {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="account-pages my-5 pt-sm-5">
         <Container>
           <Row className="justify-content-center">

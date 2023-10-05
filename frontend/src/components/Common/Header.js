@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../Context/AuthProvider'
 
 
 // Import menuDropdown
@@ -11,6 +12,8 @@ import ProfileMenu from "../Common/ProfileMenu"
 const Header = (props) => {
   const [isSearch, setSearch] = useState(false);
   const navigate = useNavigate()
+  const { auth } = useAuth();
+  const isLoggedIn = !!auth.accessToken;
   
   
   return (
@@ -97,8 +100,11 @@ const Header = (props) => {
                 </form>
               </div>
             </div>
-
-            <ProfileMenu />
+            {isLoggedIn ? (
+              <ProfileMenu />
+            ) : (
+              <div className='hand-cursor' onClick={() => navigate('/login')}>Login/Signup</div>
+            )}
 
           </div>
         </div>

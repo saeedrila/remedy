@@ -94,6 +94,11 @@ class AccountLogin(APIView):
 
         if user is not None:
             login(request, user)
+            account = Account.objects.get(email = email)
+            if not account.username:
+                username = account.email
+            else:
+                username = account.username
 
             # Generate access token with the correct lifetime
             access_token = RefreshToken.for_user(user)
@@ -115,6 +120,7 @@ class AccountLogin(APIView):
                 'accessToken': str(access_token.access_token),
                 'refreshToken': str(refresh_token),
                 'roles': roles,
+                'username': username,
             }, status=status.HTTP_200_OK)
         
         else:
