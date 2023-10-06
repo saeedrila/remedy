@@ -63,18 +63,20 @@ function App() {
           <Route path='/' element={<Home />} />
 
           {/* Patient specific pages */}
-          {/* Appointment selection */}
           <Route element={<RequireAuth />}>
+            {/* Profile */}
+            <Route path='profile-patient' element={<ProfilePatient/>} />
+
+            {/* Dashboard */}
+            <Route path='dashboard-patient' element={<DashboardPatient/>} />
+
+            {/* Appointment selection */}
             <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
             <Route path='doctor-specialties/:specialtyId' element={<SelectDoctor/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
           </Route>
 
-          {/* Dashboard */}
-          <Route path='dashboard-patient' element={<DashboardPatient/>} />
-          {/* Profile */}
-          <Route path='profile-patient' element={<ProfilePatient/>} />
 
 
           {/* Profile section */}

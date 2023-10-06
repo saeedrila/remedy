@@ -6,8 +6,9 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-
+import { useAuth } from '../../Context/AuthProvider'
 import { Link, useNavigate } from "react-router-dom";
+import axios from "../../api/axios";
 
 // users
 import user1 from "../../assets/images/users/avatar-1.png";
@@ -16,9 +17,18 @@ const ProfileMenu = props => {
   const [menu, setMenu] = useState(false);
   const [username, setUsername] = useState("User");
   const navigate = useNavigate()
+  const { auth, setAuth } = useAuth();
 
   const handleLogout = () => {
     localStorage.clear();
+    setAuth({
+      email: null,
+      pwd: null,
+      roles: [],
+      accessToken: null,
+      refreshToken: null,
+    });
+    delete axios.defaults.headers.common['Authorization'];
     navigate('/');
   }
 

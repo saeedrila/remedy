@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 import {
   Container,
   Row,
@@ -10,13 +10,35 @@ import {
   CardBody,
   Table,
 } from 'reactstrap'
-import user1 from '../../assets/images/users/avatar-5.jpg'
+import axios from '../../api/axios'
 
+import user1 from '../../assets/images/users/avatar-5.jpg'
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 
+const GET_PROFILE_DETAILS = '/get-patient-profile-details'
 
 function ProfilePatient() {
+  const [profileDetails, setProfileDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.get(GET_PROFILE_DETAILS, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        setProfileDetails(response.data)
+        console.log('Profile data: ', response.data)
+      } catch(error){
+
+        console.error('Error fetching data', error)
+      }};
+    fetchData();
+  }, []);
+
     return (
         <>
           {/* Header section */}
@@ -42,36 +64,36 @@ function ProfilePatient() {
                         <Table className="table mb-0">
                           <tbody>
                             <tr>
-                              <th scope="row">Name</th>
-                              <td>Mark</td>
+                              <th scope="row">Email Address</th>
+                              <td>{profileDetails.email}</td>
                             </tr>
                             <tr>
-                              <th scope="row">Email Address</th>
-                              <td>Jacob</td>
+                              <th scope="row">Password</th>
+                              <td><Button className='m-2'>Change Password</Button></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">User Name</th>
+                              <td>{profileDetails.username || 'No information uploaded'}</td>
                             </tr>
                             <tr>
                               <th scope="row">Phone Number</th>
-                              <td>Larry</td>
+                              <td>{profileDetails.mobile || 'No information uploaded'}</td>
                             </tr>
                             <tr>
                               <th scope="row">Gender</th>
-                              <td>Larry</td>
+                              <td>{profileDetails.gender || 'No information uploaded'}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Age</th>
+                              <td>{profileDetails.age || 'No information uploaded'}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Blood Group</th>
+                              <td>{profileDetails.blood_group || 'No information uploaded'}</td>
                             </tr>
                             <tr>
                               <th scope="row">Address</th>
-                              <td>Larry</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">State</th>
-                              <td>Larry</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">Country</th>
-                              <td>Larry</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">PIN Code</th>
-                              <td>Larry</td>
+                              <td>{profileDetails.address || 'No information uploaded'}</td>
                             </tr>
                           </tbody>
                         </Table>
