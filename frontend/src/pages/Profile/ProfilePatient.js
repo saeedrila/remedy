@@ -3,9 +3,11 @@ import {
   Container,
   Row,
   Col,
+  Button,
+  Modal,
+  Form,
 } from 'react-bootstrap'
 import {
-  Button,
   Card,
   CardBody,
   Table,
@@ -19,7 +21,11 @@ import Footer from '../../components/Common/Footer'
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
 
 function ProfilePatient() {
+  // Profile details got from backend
   const [profileDetails, setProfileDetails] = useState([]);
+
+  // Profile edit modal show/hide state
+  const [profileEditShow, setProfileEditShow] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +47,88 @@ function ProfilePatient() {
 
     return (
         <>
+          {/* Profile Edit Modal */}
+          <Modal
+            show={profileEditShow}
+            onHide={() => setProfileEditShow(false)}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Edit Profile</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Container>
+              <Row>
+                <Col>User Name</Col>
+                <Col>
+                  <Form.Control 
+                    type="text" 
+                    placeholder={profileDetails.username || "Enter your user name"} 
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>Phone Number</Col>
+                <Col>
+                  <Form.Control 
+                    type="text" 
+                    placeholder={profileDetails.mobile || "Enter your phone number"}
+                    pattern="[0-9]{10}|"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>Gender</Col>
+                <Col>
+                  <Form.Control 
+                    as="select"defaultValue={profileDetails.gender || ""}>
+                    <option>Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </Form.Control>
+                </Col>
+              </Row>
+              <Row>
+                <Col>Age</Col>
+                <Col>
+                  <Form.Control 
+                    type="number" 
+                    placeholder={profileDetails.age || "Enter your age"}
+                    min={0} 
+                    max={99}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>Blood Group</Col>
+                <Col>
+                  <Form.Control 
+                    type="text" 
+                    placeholder={profileDetails.blood_group || "Enter your Blood Group"}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>Address</Col>
+                <Col>
+                  <Form.Control 
+                    as="textarea" 
+                    rows={3}
+                    placeholder={profileDetails.address || "Enter your Address"}
+                  />
+                </Col>
+              </Row>
+            </Container>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setProfileEditShow(false)}>
+                Close
+              </Button>
+              <Button variant="primary">*Save</Button>
+            </Modal.Footer>
+          </Modal>
+
           {/* Header section */}
           <Header />
     
@@ -99,7 +187,7 @@ function ProfilePatient() {
                         </Table>
                       </div>
                     </CardBody>
-                    <Button className='m-4'>
+                    <Button className='m-4'onClick={() => setProfileEditShow(true)}>
                       Edit
                     </Button>
                   </Card>
