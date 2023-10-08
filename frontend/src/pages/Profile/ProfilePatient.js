@@ -45,6 +45,21 @@ function ProfilePatient() {
     fetchData();
   }, []);
 
+  // Form data storage
+  const [formData, setFormData] = useState({
+    username: profileDetails.username || '',
+    mobile: profileDetails.mobile || '',
+    gender: profileDetails.gender || '',
+    age: profileDetails.age || '',
+    blood_group: profileDetails.blood_group || '',
+    address: profileDetails.address || '',
+  })
+  // Handle form input data
+  const handleInputChangeProfileEdit = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
     return (
         <>
           {/* Profile Edit Modal */}
@@ -65,6 +80,8 @@ function ProfilePatient() {
                   <Form.Control 
                     type="text" 
                     placeholder={profileDetails.username || "Enter your user name"} 
+                    value={formData.username}
+                    onChange={handleInputChangeProfileEdit}
                   />
                 </Col>
               </Row>
