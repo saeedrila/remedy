@@ -13,36 +13,39 @@ import {
   Table,
 } from 'reactstrap'
 import axios from '../../api/axios'
+import { toast } from 'react-toastify'
 
 import user1 from '../../assets/images/users/avatar-5.jpg'
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
+const UPDATE_PROFILE_DETAILS = '/get-patient-profile-details'
+
 
 function ProfilePatient() {
   // Profile details got from backend
   const [profileDetails, setProfileDetails] = useState([]);
 
   // Profile edit modal show/hide state
-  const [profileEditShow, setProfileEditShow] = useState(false);
+  const [ProfileEditModalShow, setProfileEditModalShow] = useState(false);
+  const fetchProfileData = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(GET_PROFILE_DETAILS, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      setProfileDetails(response.data)
+      console.log('Profile data: ', response.data)
+    } catch(error){
+
+      console.error('Error fetching data', error)
+    }};
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken');
-        const response = await axios.get(GET_PROFILE_DETAILS, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        setProfileDetails(response.data)
-        console.log('Profile data: ', response.data)
-      } catch(error){
-
-        console.error('Error fetching data', error)
-      }};
-    fetchData();
+    fetchProfileData();
   }, []);
 
   // Form data storage
@@ -59,13 +62,49 @@ function ProfilePatient() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  // Handle submit of input data
+  const handleProfileEditSubmit = async () => {
+    const updatedData = {};
+    for (const[key, value] of Object.entries(formData)) {
+      if (value !== '') {
+        updatedData[key] = value;
+      }
+    }
+    try {
+      const response = await axios.patch(UPDATE_PROFILE_DETAILS, updatedData);
+      fetchProfileData();
+      toast.success('Successfully updated', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+    } catch (error) {
+      if (error.response){
+        toast.error('Error', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'light',
+        });
+      }
+    }
+    console.log('Updated data:', updatedData)
+    setProfileEditModalShow(false)
+  }
 
     return (
         <>
           {/* Profile Edit Modal */}
           <Modal
-            show={profileEditShow}
-            onHide={() => setProfileEditShow(false)}
+            show={ProfileEditModalShow}
+            onHide={() => setProfileEditModalShow(false)}
             backdrop="static"
             keyboard={false}
           >
@@ -81,6 +120,7 @@ function ProfilePatient() {
                     type="text" 
                     placeholder={profileDetails.username || "Enter your user name"} 
                     value={formData.username}
+                    name="username"
                     onChange={handleInputChangeProfileEdit}
                   />
                 </Col>
@@ -92,6 +132,9 @@ function ProfilePatient() {
                     type="text" 
                     placeholder={profileDetails.mobile || "Enter your phone number"}
                     pattern="[0-9]{10}|"
+                    value={formData.mobile}
+                    name="mobile"
+                    onChange={handleInputChangeProfileEdit}
                   />
                 </Col>
               </Row>
@@ -99,7 +142,11 @@ function ProfilePatient() {
                 <Col>Gender</Col>
                 <Col>
                   <Form.Control 
-                    as="select"defaultValue={profileDetails.gender || ""}>
+                    as="select"
+                    value={formData.gender}
+                    name="gender"
+                    onChange={handleInputChangeProfileEdit}
+                    >
                     <option>Select Gender</option>
                     <option>Male</option>
                     <option>Female</option>
@@ -114,6 +161,9 @@ function ProfilePatient() {
                     placeholder={profileDetails.age || "Enter your age"}
                     min={0} 
                     max={99}
+                    value={formData.age}
+                    name="age"
+                    onChange={handleInputChangeProfileEdit}
                   />
                 </Col>
               </Row>
@@ -123,6 +173,9 @@ function ProfilePatient() {
                   <Form.Control 
                     type="text" 
                     placeholder={profileDetails.blood_group || "Enter your Blood Group"}
+                    value={formData.blood_group}
+                    name="blood_group"
+                    onChange={handleInputChangeProfileEdit}
                   />
                 </Col>
               </Row>
@@ -133,16 +186,19 @@ function ProfilePatient() {
                     as="textarea" 
                     rows={3}
                     placeholder={profileDetails.address || "Enter your Address"}
+                    value={formData.address}
+                    name="address"
+                    onChange={handleInputChangeProfileEdit}
                   />
                 </Col>
               </Row>
             </Container>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={() => setProfileEditShow(false)}>
+              <Button variant="secondary" onClick={() => setProfileEditModalShow(false)}>
                 Close
               </Button>
-              <Button variant="primary">*Save</Button>
+              <Button variant="primary" onClick={handleProfileEditSubmit}>*Save</Button>
             </Modal.Footer>
           </Modal>
 
@@ -204,7 +260,7 @@ function ProfilePatient() {
                         </Table>
                       </div>
                     </CardBody>
-                    <Button className='m-4'onClick={() => setProfileEditShow(true)}>
+                    <Button className='m-4'onClick={() => setProfileEditModalShow(true)}>
                       Edit
                     </Button>
                   </Card>
