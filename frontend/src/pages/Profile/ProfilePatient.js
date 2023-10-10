@@ -19,16 +19,60 @@ import user1 from '../../assets/images/users/avatar-5.jpg'
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 
+// Password validation
+const PWD_REGEX = /^.{4,23}$/;
+
+// API endpoints
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
 const UPDATE_PROFILE_DETAILS = '/get-patient-profile-details'
+const CHANGE_PASSWORD = ''
 
 
 function ProfilePatient() {
-  // Profile details got from backend
+  // Profile details recieved from backend
   const [profileDetails, setProfileDetails] = useState([]);
+
+  // Password
+  const [pwd, setPwd] = useState('');
+  const [matchPwd, setMatchPwd] = useState('');
+  const [newPwd, setNewPwd] = useState('');
 
   // Profile edit modal show/hide state
   const [ProfileEditModalShow, setProfileEditModalShow] = useState(false);
+  const [ChangePasswordModalShow, setChangePasswordModalShow] = useState(false);
+
+  const handleChangePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (!pwd || !matchPwd || !newPwd) {
+      toast.error('Please enter details', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+    }
+    if (pwd !== matchPwd){
+      toast.error('Password does not match', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      })
+    } else {
+      try {
+        const response = await axios.post(CHANGE_PASSWORD)
+      } catch (error) {
+        //Catch error here!
+      }
+    }
+  };
+
   const fetchProfileData = async () => {
     try {
       const accessToken = localStorage.getItem('accessToken');
@@ -57,11 +101,13 @@ function ProfilePatient() {
     blood_group: profileDetails.blood_group || '',
     address: profileDetails.address || '',
   })
+
   // Handle form input data
   const handleInputChangeProfileEdit = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   // Handle submit of input data
   const handleProfileEditSubmit = async () => {
     const updatedData = {};
@@ -82,6 +128,14 @@ function ProfilePatient() {
         draggable: true,
         theme: 'light',
       });
+      setFormData({
+        username: '',
+        mobile: '',
+        gender: '',
+        age: '',
+        blood_group: '',
+        address: '',
+      });
     } catch (error) {
       if (error.response){
         toast.error('Error', {
@@ -101,6 +155,61 @@ function ProfilePatient() {
 
     return (
         <>
+          {/* Change Password Modal */}
+          <Modal
+            show={ChangePasswordModalShow}
+            onHide={() => setChangePasswordModalShow(false)}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Change Password</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Container>
+              <Row>
+                <Col>Old Password</Col>
+                <Col>
+                  <Form.Control 
+                    type="password" 
+                    placeholder={"Enter old password"} 
+                    name="pwd"
+                    onChange={() => setPwd(pwd)}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>Old Password again</Col>
+                <Col>
+                  <Form.Control 
+                    type="password" 
+                    placeholder={"Enter old password again"}
+                    name="matchPwd"
+                    onChange={() => setMatchPwd(matchPwd)}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>New Password</Col>
+                <Col>
+                  <Form.Control 
+                    type="password" 
+                    placeholder={"Enter new password"}
+                    name="newPwd"
+                    onChange={() => setNewPwd(newPwd)}
+                  />
+                </Col>
+              </Row>
+            </Container>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setChangePasswordModalShow(false)}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleChangePasswordSubmit}>*Save</Button>
+            </Modal.Footer>
+          </Modal>
+
           {/* Profile Edit Modal */}
           <Modal
             show={ProfileEditModalShow}
@@ -230,7 +339,7 @@ function ProfilePatient() {
                             </tr>
                             <tr>
                               <th scope="row">Password</th>
-                              <td><Button className='m-2'>Change Password</Button></td>
+                              <td><Button className='m-2' onClick={() => setChangePasswordModalShow(true)}>Change Password</Button></td>
                             </tr>
                             <tr>
                               <th scope="row">User Name</th>

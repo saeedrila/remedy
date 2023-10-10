@@ -12,9 +12,11 @@ import {
 } from 'reactstrap';
 import axios from '../../api/axios';
 
-
+// Email and password validation
 const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const PWD_REGEX = /^.{4,23}$/;
+
+// API Endpoint
 const REGISTER_URL = '/account-signup'
 
 const PatientRegister = () => {
