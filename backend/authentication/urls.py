@@ -16,6 +16,7 @@ urlpatterns = [
     path('account-signup', views.AccountSignup.as_view(), name='account-signup'),
     path('account-login', views.AccountLogin.as_view(), name='patient-login'),
     path('logout', views.LogoutView.as_view(), name='logout-view'),
+    path('change-password', views.ChangePassword.as_view(), name='change-password'),
 
 
     # Activate user by Executive

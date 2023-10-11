@@ -17,6 +17,7 @@ from .serializers import (
     AllAccountSerializer,
     LoginSerializer,
     UserActivationSerializer,
+    ChangePasswordSerializer
 )
 
 # Error logging
@@ -161,3 +162,21 @@ class ActivateUser(APIView):
         account.save()
 
         return Response({"detail": "User account updated successfully"}, status=200)
+
+class ChangePassword(APIView):
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            current_password = serializer.validated_data['current_password']
+            new_password = serializer.validated_data['new_password']
+
+            user = request.user
+
+            if not user.check_password(current_password):
+                return Response({"detail": "Current Password incorrect"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            user.set_password(new_password)
+            user.save()
+            return Response({"details": "Password changed Successfully"}, status=status.HTTP_202_ACCEPTED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

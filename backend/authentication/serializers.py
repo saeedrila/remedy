@@ -44,3 +44,8 @@ class LoginSerializer(serializers.Serializer):
 class UserActivationSerializer(serializers.Serializer):
     id = serializers.CharField()
     is_active = serializers.BooleanField()
+
+# Change password
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

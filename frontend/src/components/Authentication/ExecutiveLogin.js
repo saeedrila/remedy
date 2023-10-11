@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import withRouter from '../Common/withRouter';
+import useAuth from '../../hooks/useAuth';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Container,
   Row,
@@ -11,54 +12,93 @@ import {
   Form,
   Label,
   Input,
-  FormFeedback,
 } from 'reactstrap';
 
-// Formik validation
-import * as Yup from "yup";
-import { useFormik } from "formik";
+import axios from '../../api/axios';
+
+// Login URL for backend
+const LOGIN_URL = '/account-login'
 
 
-const ExecutiveLogin = ({ history }) => {
-  const [validation, setValidation] = useState({
-    values: {},
-    touched: {},
-    errors: {},
-  });
+const ExecutiveLogin = () => {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const handleValidationChange = (e) => {
-    const { name, value } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      values: {
-        ...prevValidation.values,
-        [name]: value,
-      },
-    }));
-  };
+  const [errMsg, setErrMsg] = useState('')
+  const [email, setEmail] = useState('')
+  const [pwd, setPwd] = useState('')
 
-  const handleValidationBlur = (e) => {
-    const { name } = e.target;
-    setValidation((prevValidation) => ({
-      ...prevValidation,
-      touched: {
-        ...prevValidation.touched,
-        [name]: true,
-      },
-    }));
-  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your validation and login logic here
-    // For simplicity, this example just redirects after submission
-    history.push('/dashboard'); // Replace with your desired route
+
+    try{
+      const response = await axios.post(
+        LOGIN_URL,
+        { email: email, password: pwd },
+        {headers: 
+          {'Content-Type': 'application/json'}},
+           {withCredentials: true}
+        );
+      const accessToken = response?.data?.accessToken;
+      const refreshToken = response?.data?.refreshToken;
+      const username = response?.data?.username
+      const roles = response?.data?.roles;
+      console.log('Response:',response)
+      setAuth({email, pwd, roles, accessToken, refreshToken});
+
+      localStorage.clear();
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('username', username)
+      axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
+      console.log('Response.data:',response.data)
+
+      navigate(from, {replace: true})
+
+    } catch (err){
+      if (!err?.response){
+        setErrMsg('No Server Response')
+      } else if (err.response?.status === 400){
+        setErrMsg('Email or Password missing');
+      } else if (err.response?.status === 401){
+        setErrMsg('Not authorized');
+      } else if (err.response?.status === 404){
+        setErrMsg('Server Error');
+      } else{
+        setErrMsg('Login Failed');
+      }
+      toast.error(errMsg, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+    }
+    console.log(email, pwd);
   };
 
   return (
-    <React.Fragment>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="account-pages my-5 pt-sm-5">
-      <Container>
+        <Container>
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
               <Card className="overflow-hidden">
@@ -66,7 +106,7 @@ const ExecutiveLogin = ({ history }) => {
                   <Row>
                     <Col>
                       <div className="text-primary p-4">
-                        <h3 className="text-primary  text-center">Welcome Executive !</h3>
+                        <h3 className="text-primary  text-center">Welcome Executive!</h3>
                         <p className=' text-center'>Sign in as an Executive to continue to Remedy.</p>
                       </div>
                     </Col>
@@ -76,11 +116,7 @@ const ExecutiveLogin = ({ history }) => {
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
+                      onSubmit={handleSubmit}
                     >
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
@@ -89,8 +125,9 @@ const ExecutiveLogin = ({ history }) => {
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
-                          onChange={validation.handleChange}
-                          value={ExecutiveLogin.email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          value={email}
+                          required
                         />
                       </div>
 
@@ -100,12 +137,13 @@ const ExecutiveLogin = ({ history }) => {
                           name="password"
                           type="password"
                           placeholder="Enter Password"
-                          onChange={validation.handleChange}
-                          value={ExecutiveLogin.email}
+                          onChange={(e) => setPwd(e.target.value)}
+                          value={pwd}
+                          required
                         />
                       </div>
 
-                      <div className="form-check">
+                      {/* <div className="form-check">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -117,7 +155,7 @@ const ExecutiveLogin = ({ history }) => {
                         >
                           Remember me
                         </label>
-                      </div>
+                      </div> */}
 
                       <div className="mt-3 d-grid">
                         <button
@@ -138,9 +176,15 @@ const ExecutiveLogin = ({ history }) => {
                 </CardBody>
               </Card>
               <div className="mt-5 text-center">
+                <div className='d-flex justify-content-center'>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/login')}>Patient's Login{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/doctor-login')}>Doctor's Login{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/lab-login')}>Lab's Login{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/executive-login')}>Executive's Login{" "}</p>
+                </div>
                 <p>
                   Don&#39;t have an account ?{" "}
-                  <Link to="/executive-register" className="fw-medium text-primary">
+                  <Link to="/register" className="fw-medium text-primary">
                     {" "}
                     Signup now{" "}
                   </Link>{" "}
@@ -154,12 +198,8 @@ const ExecutiveLogin = ({ history }) => {
           </Row>
         </Container>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
-export default withRouter(ExecutiveLogin);
-
-ExecutiveLogin.propTypes = {
-  history: PropTypes.object,
-};
+export default ExecutiveLogin

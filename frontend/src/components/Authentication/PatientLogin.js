@@ -3,7 +3,6 @@ import useAuth from '../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import {
   Container,
   Row,
@@ -14,22 +13,20 @@ import {
   Label,
   Input,
 } from 'reactstrap';
+
 import axios from '../../api/axios';
 
-// const LOGIN_URL = '/token/'
 // Login URL for backend
 const LOGIN_URL = '/account-login'
 
 
-const PatientLogin = ({ history }) => {
+const PatientLogin = () => {
   const { setAuth } = useAuth();
-
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
   const [errMsg, setErrMsg] = useState('')
-
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
 
@@ -75,7 +72,7 @@ const PatientLogin = ({ history }) => {
       }
       toast.error(errMsg, {
         position: 'top-right',
-        autoClose: 5000, // Display for 5 seconds
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -84,8 +81,6 @@ const PatientLogin = ({ history }) => {
       });
     }
     console.log(email, pwd);
-
-    // history.push('/dashboard'); 
   };
 
   return (
@@ -181,6 +176,12 @@ const PatientLogin = ({ history }) => {
                 </CardBody>
               </Card>
               <div className="mt-5 text-center">
+                <div className='d-flex justify-content-center'>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/login')}>Patient's Login{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/doctor-login')}>Doctor's Login{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/lab-login')}>Lab's Login{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/executive-login')}>Executive's Login{" "}</p>
+                </div>
                 <p>
                   Don&#39;t have an account ?{" "}
                   <Link to="/register" className="fw-medium text-primary">

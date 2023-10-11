@@ -25,7 +25,7 @@ const PWD_REGEX = /^.{4,23}$/;
 // API endpoints
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
 const UPDATE_PROFILE_DETAILS = '/get-patient-profile-details'
-const CHANGE_PASSWORD = ''
+const CHANGE_PASSWORD = '/change-password'
 
 
 function ProfilePatient() {
@@ -53,8 +53,9 @@ function ProfilePatient() {
         draggable: true,
         theme: 'light',
       });
+      return;
     }
-    if (pwd !== matchPwd){
+    if (newPwd !== matchPwd){
       toast.error('Password does not match', {
         position: 'top-right',
         autoClose: 3000,
@@ -64,12 +65,41 @@ function ProfilePatient() {
         draggable: true,
         theme: 'light',
       })
-    } else {
-      try {
-        const response = await axios.post(CHANGE_PASSWORD)
-      } catch (error) {
-        //Catch error here!
-      }
+      return;
+    }
+    try {
+      const response = await axios.post(CHANGE_PASSWORD, {
+        current_password: pwd,
+        new_password: newPwd
+      })
+      console.log(response.data)
+      setChangePasswordModalShow(false);
+      // Reset form
+      setPwd('');
+      setMatchPwd('');
+      setNewPwd('');
+
+      toast.success('Password changed successfully', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
+  
+    } catch (error) {
+      console.error('Error changing password:', error);
+      toast.error('An error occurred while changing the password', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
     }
   };
 
@@ -174,18 +204,8 @@ function ProfilePatient() {
                     type="password" 
                     placeholder={"Enter old password"} 
                     name="pwd"
-                    onChange={() => setPwd(pwd)}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>Old Password again</Col>
-                <Col>
-                  <Form.Control 
-                    type="password" 
-                    placeholder={"Enter old password again"}
-                    name="matchPwd"
-                    onChange={() => setMatchPwd(matchPwd)}
+                    value={pwd}
+                    onChange={(e) => setPwd(e.target.value)}
                   />
                 </Col>
               </Row>
@@ -194,9 +214,23 @@ function ProfilePatient() {
                 <Col>
                   <Form.Control 
                     type="password" 
-                    placeholder={"Enter new password"}
+                    placeholder={"New Password"}
                     name="newPwd"
-                    onChange={() => setNewPwd(newPwd)}
+                    value={newPwd}
+                    onChange={(e) => setNewPwd(e.target.value)}
+                    
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>New Password again</Col>
+                <Col>
+                  <Form.Control 
+                    type="password" 
+                    placeholder={"Enter new password again"}
+                    name="matchPwd"
+                    value={matchPwd}
+                    onChange={(e) => setMatchPwd(e.target.value)}
                   />
                 </Col>
               </Row>
