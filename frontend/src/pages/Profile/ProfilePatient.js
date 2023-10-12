@@ -240,7 +240,7 @@ function ProfilePatient() {
               <Button variant="secondary" onClick={() => setChangePasswordModalShow(false)}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleChangePasswordSubmit}>*Save</Button>
+              <Button variant="primary" onClick={handleChangePasswordSubmit}>Save</Button>
             </Modal.Footer>
           </Modal>
 

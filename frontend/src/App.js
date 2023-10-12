@@ -34,8 +34,9 @@ import DashboardLab from './pages/Dashboard/DashboardLab';
 import DashboardPatient from './pages/Dashboard/DashboardPatient';
 import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 
-// Error 404
+// Error 404,401
 import Error404 from './pages/Error404';
+import Error401 from './pages/Error401';
 
 // Sitemap
 import SiteMap from './pages/SiteMap';
@@ -48,22 +49,22 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* Public pages */}
           {/* Logins */}
-          <Route path="/executive-login" element={<ExecutiveLoginPage />} />
-          <Route path="/doctor-login" element={<DoctorLoginPage />} />
-          <Route path="/lab-login" element={<LabLoginPage />} />
-          <Route path="/login" element={<PatientLoginPage />} />
+          <Route path="executive-login" element={<ExecutiveLoginPage />} />
+          <Route path="doctor-login" element={<DoctorLoginPage />} />
+          <Route path="lab-login" element={<LabLoginPage />} />
+          <Route path="login" element={<PatientLoginPage />} />
 
           {/* Account registration */}
-          <Route path='/executive-register' element={<ExecutiveRegisterPage />} />
-          <Route path='/doctor-register' element={<DoctorRegisterPage />} />
-          <Route path='/lab-register' element={<LabRegisterPage />} />
-          <Route path='/register' element={<PatientRegisterPage />} />
+          <Route path='executive-register' element={<ExecutiveRegisterPage />} />
+          <Route path='doctor-register' element={<DoctorRegisterPage />} />
+          <Route path='lab-register' element={<LabRegisterPage />} />
+          <Route path='register' element={<PatientRegisterPage />} />
 
           {/* Landing page */}
           <Route path='/' element={<Home />} />
 
           {/* Patient specific pages */}
-          <Route element={<RequireAuth />}>
+          <Route element={<RequireAuth allowedRoles={'is_patient'}/>}>
             {/* Profile */}
             <Route path='profile-patient' element={<ProfilePatient/>} />
 
@@ -90,8 +91,9 @@ function App() {
 
           <Route path='lab-tests' element={<LabTests/>} />
 
-          {/* Error 404 */}
+          {/* Error 404,401 */}
           <Route path='*' element={<Error404/>} />
+          <Route path='unauthorized' element={<Error401/>} />
 
           {/* Sitemap */}
           <Route path='sitemap' element={<SiteMap />} />

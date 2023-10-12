@@ -21,7 +21,7 @@ const LOGIN_URL = '/account-login'
 
 
 const PatientLogin = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -46,9 +46,9 @@ const PatientLogin = () => {
       const refreshToken = response?.data?.refreshToken;
       const username = response?.data?.username
       const roles = response?.data?.roles;
-      console.log('Response:',response)
       setAuth({email, pwd, roles, accessToken, refreshToken});
-
+      console.log('Auth: ', auth)
+      console.log('Auth.roles: ', auth.roles)
       localStorage.clear();
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
