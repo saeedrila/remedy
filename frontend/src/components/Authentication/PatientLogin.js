@@ -46,9 +46,8 @@ const PatientLogin = () => {
       const refreshToken = response?.data?.refreshToken;
       const username = response?.data?.username
       const roles = response?.data?.roles;
-      setAuth({email, pwd, roles, accessToken, refreshToken});
-      console.log('Auth: ', auth)
-      console.log('Auth.roles: ', auth.roles)
+      setAuth({email, roles, accessToken, refreshToken});
+      
       localStorage.clear();
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);

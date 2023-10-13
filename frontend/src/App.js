@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
 import "./assets/scss/theme.scss";
+import { AuthProvider } from './Context/AuthProvider';
 
 // Login pages
 import ExecutiveLoginPage from './pages/Authentication/ExecutiveLoginPage';
@@ -63,19 +64,33 @@ function App() {
           {/* Landing page */}
           <Route path='/' element={<Home />} />
 
-          {/* Patient specific pages */}
-          <Route element={<RequireAuth allowedRoles={'is_patient'}/>}>
-            {/* Profile */}
+          {/* Profile Page */}
+          <Route element={<RequireAuth allowedRoles={['is_patient', 'is_doctor', 'is_lab', 'is_executive']}/>}>
             <Route path='profile-patient' element={<ProfilePatient/>} />
+          </Route>
 
-            {/* Dashboard */}
+          {/* Patient specific pages */}
+          <Route element={<RequireAuth allowedRoles={['is_patient']}/>}>
             <Route path='dashboard-patient' element={<DashboardPatient/>} />
-
-            {/* Appointment selection */}
             <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
             <Route path='doctor-specialties/:specialtyId' element={<SelectDoctor/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+          </Route>
+
+          {/* Doctor specific pages */}
+          <Route element={<RequireAuth allowedRoles={['is_doctor']}/>}>
+            <Route path='dashboard-doctor' element={<DashboardDoctor/>} />
+          </Route>
+          
+          {/* Lab specific pages */}
+          <Route element={<RequireAuth allowedRoles={['is_lab']}/>}>
+            <Route path='dashboard-lab' element={<DashboardLab/>} />
+          </Route>
+
+          {/* Executive specific pages */}
+          <Route element={<RequireAuth allowedRoles={['is_executive']}/>}>
+            <Route path='dashboard-executive' element={<DashboardLab/>} />
           </Route>
 
 
