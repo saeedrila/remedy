@@ -27,7 +27,10 @@ import AppointmentsLabs from '../../components/Executive/AppointmentsLabs'
 import AvailabilityLabs from '../../components/Executive/AvailabilityLabs'
 import Staff from '../../components/Executive/Staff'
 
-function DashboardExecutive(props) {
+//API Endpoint
+const ACCOUNT_APPROVAL_URL = '/account-activation'
+
+function DashboardExecutive() {
   document.title = 'Executive Dashboard'
 
   const [verticalActiveTab, setverticalActiveTab] = useState("1");
@@ -36,6 +39,11 @@ function DashboardExecutive(props) {
       setverticalActiveTab(tab);
     }
   };
+
+  const getAccountForActivation = () =>{
+    const listOfAccounts = ''
+
+  }
 
 
   return (
@@ -136,6 +144,7 @@ function DashboardExecutive(props) {
                             })}
                             onClick={() => {
                               toggleVertical("6");
+                              getAccountForActivation();
                             }}
                           >
                             Staff

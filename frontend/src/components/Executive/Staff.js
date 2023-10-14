@@ -25,7 +25,7 @@ function Staff() {
                     <tr>
                       <th>Sl. No.</th>
                       <th>ID</th>
-                      <th>Doctor/Lab</th>
+                      <th>Account type</th>
                       <th>Document</th>
                       <th>Status</th>
                       <th>Action</th>

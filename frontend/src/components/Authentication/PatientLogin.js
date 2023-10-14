@@ -46,17 +46,18 @@ const PatientLogin = () => {
       const refreshToken = response?.data?.refreshToken;
       const username = response?.data?.username
       const roles = response?.data?.roles;
-      setAuth({email, roles, accessToken, refreshToken});
+      setAuth({email, roles, accessToken, refreshToken, username});
       
       localStorage.clear();
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('username', username)
+      localStorage.setItem('email', email)
+      localStorage.setItem('roles', JSON.stringify(roles))
       axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
       console.log('Response.data:',response.data)
 
       navigate(from, {replace: true})
-
     } catch (err){
       if (!err?.response){
         setErrMsg('No Server Response')

@@ -1,9 +1,11 @@
 import './App.css';
+import { useEffect } from 'react';
 import { Routes, Route } from "react-router-dom";
 import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
 import "./assets/scss/theme.scss";
 import { AuthProvider } from './Context/AuthProvider';
+import useAuth from './hooks/useAuth';
 
 // Login pages
 import ExecutiveLoginPage from './pages/Authentication/ExecutiveLoginPage';
@@ -44,6 +46,29 @@ import SiteMap from './pages/SiteMap';
 
 
 function App() {
+  const { setAuth } = useAuth();
+  useEffect(() => {
+    try{
+      // This has to be changed before Production
+      const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = localStorage.getItem('refreshToken');
+      const email = localStorage.getItem('email');
+      const rolesJSON = localStorage.getItem('roles');
+      const username = localStorage.getItem('username');
+      if (accessToken && refreshToken && email && rolesJSON) {
+        const roles = JSON.parse(rolesJSON);
+        setAuth({
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          email: email,
+          roles: roles,
+          username: username,
+        });
+      }
+    } catch (error){
+
+    }
+  }, []);
   return (
     <>
       <Routes>
@@ -90,19 +115,9 @@ function App() {
 
           {/* Executive specific pages */}
           <Route element={<RequireAuth allowedRoles={['is_executive']}/>}>
-            <Route path='dashboard-executive' element={<DashboardLab/>} />
+            <Route path='dashboard-executive' element={<DashboardExecutive/>} />
           </Route>
 
-
-
-          {/* Profile section */}
-          <Route path='profile-doctor' element={<ProfileDoctor/>} />
-
-          {/* Dashboard section */}
-          <Route path='dashboard-doctor' element={<DashboardDoctor/>} />
-          <Route path='dashboard-lab' element={<DashboardLab/>} />
-          
-          <Route path='dashboard-executive' element={<DashboardExecutive/>} />
 
           <Route path='lab-tests' element={<LabTests/>} />
 

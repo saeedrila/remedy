@@ -6,7 +6,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { useAuth } from '../../Context/AuthProvider'
+import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 
@@ -24,7 +24,7 @@ const ProfileMenu = props => {
     setAuth({
       email: null,
       pwd: null,
-      roles: [],
+      roles: {},
       accessToken: null,
       refreshToken: null,
     });
@@ -38,6 +38,22 @@ const ProfileMenu = props => {
       setUsername(storedUsername);
     }
   }, []);
+
+  const handleDashboard = () => {
+    console.log('Dashboard');
+    if (auth.roles.is_executive){
+      navigate('/dashboard-executive')
+    }
+    else if(auth.roles.is_doctor){
+      navigate('/dashboard-doctor')
+    }
+    else if(auth.roles.is_lab){
+      navigate('/dashboard-lab')
+    }
+    else(
+      navigate('/dashboar-patient')
+    )
+  }
 
   return (
     <React.Fragment>
@@ -65,7 +81,7 @@ const ProfileMenu = props => {
             <i className="bx bx-user font-size-16 align-middle me-1" />
             {"Profile"}{" "}
           </DropdownItem>
-          <DropdownItem tag="a" onClick={() => navigate('/dashboard-patient')}>
+          <DropdownItem tag="a" onClick={() => handleDashboard()}>
             <i className="bx bx-wallet font-size-16 align-middle me-1" />
             {"Dashboard"}
           </DropdownItem>
