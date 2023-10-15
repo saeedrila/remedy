@@ -31,7 +31,7 @@ class AllAccountListView(APIView):
     def get(self, request):
         account = Account.objects.all().order_by('-id')
         serializer = AllAccountSerializer(account, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Sign up

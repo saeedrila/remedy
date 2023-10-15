@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Row,
   Col,
@@ -10,8 +10,56 @@ import {
   CardBody,
   CardTitle,
 } from 'reactstrap'
+import axios from '../../api/axios'
+
+//API Endpoint
+const ACCOUNT_APPROVAL_URL = 'account-approval'
+
+
+
 
 function Staff() {
+  document.title = 'Executive Dashboard || Staff approval'
+  const [listOfAccounts, setListOfAccounts] = useState([])
+
+  const getAccountForApproval = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(ACCOUNT_APPROVAL_URL, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setListOfAccounts(response.data);
+      console.log('List of accounts', response.data);
+    } catch (error) {
+      console.error('Error fetching data', error);
+    }
+  };
+
+  const accountApprove = async (status, account_id) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.patch(ACCOUNT_APPROVAL_URL, {
+        id: account_id,
+        status: status,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // After the patch request is successful, fetch the updated data
+      getAccountForApproval();
+    } catch (error) {
+      console.log('Error submitting data', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch initial data when the component mounts
+    getAccountForApproval();
+  }, []);
+
   return (
     <>
       <Row>
@@ -32,18 +80,25 @@ function Staff() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>id*</td>
-                      <td>Doctor*</td>
-                      <td>Document*</td>
-                      <td>To be approved*</td>
-                      <td>
-                        <Button>
-                          Edit*
-                        </Button>
-                      </td>
-                    </tr>
+                    {listOfAccounts.map((account, index) => (
+                      <tr key={account.id}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{account.id}</td>
+                        <td>{account.is_doctor ? 'Doctor' : account.is_lab ? 'Lab' : account.is_executive ? 'Executive' : 'Other'}</td>
+                        <td>{account.email}</td>
+                        <td>{account.is_active ? 'Approved' : 'Not Approved'}</td>
+                        <td>
+                          {account.is_active ?
+                          <Button onClick={() => accountApprove("False", account.id)}>
+                          Refuse
+                          </Button>
+                          :<Button onClick={() => accountApprove("True", account.id)}>
+                          Approve Now
+                          </Button>
+                          }
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>

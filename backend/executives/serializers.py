@@ -3,17 +3,18 @@ from authentication.models import Account
 
 
 
-class AccountActivationSerializer(serializers.Serializer):
-    class Meta:
-        model = Account
-        fields = (
-            'id',
-            'username',
-            'email',
-            'mobile',
-            'is_doctor'
-            'is_lab'
-            'is_executive'
-            'is_verified'
-            'is_active',)
-        
+class AccountApprovalSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    mobile = serializers.CharField()
+    is_doctor = serializers.BooleanField()
+    is_lab = serializers.BooleanField()
+    is_executive = serializers.BooleanField()
+    is_verified = serializers.BooleanField()
+    is_active = serializers.BooleanField()
+
+class AccountApprovalPatchSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    status = serializers.BooleanField()
+

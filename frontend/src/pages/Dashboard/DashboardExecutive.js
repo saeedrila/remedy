@@ -26,9 +26,9 @@ import AppointmentsDoctors from '../../components/Executive/AppointmentsDoctors'
 import AppointmentsLabs from '../../components/Executive/AppointmentsLabs'
 import AvailabilityLabs from '../../components/Executive/AvailabilityLabs'
 import Staff from '../../components/Executive/Staff'
+import axios from '../../api/axios'
 
-//API Endpoint
-const ACCOUNT_APPROVAL_URL = '/account-activation'
+
 
 function DashboardExecutive() {
   document.title = 'Executive Dashboard'
@@ -40,10 +40,6 @@ function DashboardExecutive() {
     }
   };
 
-  const getAccountForActivation = () =>{
-    const listOfAccounts = ''
-
-  }
 
 
   return (
@@ -144,7 +140,6 @@ function DashboardExecutive() {
                             })}
                             onClick={() => {
                               toggleVertical("6");
-                              getAccountForActivation();
                             }}
                           >
                             Staff
