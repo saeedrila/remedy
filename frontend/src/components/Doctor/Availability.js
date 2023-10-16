@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import axios from '../../api/axios';
 import {
   Button,
   Row,
@@ -12,30 +12,179 @@ import {
 
 } from 'reactstrap'
 import { format, addDays } from 'date-fns';
+const DOCTOR_AVAILABILITY_GET_URL = 'doctor-availability-get-url'
+
 
 function Availability() {
-  const axiosInstance = axios.create({
-    headers: {
-      'X-CSRFToken': 'E0XFgtVqx7TLnmUNzblQkfmJBJluv5oy'
-    },
-  });
+  document.title = 'Doctor Dashboard || Availability'
+  const [slotsAvailable, setSlotsAvailable] = useState([])
+
+  const [dayZeroOfflineButtons, setDayZeroOfflineButtons] = useState([])
+  const [dayOneOfflineButtons, setDayOneOfflineButtons] = useState([])
+  const [dayTwoOfflineButtons, setDayTwoOfflineButtons] = useState([])
+  const [dayThreeOfflineButtons, setDayThreeOfflineButtons] = useState([])
+  const [dayZeroOnlineButtons, setDayZeroOnlineButtons] = useState([])
+  const [dayOneOnlineButtons, setDayOneOnlineButtons] = useState([])
+  const [dayTwoOnlineButtons, setDayTwoOnlineButtons] = useState([])
+  const [dayThreeOnlineButtons, setDayThreeOnlineButtons] = useState([])
+
+  const getSlotsAvailable = async () => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(DOCTOR_AVAILABILITY_GET_URL, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+      });
+      setSlotsAvailable(response.data);
+      console.log('Response.data: ', response.data)
+      console.log('slotsAvailable: ', slotsAvailable)
+
+      console.log('Get slots available Try completed')
+    } catch(error) {
+      console.log('Get slots available Catch completed')
+    }
+  }
+
+
+  useEffect(() => {
+    getSlotsAvailable();
+  }, []);
+
+  useEffect(() => {
+    console.log('slotsAvailable updated:', slotsAvailable);
+    // Extract and store time slots for each day
+    if (slotsAvailable.length > 0) {
+      const dayZeroOfflineSlots = slotsAvailable[0].slots_details_offline;
+      const dayZeroOnlineSlots = slotsAvailable[0].slots_details_online;
+      const dayOneOfflineSlots = slotsAvailable[1].slots_details_offline;
+      const dayOneOnlineSlots = slotsAvailable[1].slots_details_online;
+      const dayTwoOfflineSlots = slotsAvailable[2].slots_details_offline;
+      const dayTwoOnlineSlots = slotsAvailable[2].slots_details_online;
+      const dayThreeOfflineSlots = slotsAvailable[3].slots_details_offline;
+      const dayThreeOnlineSlots = slotsAvailable[3].slots_details_online;
+
+      // Day zero button creation
+      const dayZeroOfflineButtons = Object.entries(dayZeroOfflineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayZeroOfflineButtons(dayZeroOfflineButtons);
+
+      const dayZeroOnlineButtons = Object.entries(dayZeroOnlineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayZeroOnlineButtons(dayZeroOnlineButtons);
+            
+      // Day one button creation
+      const dayOneOfflineButtons = Object.entries(dayOneOfflineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayOneOfflineButtons(dayOneOfflineButtons);
+
+      const dayOneOnlineButtons = Object.entries(dayOneOnlineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayOneOnlineButtons(dayOneOnlineButtons);
+            
+      // Day two button creation
+      const dayTwoOfflineButtons = Object.entries(dayTwoOfflineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayTwoOfflineButtons(dayTwoOfflineButtons);
+
+      const dayTwoOnlineButtons = Object.entries(dayTwoOnlineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayTwoOnlineButtons(dayTwoOnlineButtons);
+            
+      // Day three button creation
+      const dayThreeOfflineButtons = Object.entries(dayThreeOfflineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayThreeOfflineButtons(dayThreeOfflineButtons);
+
+      const dayThreeOnlineButtons = Object.entries(dayThreeOnlineSlots).map(([key, slot]) => (
+        <Button 
+          key={key} 
+          className={
+            slot.status === 'notAvailable' ? 'btn-secondary' :
+            slot.status === 'available' ? 'btn-success' :
+            slot.status === 'updated' ? 'btn-info' : 'btn-danger'
+          }
+        >
+          {slot.time}
+        </Button>
+      ));
+      setDayThreeOnlineButtons(dayThreeOnlineButtons);
+    }
+  }, [slotsAvailable]);
+
   // Today's date
   const currentDate = new Date();
   const formattedTodaysDate = format(currentDate, 'yyyy-MM-dd');
-  const [todayTimeSlot, setTodayTimeSlot] = useState([]);
-  useEffect(() => {
-    axiosInstance.post('http://127.0.0.1:8000/api/doctor-availability-registration', formattedTodaysDate)
-    .then(response => {
-      setTodayTimeSlot(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching data', error)
-    })
-  }, []);
-
-  const [tomorrowTimeSlot, setTomorrowTimeSlot] = useState([]);
-  const [dayAfterTomorrowTimeSlot, setDayAfterTomorrowTimeSlot] = useState([]);
-  const [secondDayAfterTomorrowTimeSlot, setSecondDayAfterTomorrowTimeSlot] = useState([]);
   // Tomorrow's date
   const tomorrowDate = addDays(currentDate, 1);
   const formattedTomorrowDate = format(tomorrowDate, 'yyyy-MM-dd');
@@ -46,99 +195,37 @@ function Availability() {
   const secondDayAfterTomorrowDate = addDays(currentDate, 3);
   const formattedSecondDayAfterTomorrowDate = format(secondDayAfterTomorrowDate, 'yyyy-MM-dd');
 
-  const todayAvailabilityButtons = [];
-  const tomorrowAvailabilityButtons = [];
-  const dayAfterTomorrowAvailabilityButtons = [];
-  const secondDayAfterTomorrowAvailabilityButtons = [];
 
-  const startTime = new Date();
-  startTime.setHours(9, 0, 0);
-
-  const endTime = new Date();
-  endTime.setHours(17, 30, 0);
-
-  const getRandomColor = () => {
-    const colors = ['success', 'secondary'];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
-  while (startTime <= endTime){
-    const timeString = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const id = `button-${timeString.replace(':', '-')}`;
-    const todayAvailabilityColor = getRandomColor();
-    const tomorrowAvailabilityColor = getRandomColor();
-    const dayAfterTomorrowAvailabilityColor = getRandomColor();
-    const secondDayAfterTomorrowAvailabilityColor = getRandomColor();
-
-    todayAvailabilityButtons.push(
-      <Button key={id} color={todayAvailabilityColor} className={`btn btn-${todayAvailabilityColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-
-    tomorrowAvailabilityButtons.push(
-      <Button key={id} color={tomorrowAvailabilityColor} className={`btn btn-${tomorrowAvailabilityColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-
-    dayAfterTomorrowAvailabilityButtons.push(
-      <Button 
-        key={id} 
-        color={dayAfterTomorrowAvailabilityColor} 
-        className={`btn btn-${dayAfterTomorrowAvailabilityColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-
-    secondDayAfterTomorrowAvailabilityButtons.push(
-      <Button 
-        key={id} 
-        color={secondDayAfterTomorrowAvailabilityColor} 
-        className={`btn btn-${secondDayAfterTomorrowAvailabilityColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-    startTime.setMinutes(startTime.getMinutes() + 15);
-  }
 
   return (
     <>
       <Row>
-        <Col sm={6}>
+        <Col>
           <Card>
             <CardTitle className='text-center'>
-              Today: {formattedTodaysDate}
+            Color codes
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
-                {todayAvailabilityButtons}
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col sm={6}>
-          <Card>
-            <CardTitle className='text-center'>
-              Tomorrow: {formattedTomorrowDate}
-            </CardTitle>
-            <CardBody>
-              <div className="d-flex flex-wrap gap-2">
-                {tomorrowAvailabilityButtons}
+              <Button className={'btn-secondary'}>Slot not available for public</Button>
+              <Button className={'btn-success'}>Slot available for public</Button>
+              <Button className={'btn-warning'}>Slot has been booked</Button>
+              <Button className={'btn-info'}>Slot just updated</Button>
               </div>
             </CardBody>
           </Card>
         </Col>
       </Row>
+      {/* DayZero */}
       <Row>
         <Col sm={6}>
           <Card>
             <CardTitle className='text-center'>
-              Day after Tomorrow: {formattedDayAfterTomorrowDate}
+              Today: {formattedTodaysDate} (Online)
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
-                {dayAfterTomorrowAvailabilityButtons}
+                {dayZeroOnlineButtons}
               </div>
             </CardBody>
           </Card>
@@ -146,16 +233,98 @@ function Availability() {
         <Col sm={6}>
           <Card>
             <CardTitle className='text-center'>
-              2nd day after Tomorrow: {formattedSecondDayAfterTomorrowDate}
+            Today: {formattedTodaysDate} (Offline)
             </CardTitle>
             <CardBody>
               <div className="d-flex flex-wrap gap-2">
-                {secondDayAfterTomorrowAvailabilityButtons}
+                {dayZeroOfflineButtons}
               </div>
             </CardBody>
           </Card>
         </Col>
       </Row>
+      {/* DayOne */}
+      <Row>
+        <Col sm={6}>
+          <Card>
+            <CardTitle className='text-center'>
+              Tomorrow: {formattedTomorrowDate} (Online)
+            </CardTitle>
+            <CardBody>
+              <div className="d-flex flex-wrap gap-2">
+                {dayOneOnlineButtons}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col sm={6}>
+          <Card>
+            <CardTitle className='text-center'>
+              Tomorrow: {formattedTomorrowDate} (Offline)
+            </CardTitle>
+            <CardBody>
+              <div className="d-flex flex-wrap gap-2">
+              {dayOneOfflineButtons}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      {/* DayTwo */}
+      <Row>
+        <Col sm={6}>
+          <Card>
+            <CardTitle className='text-center'>
+              Day after Tomorrow: {formattedDayAfterTomorrowDate} (Online)
+            </CardTitle>
+            <CardBody>
+              <div className="d-flex flex-wrap gap-2">
+              {dayTwoOnlineButtons}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col sm={6}>
+          <Card>
+            <CardTitle className='text-center'>
+            Day after Tomorrow: {formattedDayAfterTomorrowDate} (Offline)
+            </CardTitle>
+            <CardBody>
+              <div className="d-flex flex-wrap gap-2">
+              {dayTwoOfflineButtons}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      {/* DayThree */}
+      <Row>
+        <Col sm={6}>
+          <Card>
+            <CardTitle className='text-center'>
+            2nd day after Tomorrow: {formattedSecondDayAfterTomorrowDate} (Online)
+            </CardTitle>
+            <CardBody>
+              <div className="d-flex flex-wrap gap-2">
+              {dayThreeOnlineButtons}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+        <Col sm={6}>
+          <Card>
+            <CardTitle className='text-center'>
+              2nd day after Tomorrow: {formattedSecondDayAfterTomorrowDate} (Offline)
+            </CardTitle>
+            <CardBody>
+              <div className="d-flex flex-wrap gap-2">
+              {dayThreeOfflineButtons}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+
     </>
   )
 }

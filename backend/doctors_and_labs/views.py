@@ -5,15 +5,13 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.generics import ListAPIView
 from django.db.models import F, ExpressionWrapper, FloatField
-import datetime
+from datetime import datetime, timedelta, time, date
 
 # From files
 from .import views
 from .models import Account
 from .serializers import (
     RegisterSpecialization,
-    DoctorAvailabilityRegistration,
-    DoctorAvailabilitySerializer,
 )
 from .models import (
     DoctorProfile, 
@@ -204,42 +202,129 @@ class DoctorsAtSpecialization(APIView):
 
 # Doctor's available timing registration
 class DoctorAvailabilityRegistration(APIView):
-    @csrf_exempt
-    def post(self, request):
-        serializer = DoctorAvailabilityRegistration(data=request.data)
-        if serializer.is_valid():
-            date = serializer.validated_data.get('date')
-            if request.user.is_doctor:
-                start_time = datetime.time(6, 0)
-                end_time = datetime.time(22, 0)
-                slots_data = {
-                    "online": [],
-                    "inPerson": []
-                }
-                time_interval = datetime.timedelta(minutes=15)
-                current_time = datetime.datetime.combine(datetime.date.today(), start_time)
+    def get(self, request):
+        #For doctors:
+        if request.user.is_doctor:
+            try:
+                account = Account.objects.get(id = request.user.id)
+                # Dates from datetime library
+                day_zero_raw = datetime.now().date()
+                day_one_raw = day_zero_raw + timedelta(days=1)
+                day_two_raw = day_zero_raw + timedelta(days=2)
+                day_three_raw = day_zero_raw + timedelta(days=3)
+                # Dates converted into YYYY-MM-DD format
+                day_zero = day_zero_raw.strftime("%Y-%m-%d")
+                day_one = day_one_raw.strftime("%Y-%m-%d")
+                day_two = day_two_raw.strftime("%Y-%m-%d")
+                day_three = day_three_raw.strftime("%Y-%m-%d")
+                # Slots dummy empty data
+                start_time = time(8, 0)
+                end_time = time(10, 0)
+                slots_dummy_data = {}
+                time_interval = timedelta(minutes=15)
+                current_time = datetime.combine(date.today(), start_time)
                 slot_id = 1
 
                 while current_time.time() < end_time:
                     time_str = current_time.strftime("%I:%M %p")
                     time_slot = {
-                        "id": slot_id,
                         "time": time_str,
-                        "status": "N"
+                        "status": "notAvailable"
                     }
-                    slots_data["online"].append(time_slot.copy())
-                    slots_data["inPerson"].append(time_slot)
+                    slots_dummy_data[slot_id] = time_slot
                     current_time += time_interval
                     slot_id += 1
 
-                doctor = request.user
-                specialization, created = DoctorAvailability.objects.get_or_create(doctor=doctor, date=date)
+                # Getting status from db
+                status_day_zero, created = DoctorAvailability.objects.get_or_create(
+                    date=day_zero,
+                    doctor=account,
+                    defaults={
+                        'slots_details_online': slots_dummy_data,
+                        'slots_details_offline': slots_dummy_data
+                    }
+                )
+                status_day_one, _ = DoctorAvailability.objects.get_or_create(
+                    date=day_one,
+                    doctor=account,
+                    defaults={
+                        'slots_details_online': slots_dummy_data,
+                        'slots_details_offline': slots_dummy_data
+                    }                
+                )
+                status_day_two, _ = DoctorAvailability.objects.get_or_create(
+                    date=day_two,
+                    doctor=account,
+                    defaults={
+                        'slots_details_online': slots_dummy_data,
+                        'slots_details_offline': slots_dummy_data
+                    }                
+                )
+                status_day_three, _ = DoctorAvailability.objects.get_or_create(
+                    date=day_three,
+                    doctor=account,
+                    defaults={
+                        'slots_details_online': slots_dummy_data,
+                        'slots_details_offline': slots_dummy_data
+                    }                
+                )
+                # Create status dict to send to frontend
+                doctor_availabilities = [status_day_zero, status_day_one, status_day_two, status_day_three]
+                # serializer = DoctorAvailabilitySerializer(doctor_availabilities, many=True)
+                serialized_data = []
+                for doctor_availability in doctor_availabilities:
+                    serialized_data.append({
+                        'id': doctor_availability.id,
+                        'date': doctor_availability.date,
+                        'slots_status_online': doctor_availability.slots_status_online,
+                        'slots_status_offline': doctor_availability.slots_status_offline,
+                        'slots_details_online': doctor_availability.slots_details_online,
+                        'slots_details_offline': doctor_availability.slots_details_offline,
+                    })
+                return Response(serialized_data, status=status.HTTP_200_OK)
 
-                if created:
-                    specialization.slots_status = slots_data
-                    specialization.save()
-                return Response({"slots_data": slots_data})
-            else:
-                return Response({"details": "You are not authorized to submit availability"}, status=status.HTTP_401_UNAUTHORIZED)
+            except Account.DoesNotExist:
+                return Response({"detail": "User with this ID does not exist."}, status=status.HTTP_401_UNAUTHORIZED)
+        elif request.user.is_patient:
+            pass
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+    # def post(self, request):
+    #     serializer = DoctorAvailabilityRegistration(data=request.data)
+    #     if serializer.is_valid():
+    #         date = serializer.validated_data.get('date')
+    #         if request.user.is_doctor:
+    #             start_time = datetime.time(6, 0)
+    #             end_time = datetime.time(22, 0)
+    #             slots_data = {
+    #                 "online": [],
+    #                 "inPerson": []
+    #             }
+    #             time_interval = datetime.timedelta(minutes=15)
+    #             current_time = datetime.datetime.combine(datetime.date.today(), start_time)
+    #             slot_id = 1
+
+    #             while current_time.time() < end_time:
+    #                 time_str = current_time.strftime("%I:%M %p")
+    #                 time_slot = {
+    #                     "id": slot_id,
+    #                     "time": time_str,
+    #                     "status": "N"
+    #                 }
+    #                 slots_data["online"].append(time_slot.copy())
+    #                 slots_data["inPerson"].append(time_slot)
+    #                 current_time += time_interval
+    #                 slot_id += 1
+
+    #             doctor = request.user
+    #             specialization, created = DoctorAvailability.objects.get_or_create(doctor=doctor, date=date)
+
+    #             if created:
+    #                 specialization.slots_status = slots_data
+    #                 specialization.save()
+    #             return Response({"slots_data": slots_data})
+    #         else:
+    #             return Response({"details": "You are not authorized to submit availability"}, status=status.HTTP_401_UNAUTHORIZED)
+    #     else:
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

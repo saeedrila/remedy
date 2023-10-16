@@ -13,7 +13,10 @@ class DoctorProfile(models.Model):
 class DoctorAvailability(models.Model):
     date = models.DateField(db_index=True)
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_availabilities', db_index=True)
-    slots_status = models.JSONField(default=dict)
+    slots_status_online = models.BooleanField(default=False)
+    slots_status_offline = models.BooleanField(default=False)
+    slots_details_online = models.JSONField(default=dict)
+    slots_details_offline = models.JSONField(default=dict)
 
 class DoctorSpecializations(models.Model):
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_specializations')

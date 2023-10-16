@@ -25,7 +25,7 @@ import Availability from '../../components/Doctor/Availability'
 import Prescription from '../../components/Doctor/Prescription'
 import Payments from '../../components/Doctor/Payments'
 
-function DashboardDoctor(props) {
+function DashboardDoctor() {
   document.title = 'Doctors Dashboard'
 
   const [verticalActiveTab, setverticalActiveTab] = useState("1");

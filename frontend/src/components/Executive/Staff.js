@@ -11,10 +11,10 @@ import {
   CardTitle,
 } from 'reactstrap'
 import axios from '../../api/axios'
+import { toast } from 'react-toastify'
 
 //API Endpoint
 const ACCOUNT_APPROVAL_URL = 'account-approval'
-
 
 
 
@@ -47,11 +47,27 @@ function Staff() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
-      // After the patch request is successful, fetch the updated data
+      toast.success(response.data.detail, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
       getAccountForApproval();
     } catch (error) {
       console.log('Error submitting data', error);
+      toast.error('Error submitting data', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
     }
   };
 
@@ -89,10 +105,10 @@ function Staff() {
                         <td>{account.is_active ? 'Approved' : 'Not Approved'}</td>
                         <td>
                           {account.is_active ?
-                          <Button onClick={() => accountApprove("False", account.id)}>
-                          Refuse
+                          <Button color='danger' onClick={() => accountApprove("False", account.id)}>
+                          Block
                           </Button>
-                          :<Button onClick={() => accountApprove("True", account.id)}>
+                          :<Button color='success' onClick={() => accountApprove("True", account.id)}>
                           Approve Now
                           </Button>
                           }

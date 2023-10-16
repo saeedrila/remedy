@@ -18,22 +18,22 @@ class DoctorSpecializationData(serializers.Serializer):
 class DoctorAvailabilityRegistration(serializers.Serializer):
     date = serializers.CharField(max_length=10)
 
+# Doctor status get, following 2 classes are part of it.
+# Not using anymore
+class SlotSerializer(serializers.Serializer):
+    time = serializers.CharField()
+    status = serializers.CharField()
+
+class DoctorAvailabilitySerializer(serializers.Serializer):
+    date = serializers.CharField()
+    slots_status_online = serializers.BooleanField()
+    slots_status_offline = serializers.BooleanField()
+    slots_details_online = SlotSerializer(many=True)
+    slots_details_offline = SlotSerializer(many=True)
+
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorProfile
         fields = ('fee_per_session', 'experience', 'description')
 
-
-
-
-class DoctorAvailabilitySerializer(serializers.Serializer):
-    doctorprofile = DoctorProfileSerializer(source='doctor', read_only=True)
-    availability_ids = serializers.SerializerMethodField()
-
-    class Meta:
-        model = DoctorAvailability
-        fields = ('doctor_id', 'fee_per_session', 'availability_ids')
-
-    def get_availability_ids(self, obj):
-        return [availability.id for availability in obj]

@@ -16,7 +16,6 @@ class AccountApproval(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def patch(self, request):
-        print('User data: ', request.user)
         if not request.user.is_executive:
             return Response({"detail": "You are not authorized to do this operation"}, status=status.HTTP_403_FORBIDDEN)
         
@@ -31,9 +30,18 @@ class AccountApproval(APIView):
             account = Account.objects.get(id = id)
             account.is_active = activation_status
             account.save()
-            return Response({"detail": "User account updated successfully"}, status=status.HTTP_200_OK)
+
+            action = 'approved' if activation_status else 'blocked'
+            success_message = f"{account.email}'s account {action} successfully"
+            response_data = {
+                "detail": success_message,
+                "email": account.email,
+                "activation_status": activation_status,
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
         
         except Account.DoesNotExist:
-            return Response({"detail": "User with this ID does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "User with this ID does not exist."}, status=status.HTTP_401_UNAUTHORIZED)
         
         
