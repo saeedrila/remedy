@@ -3,9 +3,20 @@ from .import views
 
 
 urlpatterns = [
+    # Get doctor availability
+    path('doctor-availability-get-url', views.DoctorAvailabilityRegistration.as_view(), name='doctor-availability-get-url'),
+    # Get and Patch doctor account details
+    path('get-doctor-account-details', views.DoctorAccountDetails.as_view(), name='doctor_account_details'),
+    # Get and Post doctor specialization details
+    path('doctor-specialization-generic-url', views.GetListOfSpecialization.as_view(), name='doctor_specialization_url'),
+    # Specific url for getting a doctor's specialization details
+    path('doctor-specialization-specific', views.DoctorSpecificSpecialization.as_view(), name='doctor_specialization_specific'),
+
+
+
+
     # Register specialization
     path('register-specialization', views.RegisterSpecialization.as_view(), name='register-specialization'),
-
 
     # Frontend
     # Get doctor specialization details
@@ -18,6 +29,8 @@ urlpatterns = [
     # Not using currently
     path('doctor-availability-registration', views.DoctorAvailabilityRegistration.as_view(), name='doctor-availability-registration'),
 
-    # Get doctor availability
-    path('doctor-availability-get-url', views.DoctorAvailabilityRegistration.as_view(), name='doctor-availability-get-url'),
+
+
+
+
 ]

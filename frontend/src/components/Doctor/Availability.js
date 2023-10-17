@@ -50,7 +50,7 @@ function Availability() {
 
         dayTwoOfflineSlots: response.data[2].slots_details_offline,
         dayTwoOnlineSlots: response.data[2].slots_details_online,
-        
+
         dayThreeOfflineSlots: response.data[3].slots_details_offline,
         dayThreeOnlineSlots: response.data[3].slots_details_online,
       });
@@ -65,7 +65,6 @@ function Availability() {
 
   useEffect(() =>{
     console.log('slotsAvailable updated:', slotsAvailable);
-    console.log('Day zero online slots:', slotsAvailable.dayZeroOnlineSlots);
   }, [slotsAvailable])
 
   const toggleAvailability = async (status, slot_id, date, line, time) => {
@@ -232,11 +231,11 @@ function Availability() {
                         <td>{slot.status === 'notAvailable' ? 'Not available to public' : slot.status === 'available' ? 'Available to public': 'Booked'}</td>
                         <td>
                           {slot.status === 'notAvailable' ? (
-                            <Button className='btn-success' onClick={() => toggleAvailability("False")}>
+                            <Button className='btn-success' onClick={() => toggleAvailability("True", slotKey, formattedTomorrowDate, 'online', slot.time)}>
                               Approve Now
                             </Button>
                           ) : (slot.status === 'available' ? (
-                            <Button className='btn-danger' onClick={() => toggleAvailability("True")}>
+                            <Button className='btn-danger' onClick={() => toggleAvailability("False", slotKey, formattedTomorrowDate, 'online', slot.time)}>
                               Block
                             </Button>
                           ) : (<Button disabled> Reserved </Button>
@@ -273,11 +272,11 @@ function Availability() {
                         <td>{slot.status === 'notAvailable' ? 'Not available to public' : slot.status === 'available' ? 'Available to public': 'Booked'}</td>
                         <td>
                           {slot.status === 'notAvailable' ? (
-                            <Button className='btn-success' onClick={() => toggleAvailability("False")}>
+                            <Button className='btn-success' onClick={() => toggleAvailability("True", slotKey, formattedTomorrowDate, 'offline', slot.time)}>
                               Approve Now
                             </Button>
                           ) : (slot.status === 'available' ? (
-                            <Button className='btn-danger' onClick={() => toggleAvailability("True")}>
+                            <Button className='btn-danger' onClick={() => toggleAvailability("False", slotKey, formattedTomorrowDate, 'offline', slot.time)}>
                               Block
                             </Button>
                           ) : (<Button disabled> Reserved </Button>
@@ -318,11 +317,11 @@ function Availability() {
                         <td>{slot.status === 'notAvailable' ? 'Not available to public' : slot.status === 'available' ? 'Available to public': 'Booked'}</td>
                         <td>
                           {slot.status === 'notAvailable' ? (
-                            <Button className='btn-success' onClick={() => toggleAvailability("False")}>
+                            <Button className='btn-success' onClick={() => toggleAvailability("True", slotKey, formattedDayAfterTomorrowDate, 'online', slot.time)}>
                               Approve Now
                             </Button>
                           ) : (slot.status === 'available' ? (
-                            <Button className='btn-danger' onClick={() => toggleAvailability("True")}>
+                            <Button className='btn-danger' onClick={() => toggleAvailability("False", slotKey, formattedDayAfterTomorrowDate, 'online', slot.time)}>
                               Block
                             </Button>
                           ) : (<Button disabled> Reserved </Button>
@@ -359,11 +358,11 @@ function Availability() {
                         <td>{slot.status === 'notAvailable' ? 'Not available to public' : slot.status === 'available' ? 'Available to public': 'Booked'}</td>
                         <td>
                           {slot.status === 'notAvailable' ? (
-                            <Button className='btn-success' onClick={() => toggleAvailability("False")}>
+                            <Button className='btn-success' onClick={() => toggleAvailability("True", slotKey, formattedDayAfterTomorrowDate, 'offline', slot.time)}>
                               Approve Now
                             </Button>
                           ) : (slot.status === 'available' ? (
-                            <Button className='btn-danger' onClick={() => toggleAvailability("True")}>
+                            <Button className='btn-danger' onClick={() => toggleAvailability("False", slotKey, formattedDayAfterTomorrowDate, 'offline', slot.time)}>
                               Block
                             </Button>
                           ) : (<Button disabled> Reserved </Button>
@@ -404,11 +403,11 @@ function Availability() {
                         <td>{slot.status === 'notAvailable' ? 'Not available to public' : slot.status === 'available' ? 'Available to public': 'Booked'}</td>
                         <td>
                           {slot.status === 'notAvailable' ? (
-                            <Button className='btn-success' onClick={() => toggleAvailability("False")}>
+                            <Button className='btn-success' onClick={() => toggleAvailability("True", slotKey, formattedSecondDayAfterTomorrowDate, 'online', slot.time)}>
                               Approve Now
                             </Button>
                           ) : (slot.status === 'available' ? (
-                            <Button className='btn-danger' onClick={() => toggleAvailability("True")}>
+                            <Button className='btn-danger' onClick={() => toggleAvailability("False", slotKey, formattedSecondDayAfterTomorrowDate, 'online', slot.time)}>
                               Block
                             </Button>
                           ) : (<Button disabled> Reserved </Button>
@@ -445,11 +444,11 @@ function Availability() {
                         <td>{slot.status === 'notAvailable' ? 'Not available to public' : slot.status === 'available' ? 'Available to public': 'Booked'}</td>
                         <td>
                           {slot.status === 'notAvailable' ? (
-                            <Button className='btn-success' onClick={() => toggleAvailability("False")}>
+                            <Button className='btn-success' onClick={() => toggleAvailability("True", slotKey, formattedSecondDayAfterTomorrowDate, 'offline', slot.time)}>
                               Approve Now
                             </Button>
                           ) : (slot.status === 'available' ? (
-                            <Button className='btn-danger' onClick={() => toggleAvailability("True")}>
+                            <Button className='btn-danger' onClick={() => toggleAvailability("False", slotKey, formattedSecondDayAfterTomorrowDate, 'offline', slot.time)}>
                               Block
                             </Button>
                           ) : (<Button disabled> Reserved </Button>

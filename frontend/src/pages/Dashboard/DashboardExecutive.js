@@ -214,7 +214,6 @@ function DashboardExecutive() {
       {/* Footer section */}
       <Footer />
     </>
-
   )
 }
 

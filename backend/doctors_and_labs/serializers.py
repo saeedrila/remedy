@@ -18,6 +18,20 @@ class DoctorSpecializationData(serializers.Serializer):
 class DoctorAvailabilityRegistration(serializers.Serializer):
     date = serializers.CharField(max_length=10)
 
+# Doctor profile get
+class DoctorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorProfile
+        fields = '__all__'
+
+# Specialization get universal
+class SpecializationSerializer(serializers.Serializer):
+    specialization_title = serializers.CharField()
+
+
+
+
+# Need to check the following and wanted to delete classes that are not required.
 # Doctor status get, following 2 classes are part of it.
 # Not using anymore
 class SlotSerializer(serializers.Serializer):

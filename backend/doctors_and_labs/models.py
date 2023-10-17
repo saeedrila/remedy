@@ -20,7 +20,7 @@ class DoctorAvailability(models.Model):
 
 class DoctorSpecializations(models.Model):
     doctor = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='doctor_specializations')
-    specialization_title = models.CharField(max_length=40, default='Default')
+    specialization_title = models.CharField(max_length=40, default='')
 
 
 # Lab related Models

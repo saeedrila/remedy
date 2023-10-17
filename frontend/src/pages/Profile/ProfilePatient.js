@@ -114,7 +114,6 @@ function ProfilePatient() {
       setProfileDetails(response.data)
       console.log('Profile data: ', response.data)
     } catch(error){
-
       console.error('Error fetching data', error)
     }};
 

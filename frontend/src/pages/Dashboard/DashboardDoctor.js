@@ -24,6 +24,7 @@ import classnames from "classnames";
 import Availability from '../../components/Doctor/Availability'
 import Prescription from '../../components/Doctor/Prescription'
 import Payments from '../../components/Doctor/Payments'
+import AccountDoctor from '../../components/Doctor/AccountDoctor'
 
 function DashboardDoctor() {
   document.title = 'Doctors Dashboard'
@@ -80,9 +81,23 @@ function DashboardDoctor() {
                               toggleVertical("2");
                             }}
                           >
-                            My Appointmets
+                            My Account
                           </NavLink>
                         </NavItem>
+                        {/* <NavItem>
+                          <NavLink
+                            style={{ cursor: "pointer" }}
+                            className={classnames({
+                              "mb-2": true,
+                              active: verticalActiveTab === "2",
+                            })}
+                            onClick={() => {
+                              toggleVertical("2");
+                            }}
+                          >
+                            My Appointmets
+                          </NavLink>
+                        </NavItem> */}
                         <NavItem>
                           <NavLink
                             style={{ cursor: "pointer" }}
@@ -138,10 +153,15 @@ function DashboardDoctor() {
                           <Dashboard />
                         </TabPane>
 
-                        {/* My appointments */}
+                        {/* My Account */}
                         <TabPane tabId="2">
-                          <Appointments />
+                        <AccountDoctor />
                         </TabPane>
+
+                        {/* My appointments */}
+                        {/* <TabPane tabId="3">
+                          <Appointments />
+                        </TabPane> */}
 
                         {/* My availability */}
                         <TabPane tabId="3">
@@ -170,7 +190,6 @@ function DashboardDoctor() {
       {/* Footer section */}
       <Footer />
     </>
-
   )
 }
 
