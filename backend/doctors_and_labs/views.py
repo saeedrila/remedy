@@ -6,12 +6,14 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.generics import ListAPIView
 from django.db.models import F, ExpressionWrapper, FloatField
 from datetime import datetime, timedelta, time, date
+import json
 
 # From files
 from .import views
 from .models import Account
 from .serializers import (
     RegisterSpecialization,
+    DoctorAvailabilityToggleSerializer,
 )
 from .models import (
     DoctorProfile, 
@@ -290,6 +292,65 @@ class DoctorAvailabilityRegistration(APIView):
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
         
+    def patch(self, request):
+        if request.user.is_doctor:
+            serializer = DoctorAvailabilityToggleSerializer(data= request.data)
+            if serializer.is_valid():
+                slot_status = serializer.validated_data.get('status')
+                date = serializer.validated_data.get('date')
+                line = serializer.validated_data.get('line')
+                slot_id = serializer.validated_data.get('slot_id')
+                slot_status_script = 'available' if slot_status else 'notAvailable'
+                print('Date: ', date, 'Line: ', line, 'Slot_id: ', slot_id, 'Status: ', slot_status_script)
+
+                column_name = 'slots_status_offline' if line == 'offline' else 'slots_status_online'
+                
+                time_slot_object = DoctorAvailability.objects.get(doctor=request.user, date=date)
+                print('Time slot obj: ', time_slot_object)
+
+                # Assuming the model has attributes or fields named 'slots_status_offline' and 'slots_status_online'
+                if line == 'offline':
+                    column_data = time_slot_object.slots_details_offline
+                else:
+                    column_data = time_slot_object.slots_details_online
+                print('Column name: ', column_name)
+                print('Column data: ', column_data)
+                if isinstance(column_data, dict):
+                    if slot_id in column_data:
+                        updated_column_data = dict(column_data)
+
+                        # Update 'time' and 'status' for the selected slot within the dictionary
+                        updated_column_data[slot_id]['status'] = slot_status_script
+                        
+                        # Convert the dictionary to a JSON string
+                        column_data_json = updated_column_data
+                        
+                        # Set the JSON data back to the model field
+                        if line == 'offline':
+                            time_slot_object.slots_details_offline = column_data_json
+                        else:
+                            time_slot_object.slots_details_online = column_data_json
+                        
+                        # Save the changes to the model
+                        time_slot_object.save()
+                        
+                        print('Column data updated: ', updated_column_data)
+                        return Response({"details": "Successfully updated"}, status=status.HTTP_200_OK)
+                    else:
+                        print('Slot ID not found in column_data')
+                else:
+                    print('column_data is not a dictionary')
+
+                return Response({"details": "Successfully updated"}, status=status.HTTP_200_OK)
+
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"details": "Not authorized."}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+
+
     # def post(self, request):
     #     serializer = DoctorAvailabilityRegistration(data=request.data)
     #     if serializer.is_valid():

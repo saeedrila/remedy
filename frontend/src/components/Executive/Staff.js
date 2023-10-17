@@ -13,7 +13,7 @@ import {
 import axios from '../../api/axios'
 import { toast } from 'react-toastify'
 
-//API Endpoint
+// API Endpoint
 const ACCOUNT_APPROVAL_URL = 'account-approval'
 
 

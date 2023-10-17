@@ -31,6 +31,13 @@ class DoctorAvailabilitySerializer(serializers.Serializer):
     slots_details_online = SlotSerializer(many=True)
     slots_details_offline = SlotSerializer(many=True)
 
+class DoctorAvailabilityToggleSerializer(serializers.Serializer):
+    status = serializers.BooleanField()
+    slot_id = serializers.CharField()
+    date = serializers.CharField()
+    line = serializers.CharField()
+    time = serializers.CharField()
+
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     class Meta:
