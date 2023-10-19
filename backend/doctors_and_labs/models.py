@@ -23,6 +23,8 @@ class DoctorSpecializations(models.Model):
     specialization_title = models.CharField(max_length=40, default='')
 
 
+
+
 # Lab related Models
 class LabProfile(models.Model):
     lab = models.ForeignKey(Account, on_delete=models.CASCADE)

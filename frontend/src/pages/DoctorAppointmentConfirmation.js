@@ -17,10 +17,24 @@ function DoctorAppointmentConfirmation() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { doctor, timing } = location.state;
+  const doctor_email = 'doctor5@g.com'
+  const patient_email = 'patient5@g.com'
+  const line = 'offline'
+  const time_slot = '9:00 AM'
+  const fee = 400
+  const date = '2023-10-19'
 
   const handleProceedToPaymentClick = () => {
-    navigate('payment-confirmation')
+    navigate('payment-confirmation', {
+      state: {
+        doctor_email,
+        patient_email,
+        line,
+        time_slot,
+        fee,
+        date,
+      }
+    })
   }
 
   return (
@@ -34,13 +48,12 @@ function DoctorAppointmentConfirmation() {
               <Card className="border">
                 <Card.Img variant="top" src={pic1} />
                 <Card.Body>
-                  <Card.Title className="justify-content-center" >Doctor: Dr.{doctor}</Card.Title>
-                  <Card.Title className="justify-content-center" >₹ fee here</Card.Title>
-                  <Card.Title className="justify-content-center" >Date: date</Card.Title>
-                  <Card.Title className="justify-content-center" >Time: {timing}</Card.Title>
-                  <Card.Title className="justify-content-center" >Patient Name: patient_name</Card.Title>
-                  <Card.Title className="justify-content-center" >Any other details you want to share: details</Card.Title>
-                  
+                  <Card.Title className="justify-content-center" >Doctor: Dr.{doctor_email}</Card.Title>
+                  <Card.Title className="justify-content-center" >₹ {fee}</Card.Title>
+                  <Card.Title className="justify-content-center" >Date: {date}</Card.Title>
+                  <Card.Title className="justify-content-center" >Mode: {line}</Card.Title>
+                  <Card.Title className="justify-content-center" >Time: {time_slot}</Card.Title>
+                  <Card.Title className="justify-content-center" >Patient Name: {patient_email}</Card.Title>                  
                   <Button variant="success" 
                     className="mt-3" 
                     onClick={() => 

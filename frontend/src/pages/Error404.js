@@ -27,7 +27,7 @@ function Error404() {
                 <div className="mt-5 text-center">
                   <Link
                     className="btn btn-primary waves-effect waves-light "
-                    to="/home"
+                    to="/"
                   >
                     Back to Home
                   </Link>

@@ -97,11 +97,15 @@ function App() {
           {/* Patient specific pages */}
           <Route element={<RequireAuth allowedRoles={['is_patient']}/>}>
             <Route path='dashboard-patient' element={<DashboardPatient/>} />
-            <Route path='doctor-specialties' element={<DoctorSpecialties/>} />
-            <Route path='doctor-specialties/:specialtyId' element={<SelectDoctor/>} />
+            <Route path='doctor-at-specialization' element={<DoctorSpecialties/>} />
+            
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
             <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
           </Route>
+          {/* For testing. This should go inside Patient specific */}
+          <Route path='doctor-at-specialization/:specialization_title' element={<SelectDoctor/>} />
+          <Route path='doctor-at-specialization/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
+          <Route path='doctor-at-specialization/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
 
           {/* Doctor specific pages */}
           <Route element={<RequireAuth allowedRoles={['is_doctor']}/>}>

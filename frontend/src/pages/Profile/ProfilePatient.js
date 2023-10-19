@@ -15,7 +15,7 @@ import {
 import axios from '../../api/axios'
 import { toast } from 'react-toastify'
 
-import user1 from '../../assets/images/users/avatar-5.jpg'
+import user1 from '../../assets/images/users/avatar-1.png'
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 

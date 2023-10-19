@@ -24,7 +24,16 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
         model = DoctorProfile
         fields = '__all__'
 
-# Specialization get universal
+# Account serializer for doctor at a specific specialization
+class AccountSerializerDoctorAtSpecialization(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ('email',)
+
+
+
+
+# Specialization get universal, currently not in use
 class SpecializationSerializer(serializers.Serializer):
     specialization_title = serializers.CharField()
 

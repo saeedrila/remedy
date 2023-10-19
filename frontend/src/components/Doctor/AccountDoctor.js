@@ -15,7 +15,7 @@ import {
 import axios from '../../api/axios'
 import { toast } from 'react-toastify'
 
-//API Endpoints
+// API Endpoints
 const GET_ACCOUNT_DETAILS = '/get-doctor-account-details'
 const UPDATE_ACCOUNT_DETAILS = '/get-doctor-account-details'
 const DOCTOR_SPECIALIZATION_SPECIFIC ='/doctor-specialization-specific'

@@ -14,28 +14,28 @@ import Footer from './Common/Footer'
 // Picture
 import pic1 from '../assets/images/medical/doctor-specialty.svg'
 
-// Get doctor specializations data from backend
-const SPECIALIZATION_DATA ='/doctor-specialization-data'
+// API Endpoints
+const DOCTOR_SPECIALIZATION_GENERIC ='/doctor-specialization-generic-url'
 
 function DoctorSpecialties() {
-  const [specialties, setSpecialties] = useState([]);
+  const [specializationDetails, setSpecializationDetails] = useState([]);
 
+  const fetchDoctorSpecializationData = async () => {
+    try {
+      const response = await axios.get(DOCTOR_SPECIALIZATION_GENERIC, {
+      })
+      const updatedSpecializations = response.data.map(item => ({
+        ...item,
+        img: pic1
+      }));
+      setSpecializationDetails(updatedSpecializations)
+      console.log('Doctors specializations: ', updatedSpecializations)
+    } catch(error) {
+      console.error('Error fetching data', error)
+    }
+  }
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken');
-        const response = await axios.get(SPECIALIZATION_DATA, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        setSpecialties(response.data);
-        console.log('Specialties data:', response.data)
-
-      } catch (error){
-        console.error('Error fetching data', error)
-      }};
-      fetchData();
+    fetchDoctorSpecializationData();
   }, []);
 
   const navigate = useNavigate();
@@ -48,12 +48,17 @@ function DoctorSpecialties() {
       <Container>
         <div className="big-card-container">
           <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-3">
-            {specialties.map((specialty) => (
-              <Col key={specialty.id}>
-                <Card className="border" onClick={() => navigate(`/doctor-specialties/${specialty.id}`)}>
-                  <Card.Img variant="top" src={pic1} />
+            {specializationDetails.map((data, idx) => (
+              <Col key={idx}>
+                <Card className="border" 
+                onClick={() => {
+                  const title = data.specialization_title.replace(/ /g, '-');
+                  console.log('Title:', title); 
+                  navigate(`/doctor-at-specialization/${title}`)}}
+                >
+                  <Card.Img variant="top" src={data.img} />
                   <Card.Body>
-                    <Card.Title className="justify-content-center" >{specialty.title}</Card.Title>
+                    <Card.Title className="justify-content-center" >{data.specialization_title}</Card.Title>
                   </Card.Body>
                 </Card>
               </Col>

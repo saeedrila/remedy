@@ -2,6 +2,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.generics import ListAPIView
 from django.db.models import F, ExpressionWrapper, FloatField
@@ -16,6 +17,7 @@ from .serializers import (
     DoctorAvailabilityToggleSerializer,
     DoctorProfileSerializer,
     SpecializationSerializer,
+    AccountSerializerDoctorAtSpecialization,
 )
 from .models import (
     DoctorProfile, 
@@ -201,6 +203,7 @@ class DoctorAccountDetails(APIView):
         
 # Get list of all specialization
 class GetListOfSpecialization(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request):
         try:
             specializations_available = DoctorSpecializations.objects.values('specialization_title').distinct()
@@ -241,6 +244,21 @@ class DoctorSpecificSpecialization(APIView):
         except Exception as e:
             return Response({"error": "Could not get specializations available", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
+# Doctors list for a specialization
+class DoctorsListAtSpecialization(APIView):
+    def get(self, request):
+        try:
+            title = request.query_params.get('title', None)
+            if title is not None:
+                title = title.replace('-', ' ')
+                list_of_doctors = DoctorSpecializations.objects.filter(specialization_title=title).values('doctor')
+                serializer = AccountSerializerDoctorAtSpecialization(Account.objects.filter(id__in=list_of_doctors), many=True)
+                print('List of doctors serializer: ',serializer)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail": "Specialization not found"}, status=status.HTTP_404_NOT_FOUND)
+        except DoctorSpecializations.DoesNotExist:
+            return Response({"detail": "Specialization not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 
@@ -297,26 +315,7 @@ class DoctorSpecializationData(APIView):
         ]
         return Response(serialized_data)
 
-# Doctor name and fee
-class DoctorSpecializationDetail(APIView):
-    @csrf_exempt
-    def get(self, request, specialtyId):
-        specialization = DoctorSpecializationsAvailable.objects.get(pk=specialtyId)
-        queryset1 = DoctorSpecializations.objects.filter(specialization=specialization)
-        print(queryset1)
 
-        # queryset = DoctorSpecializations.objects.filter(specialization__id=specialization_id)
-        
-        # queryset = queryset.annotate(
-        #     fee_per_session=ExpressionWrapper(
-        #         F('doctor__doctor_profiles__fee_per_session'),
-        #         output_field=FloatField()
-        #     )
-        # )
-        # print(queryset)
-
-        serializer = self.serializer_class(queryset1, many=True)
-        return Response(serializer.data, status=200)
 
 # Doctor time slots available
 class DoctorsAtSpecialization(APIView):
@@ -360,114 +359,3 @@ class DoctorsAtSpecialization(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Missing or invalid "specialtyId" parameter'}, status=status.HTTP_400_BAD_REQUEST)
-        
-# @api_view(['GET'])
-# def doctors_at_specialization(request, specialtyId=None):
-#     if specialtyId is None:
-#         specialization_id = request.query_params.get('specialtyId')
-#     else:
-#         specialization_id = specialtyId
-#     if specialization_id is not None:
-#         doctor_data = DoctorSpecializations.objects.filter(doctor__doctorspecializations__specialization_id=specialization_id)
-#         doctor_ids = list(doctor_data.values_list('doctor_id', flat=True))
-#         sending_data = {}
-#         fee_per_session_list = []
-#         for id in doctor_ids:
-#             try:
-#                 fee_per_session_data = DoctorProfile.objects.filter(doctor = id)
-#                 fee_per_session_float = float(fee_per_session_data.values_list('fee_per_session', flat=True).first())
-#                 fee_per_session_list.append(fee_per_session_float)
-#             except:
-#                 fee_per_session_list.append([])
-#         print('Fee per session list: ',fee_per_session_list)
-
-#         doctor_availability_list = []
-#         timing_availability_list = []
-#         for id in doctor_ids:
-#             try:
-#                 doctor_availability_data = DoctorAvailability.objects.filter(doctor = id)
-#                 doctor_availability_ids = list(doctor_availability_data.values_list('id', flat=True))
-#                 doctor_slots = list(doctor_availability_data.values_list('slots_status', flat=True))
-#                 doctor_availability_list.append(doctor_availability_ids)
-#                 timing_availability_list.append(doctor_slots)
-#             except:
-#                 pass
-
-#         print('Doctor availability list: ', doctor_availability_list)
-#         print('Timing availabilty list: ', timing_availability_list)
-
-#         print('Sending_data: ', sending_data)
-
-#         print('Doctor_ids: ', doctor_ids)
-#         doctor_availabilities = DoctorAvailability.objects.filter(doctor__doctorspecializations__specialization_id=specialization_id)
-        
-
-#         # for availability in doctor_availabilities:
-#         #     doctor_id = availability.doctor.id
-#         #     availability_id = availability.id
-#         #     try:
-#         #         doctor_profile = DoctorProfile.objects.get(doctor=doctor_id)
-#         #         fee_per_session = doctor_profile.fee_per_session
-#         #     except DoctorProfile.DoesNotExist:
-#         #         fee_per_session = None
-            
-#             # doctor_info = {
-#             #     'doctor_id': doctor_id,
-#             #     'doctor_fee': fee_per_session,
-#             #     'availability_ids': [availability_id],
-#             # }
-#             # existing_info = next((info for info in sending_data if info['doctor_id'] == doctor_id), None)
-#             # if existing_info:
-#             #     existing_info['availability_ids'].append(availability_id)
-#             # else:
-#             #     sending_data.append(doctor_info)
-
-#             # print(f"Availability ID: {availability.id}")
-#             # print(f"Doctor ID: {availability.doctor.id}")
-#             # print('Doctor Data serialized?:', sending_data)
-#         return Response(status=200)
-#     else:
-#         return Response({'error': 'Missing or invalid "specialtyId" parameter'}, status=400)
-
-
-
-
-
-    # def post(self, request):
-    #     serializer = DoctorAvailabilityRegistration(data=request.data)
-    #     if serializer.is_valid():
-    #         date = serializer.validated_data.get('date')
-    #         if request.user.is_doctor:
-    #             start_time = datetime.time(6, 0)
-    #             end_time = datetime.time(22, 0)
-    #             slots_data = {
-    #                 "online": [],
-    #                 "inPerson": []
-    #             }
-    #             time_interval = datetime.timedelta(minutes=15)
-    #             current_time = datetime.datetime.combine(datetime.date.today(), start_time)
-    #             slot_id = 1
-
-    #             while current_time.time() < end_time:
-    #                 time_str = current_time.strftime("%I:%M %p")
-    #                 time_slot = {
-    #                     "id": slot_id,
-    #                     "time": time_str,
-    #                     "status": "N"
-    #                 }
-    #                 slots_data["online"].append(time_slot.copy())
-    #                 slots_data["inPerson"].append(time_slot)
-    #                 current_time += time_interval
-    #                 slot_id += 1
-
-    #             doctor = request.user
-    #             specialization, created = DoctorAvailability.objects.get_or_create(doctor=doctor, date=date)
-
-    #             if created:
-    #                 specialization.slots_status = slots_data
-    #                 specialization.save()
-    #             return Response({"slots_data": slots_data})
-    #         else:
-    #             return Response({"details": "You are not authorized to submit availability"}, status=status.HTTP_401_UNAUTHORIZED)
-    #     else:
-    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

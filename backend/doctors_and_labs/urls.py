@@ -12,9 +12,14 @@ urlpatterns = [
     # Specific url for getting a doctor's specialization details
     path('doctor-specialization-specific', views.DoctorSpecificSpecialization.as_view(), name='doctor_specialization_specific'),
 
+    # Fetch available doctors on a particular specialization
+    path('doctors-at-specific-specialization/', views.DoctorsListAtSpecialization.as_view(), name='doctors-at-specialization'),
+    
 
 
 
+
+    # Old urls, have to delete unwanted before production run.
     # Register specialization
     path('register-specialization', views.RegisterSpecialization.as_view(), name='register-specialization'),
 
@@ -22,8 +27,6 @@ urlpatterns = [
     # Get doctor specialization details
     path('doctor-specialization-data', views.DoctorSpecializationData.as_view(), name='doctor-specialization-data'),
 
-    # Fetch available doctors on a particular specialization
-    path('doctors-at-specialization/<int:specialtyId>/', views.DoctorSpecializationDetail.as_view(), name='doctors-at-specialization'),
 
     # Register doctor's available timing
     # Not using currently

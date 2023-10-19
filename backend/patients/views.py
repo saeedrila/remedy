@@ -29,3 +29,11 @@ class GetPatientProfileDetails(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Account.DoesNotExist:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class FetchAvailableTimingDoctor(APIView):
+    def get(self, request):
+        try:
+            pass
+        except:
+            pass

@@ -51,7 +51,7 @@ const ProfileMenu = props => {
       navigate('/dashboard-lab')
     }
     else(
-      navigate('/dashboar-patient')
+      navigate('/dashboard-patient')
     )
   }
 
