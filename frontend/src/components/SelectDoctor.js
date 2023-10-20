@@ -80,6 +80,29 @@ function SelectDoctor() {
       ],
     }, ]
 
+    const dummyData = [
+      {
+        email: "example1@e.com",
+        online: [
+          {day: "Monday", timings: ["09:00 AM", "02:00 PM"]},
+          {day: "Tuesday", timings: ["10:00 AM", "03:00 PM"]},
+        ],
+        offline: [
+          {day: "Wednesday", timings: ["08:00 AM", "01:00 PM"]},
+          {day: "Thursday", timings: ["09:30 AM", "02:30 PM"]},
+        ]
+      },{
+        email: "example2@e.com",
+        online: [
+          {day: "Monday", timings: ["09:00 AM", "02:00 PM"]},
+          {day: "Tuesday", timings: ["10:00 AM", "03:00 PM"]},
+        ],
+        offline: [
+          {day: "Wednesday", timings: ["08:00 AM", "01:00 PM"]},
+          {day: "Thursday", timings: ["09:30 AM", "02:30 PM"]},
+        ]
+      }, ]
+
   const navigate = useNavigate();
 
   const[selectedTiming, setSelectedTiming] = useState({});
@@ -126,18 +149,18 @@ function SelectDoctor() {
     setShowProceedButton(newShowProceedButtons);
   }
   
-
+  // Old proceed function
   const handleProceedClick = (cardIndex) => {
     const selectedCardTiming = selectedTiming[cardIndex];
 
     if (selectedCardTiming){
       console.log('handleProceedClick has been clicked', cardIndex, selectedCardTiming.timing);
-      navigate('doctor-appointment-confirmation',{
-        state: {
-          doctor: doctorList[selectedCardTiming.cardIndex].name,
-          timing: selectedCardTiming.timing,
-        }
-      });
+      // navigate('doctor-appointment-confirmation',{
+      //   state: {
+      //     doctor: doctorList[selectedCardTiming.cardIndex].name,
+      //     timing: selectedCardTiming.timing,
+      //   }
+      // });
     }
   };
 
