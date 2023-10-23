@@ -22,9 +22,7 @@ const FETCH_AVAILABLE_TIMING_DOCTOR = 'fetch-available-timing-doctor'
 function SelectDoctor() {
   const { specialization_title } = useParams();
   const [doctorList, setDoctorList] =useState([]);
-
-  const [timeSlotsOnline, setTimeSlotsOnline] = useState({});
-  const [timeSlotsOffline, setTimeSlotsOffline] = useState({});
+  const [selectedLines, setSelectedLines] = useState({})
 
   const fetchTimeSlotDetails = async () => {
   try {
@@ -60,29 +58,11 @@ function SelectDoctor() {
     fetchDoctorListAtSpecialization();
   }, []);
 
-  const DoctorList = [
-    {
-      "email": "doctor5@g.com",
-      "online": [
-        {"id": 1, "time": "10:00", "status": "Y"},
-        {"id": 2, "time": "10:15", "status": "N"},
-        {"id": 3, "time": "10:30", "status": "Y"},
-        {"id": 4, "time": "10:45", "status": "Y"},
-        {"id": 5, "time": "11:00", "status": "Y"},
-        {"id": 6, "time": "11:15", "status": "Y"}
-      ],
-      "offline": [
-        {"id": 1, "time": "10:00", "status": "Y"},
-        {"id": 2, "time": "10:15", "status": "N"},
-        {"id": 3, "time": "10:30", "status": "Y"},
-        {"id": 4, "time": "10:45", "status": "N"},
-        {"id": 5, "time": "11:00", "status": "Y"}
-      ],
-    }, ]
 
-    const dummyData = [
+    const dayZeroDummyData = [
       {
         email: "example1@e.com",
+        img: pic1,
         online: [
           {day: "Monday", timings: ["09:00 AM", "02:00 PM"]},
           {day: "Tuesday", timings: ["10:00 AM", "03:00 PM"]},
@@ -93,6 +73,7 @@ function SelectDoctor() {
         ]
       },{
         email: "example2@e.com",
+        img: pic1,
         online: [
           {day: "Monday", timings: ["09:00 AM", "02:00 PM"]},
           {day: "Tuesday", timings: ["10:00 AM", "03:00 PM"]},
@@ -136,40 +117,17 @@ function SelectDoctor() {
     setSelectedTiming({});
     setShowProceedButton(new Array(doctorList.length).fill(false));
   }
-
-  const handleTimingClick = (cardIndex, timing) =>{
-    console.log('Clicked handleTimingClick',cardIndex, timing);
-    setSelectedTiming((prevSelectedTiming) =>({
-      ...prevSelectedTiming,
-      [cardIndex]: { cardIndex, timing },
-    }));
-    
-    const newShowProceedButtons = [...showProceedButton];
-    newShowProceedButtons[cardIndex] = true;
-    setShowProceedButton(newShowProceedButtons);
-  }
   
   // Old proceed function
-  const handleProceedClick = (cardIndex) => {
-    const selectedCardTiming = selectedTiming[cardIndex];
+  const handleProceedClick = (doctor, cardIndex) => {
 
-    if (selectedCardTiming){
-      console.log('handleProceedClick has been clicked', cardIndex, selectedCardTiming.timing);
-      // navigate('doctor-appointment-confirmation',{
-      //   state: {
-      //     doctor: doctorList[selectedCardTiming.cardIndex].name,
-      //     timing: selectedCardTiming.timing,
-      //   }
-      // });
-    }
   };
 
 
-  const handleDoctorTimeProceedClick = () => {
-    navigate('/doctor-at-specialization/doctor-appointment-confirmation',{
-      
-    });
-  }
+  const handleTimingClick = (selectedTime, selectedDate, selectedLine) => {
+    console.log(`Selected Date: ${selectedDate}, Line: ${selectedLine}, Time: ${selectedTime}`);
+  };
+  
 
 
   return (
@@ -178,78 +136,78 @@ function SelectDoctor() {
       <Header />
 
       <Container>
+        <Button>
+          dayZero
+        </Button>
+        <Button>
+          dayOne
+        </Button>
+        <Button>
+          dayTwo
+        </Button>
+        <Button>
+          dayThree
+        </Button>
+      </Container>
+
+      <Container>
         <div className="big-card-container">
           <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-3">
-            {doctorList.map((data, cardIndex) => (
-              <Col key={data.email}>
+            {dayZeroDummyData.map((doctor, cardIndex) => (
+              <Col key={doctor.email}>
                 <Card className="border">
-                  <Card.Img variant="top" src={data.img} />
+                  <Card.Img variant="top" src={doctor.img} />
                   <Card.Body>
-                    <Card.Title className="justify-content-center" >Dr. {data.email}</Card.Title>
-                    <Button variant="success" 
-                      className="mt-3" 
-                      onClick={() => 
-                      handleDoctorTimeProceedClick()}
-                    >
-                    Book Now
-                    </Button>
+                    <Card.Title className="justify-content-center">Dr. {doctor.email}</Card.Title>
                     <Nav variant="tabs">
                       <Nav.Item>
-                      <Nav.Link
-                      eventKey={`#${data.email}_online`}
-                      active={activeOfflineTabs[cardIndex]}
-                      onClick={() => handleTabClick(cardIndex, 0)}
-                    >In person</Nav.Link>
+                        <Nav.Link
+                          onClick={() => {
+                            const newSelectedLines = [...selectedLines];
+                            newSelectedLines[cardIndex] = 'offline';
+                            setSelectedLines(newSelectedLines);
+                          }}
+                          active={selectedLines[cardIndex] === 'offline'}
+                          className={selectedLines[cardIndex] === 'offline' ? 'selected' : ''}
+                        >
+                          Offline
+                        </Nav.Link>
                       </Nav.Item>
                       <Nav.Item>
-                      <Nav.Link
-                      eventKey={`#${data.email}_offline`}
-                      active={activeOnlineTabs[cardIndex]}
-                      onClick={() => handleTabClick(cardIndex, 1)}
-                    >Online</Nav.Link>
+                        <Nav.Link
+                          onClick={() => {
+                            const newSelectedLines = [...selectedLines];
+                            newSelectedLines[cardIndex] = 'online';
+                            setSelectedLines(newSelectedLines);
+                          }}
+                          active={selectedLines[cardIndex] === 'online'}
+                          className={selectedLines[cardIndex] === 'online' ? 'selected' : ''}
+                        >
+                          Online
+                        </Nav.Link>
                       </Nav.Item>
                     </Nav>
-                    <div className="mt-3">
-                      {activeOfflineTabs[cardIndex]  && (
-                        <Card>
-                          <Card.Body>
-                            <Card.Title>Select timing:</Card.Title>
-                            {Object.keys(data.offline).map((id) => (
-                              <Button 
-                              key={id} 
-                              variant={data.offline[id].status === 'Y' ? 'primary' : 'secondary'} 
-                              className='time-selection-button'
-                              onClick={() => handleTimingClick(cardIndex, data.offline[id].time)} >{data.offline[id].time}</Button>
-                            ))}
-                          </Card.Body>
-                        </Card>
-                      )}
-                      {activeOnlineTabs[cardIndex] && (
-                        <Card>
-                          <Card.Body>
-                            <Card.Title>Select timing:</Card.Title>
-                            {Object.keys(data.online).map((id) => (
-                              <Button 
-                              key={id} 
-                              variant={data.online[id].status === 'Y' ? 'primary':'secondary'} 
-                              className='time-selection-button'
-                              onClick={() => handleTimingClick(cardIndex, data.offline[id].time)} >{data.online[id].time}</Button>
-                            ))}
-                          </Card.Body>
-                        </Card>
-                      )}
-                      {showProceedButton[cardIndex] && (
-                        <Button variant="success" 
-                        className="mt-3" 
-                        onClick={() => 
-                        handleProceedClick(
-                          cardIndex, 
-                          activeOfflineTabs[cardIndex] ? 'Offline' : 'Online', 
-                          selectedTiming[cardIndex])}>
-                          Proceed with {activeOfflineTabs[cardIndex] ? 'In-person' : 'Online'} consultation at {selectedTiming[cardIndex].timing}
+                    {/* <div className="mt-3">
+                      {doctor[selectedLines[cardIndex]].map((session, index) => (
+                        <div key={index}>
+                          {session.timings.map((timing, timeIndex) => (
+                            <Button key={timeIndex} onClick={() => handleTimingClick(timing)}>
+                              {timing}
+                            </Button>
+                          ))}
+                        </div>
+                      ))}
+                      {doctor.showProceedButton && (
+                        <Button
+                          variant="success"
+                          className="mt-3"
+                          onClick={() => handleProceedClick(doctor, cardIndex)}
+                        >
+                          Proceed with {selectedLines[cardIndex] === "offline" ? 'Offline' : 'Online'} consultation
+                          at {doctor.selectedTiming.time}
                         </Button>
                       )}
-                    </div>
+                    </div> */}
                   </Card.Body>
                 </Card>
               </Col>
