@@ -24,6 +24,7 @@ function SelectDoctor() {
   const [doctorList, setDoctorList] =useState([]);
   const [selectedLines, setSelectedLines] = useState([]);
   const [daySelection, setDaySelection] = useState('dayZero');
+  
 
 
   const fetchTimeSlotDetails = async () => {
@@ -65,12 +66,6 @@ function SelectDoctor() {
     {
       email: "example1@e.com",
       img: pic1,
-      proceedButton: {
-        email: null,
-        date: null,
-        line: null,
-        time: null,
-      },
       online: [
         {day: "Monday", timings: ["09:00 AM", "09:15 PM"]},
         {day: "Tuesday", timings: ["09:30 AM", "09:45 PM"]},
@@ -82,12 +77,6 @@ function SelectDoctor() {
     },{
       email: "example2@e.com",
       img: pic1,
-      proceedButton: {
-        email: null,
-        date: null,
-        line: null,
-        time: null,
-      },
       online: [
         {day: "Monday", timings: ["10:00 AM", "10:15 PM"]},
         {day: "Tuesday", timings: ["10:30 AM", "10:45 PM"]},
@@ -99,25 +88,30 @@ function SelectDoctor() {
     }, 
   ]
 
+  const [proceedButtonData, setProceedButtonData] = useState(Array(dayZeroDummyData.length).fill({
+    email: null,
+    date: null,
+    line: null,
+    time: null,
+  }));
+
   const navigate = useNavigate();
 
-  const handleProceedClick = (doctor, cardIndex) => {
-
+  const handleProceedClick = (proceedDataEmail, proceedDataDate, proceedDataLine, proceedDataTime) => {
+    const url = `/doctor-at-specialization/doctor-appointment-confirmation?email=${proceedDataEmail}&date=${proceedDataDate}&line=${proceedDataLine}&time=${proceedDataTime}`;
+    navigate(url);
   };
 
   const handleTimingClick = (selectedTime, selectedDate, selectedLine, selectedEmail, cardIndex) => {
     console.log(`Selected Email: ${selectedEmail} Date: ${selectedDate}, Line: ${selectedLine}, Time: ${selectedTime}`);
-    dayZeroDummyData[cardIndex]['proceedButton'] = {
-      email: selectedEmail, 
-      date: selectedDate, 
-      line: selectedLine, 
-      time: selectedTime
+    const newProceedButtonData = [...proceedButtonData];
+    newProceedButtonData[cardIndex] = {
+      email: selectedEmail,
+      date: selectedDate,
+      line: selectedLine,
+      time: selectedTime,
     };
-    console.log(`After storing the data: Email: ${dayZeroDummyData[cardIndex]['proceedButton']['email']}`);
-    console.log(`After storing the data: Date: ${dayZeroDummyData[cardIndex]['proceedButton']['date']}`);
-    console.log(`After storing the data: Line: ${dayZeroDummyData[cardIndex]['proceedButton']['line']}`);
-    console.log(`After storing the data: Time: ${dayZeroDummyData[cardIndex]['proceedButton']['time']}`);
-    console.log('doctor.proceedButton:', dayZeroDummyData[cardIndex].proceedButton);
+    setProceedButtonData(newProceedButtonData);
   };
   
   console.log('Rendering component');
@@ -213,13 +207,18 @@ function SelectDoctor() {
                       ) : (
                         <p>Press Offline/Online to update appointment availability</p>
                       )}
-                      {doctor.proceedButton && doctor.proceedButton.time !== null && (
+                      {proceedButtonData[cardIndex].time !== null && (
                         <Button
                           variant="success"
                           className="mt-3"
-                          onClick={() => handleProceedClick(doctor, cardIndex)}
+                          onClick={() => handleProceedClick(
+                            proceedButtonData[cardIndex].email, 
+                            proceedButtonData[cardIndex].date,
+                            proceedButtonData[cardIndex].line,
+                            proceedButtonData[cardIndex].time,
+                          )}
                         >
-                          Proceed with {doctor.proceedButton.time}
+                          Proceed with {proceedButtonData[cardIndex].time}
                         </Button>
                       )}
                     </div>

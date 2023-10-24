@@ -15,20 +15,20 @@ import { Container } from 'reactstrap';
 
 function DoctorAppointmentConfirmation() {
   const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
   const navigate = useNavigate();
 
-  const doctor_email = 'doctor5@g.com'
-  const patient_email = 'patient5@g.com'
-  const line = 'offline'
-  const time_slot = '9:00 AM'
+  const doctor_email = queryParams.get('email');
+  const date = queryParams.get('date');
+  const line = queryParams.get('line');
+  const time_slot = queryParams.get('time');
   const fee = 400
-  const date = '2023-10-19'
 
   const handleProceedToPaymentClick = () => {
     navigate('payment-confirmation', {
       state: {
         doctor_email,
-        patient_email,
         line,
         time_slot,
         fee,
@@ -53,7 +53,6 @@ function DoctorAppointmentConfirmation() {
                   <Card.Title className="justify-content-center" >Date: {date}</Card.Title>
                   <Card.Title className="justify-content-center" >Mode: {line}</Card.Title>
                   <Card.Title className="justify-content-center" >Time: {time_slot}</Card.Title>
-                  <Card.Title className="justify-content-center" >Patient Name: {patient_email}</Card.Title>                  
                   <Button variant="success" 
                     className="mt-3" 
                     onClick={() => 
