@@ -22,7 +22,9 @@ const FETCH_AVAILABLE_TIMING_DOCTOR = 'fetch-available-timing-doctor'
 function SelectDoctor() {
   const { specialization_title } = useParams();
   const [doctorList, setDoctorList] =useState([]);
-  const [selectedLines, setSelectedLines] = useState({})
+  const [selectedLines, setSelectedLines] = useState([]);
+  const [daySelection, setDaySelection] = useState('dayZero');
+
 
   const fetchTimeSlotDetails = async () => {
   try {
@@ -59,101 +61,107 @@ function SelectDoctor() {
   }, []);
 
 
-    const dayZeroDummyData = [
-      {
-        email: "example1@e.com",
-        img: pic1,
-        online: [
-          {day: "Monday", timings: ["09:00 AM", "02:00 PM"]},
-          {day: "Tuesday", timings: ["10:00 AM", "03:00 PM"]},
-        ],
-        offline: [
-          {day: "Wednesday", timings: ["08:00 AM", "01:00 PM"]},
-          {day: "Thursday", timings: ["09:30 AM", "02:30 PM"]},
-        ]
-      },{
-        email: "example2@e.com",
-        img: pic1,
-        online: [
-          {day: "Monday", timings: ["09:00 AM", "02:00 PM"]},
-          {day: "Tuesday", timings: ["10:00 AM", "03:00 PM"]},
-        ],
-        offline: [
-          {day: "Wednesday", timings: ["08:00 AM", "01:00 PM"]},
-          {day: "Thursday", timings: ["09:30 AM", "02:30 PM"]},
-        ]
-      }, ]
+  const dayZeroDummyData = [
+    {
+      email: "example1@e.com",
+      img: pic1,
+      proceedButton: {
+        email: null,
+        date: null,
+        line: null,
+        time: null,
+      },
+      online: [
+        {day: "Monday", timings: ["09:00 AM", "09:15 PM"]},
+        {day: "Tuesday", timings: ["09:30 AM", "09:45 PM"]},
+      ],
+      offline: [
+        {day: "Wednesday", timings: ["08:00 AM", "08:15 PM"]},
+        {day: "Thursday", timings: ["08:30 AM", "08:45 PM"]},
+      ]
+    },{
+      email: "example2@e.com",
+      img: pic1,
+      proceedButton: {
+        email: null,
+        date: null,
+        line: null,
+        time: null,
+      },
+      online: [
+        {day: "Monday", timings: ["10:00 AM", "10:15 PM"]},
+        {day: "Tuesday", timings: ["10:30 AM", "10:45 PM"]},
+      ],
+      offline: [
+        {day: "Wednesday", timings: ["11:00 AM", "11:15 PM"]},
+        {day: "Thursday", timings: ["11:30 AM", "11:45 PM"]},
+      ]
+    }, 
+  ]
 
   const navigate = useNavigate();
 
-  const[selectedTiming, setSelectedTiming] = useState({});
-  const[showProceedButton, setShowProceedButton] = useState(new Array(doctorList.length).fill(false));
-
-  const [activeOfflineTabs, setActiveOfflineTabs] = useState(new Array(doctorList.length).fill(false));
-  const [activeOnlineTabs, setActiveOnlineTabs] = useState(new Array(doctorList.length).fill(false));
-  const [activeCardIndex, setActiveCardIndex] = useState(null);
-
-  const handleTabClick = (cardIndex, tabIndex) => {
-    const newActiveOfflineTabs = [...activeOfflineTabs];
-    const newActiveOnlineTabs = [...activeOnlineTabs];
-
-    if (activeCardIndex !== cardIndex){
-      newActiveOfflineTabs[activeCardIndex] = false;
-      newActiveOnlineTabs[activeCardIndex] = false;
-    }
-
-    if (tabIndex === 0) {
-      newActiveOfflineTabs[cardIndex] = !newActiveOfflineTabs[cardIndex];
-      newActiveOnlineTabs[cardIndex] = false;
-    } else if (tabIndex === 1) {
-      newActiveOnlineTabs[cardIndex] = !newActiveOnlineTabs[cardIndex];
-      newActiveOfflineTabs[cardIndex] = false;
-    }
-
-    setActiveOfflineTabs(newActiveOfflineTabs);
-    setActiveOnlineTabs(newActiveOnlineTabs);
-    setActiveCardIndex(cardIndex);
-
-    setSelectedTiming({});
-    setShowProceedButton(new Array(doctorList.length).fill(false));
-  }
-  
-  // Old proceed function
   const handleProceedClick = (doctor, cardIndex) => {
 
   };
 
-
-  const handleTimingClick = (selectedTime, selectedDate, selectedLine) => {
-    console.log(`Selected Date: ${selectedDate}, Line: ${selectedLine}, Time: ${selectedTime}`);
+  const handleTimingClick = (selectedTime, selectedDate, selectedLine, selectedEmail, cardIndex) => {
+    console.log(`Selected Email: ${selectedEmail} Date: ${selectedDate}, Line: ${selectedLine}, Time: ${selectedTime}`);
+    dayZeroDummyData[cardIndex]['proceedButton'] = {
+      email: selectedEmail, 
+      date: selectedDate, 
+      line: selectedLine, 
+      time: selectedTime
+    };
+    console.log(`After storing the data: Email: ${dayZeroDummyData[cardIndex]['proceedButton']['email']}`);
+    console.log(`After storing the data: Date: ${dayZeroDummyData[cardIndex]['proceedButton']['date']}`);
+    console.log(`After storing the data: Line: ${dayZeroDummyData[cardIndex]['proceedButton']['line']}`);
+    console.log(`After storing the data: Time: ${dayZeroDummyData[cardIndex]['proceedButton']['time']}`);
+    console.log('doctor.proceedButton:', dayZeroDummyData[cardIndex].proceedButton);
   };
   
-
+  console.log('Rendering component');
 
   return (
     <>
       {/* Header section */}
       <Header />
 
-      <Container>
-        <Button>
+      <Container className="text-center">
+        <Button 
+          variant={daySelection ==='dayZero'?'success':'secondary'} 
+          className='m-2'
+          onClick={()=>setDaySelection('dayZero')}
+        >
           dayZero
         </Button>
-        <Button>
+        <Button 
+          variant={daySelection ==='dayOne'?'success':'secondary'} 
+          className='m-2'
+          onClick={()=>setDaySelection('dayOne')}
+        >
           dayOne
         </Button>
-        <Button>
+        <Button 
+          variant={daySelection ==='dayTwo'?'success':'secondary'} 
+          className='m-2'
+          onClick={()=>setDaySelection('dayTwo')}
+        >
           dayTwo
         </Button>
-        <Button>
+        <Button 
+          variant={daySelection ==='dayThree'?'success':'secondary'}  
+          className='m-2'
+          onClick={()=>setDaySelection('dayThree')}
+        >
           dayThree
         </Button>
       </Container>
 
       <Container>
         <div className="big-card-container">
-          <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-3">
-            {dayZeroDummyData.map((doctor, cardIndex) => (
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-1">
+            {dayZeroDummyData.length > 0 ? (dayZeroDummyData.map((doctor, cardIndex) => (
               <Col key={doctor.email}>
                 <Card className="border">
                   <Card.Img variant="top" src={doctor.img} />
@@ -163,10 +171,10 @@ function SelectDoctor() {
                       <Nav.Item>
                         <Nav.Link
                           onClick={() => {
-                            const newSelectedLines = [...selectedLines];
-                            newSelectedLines[cardIndex] = 'offline';
-                            setSelectedLines(newSelectedLines);
-                          }}
+                            const updatedSelectedLines = [...selectedLines];
+                            updatedSelectedLines[cardIndex] = 'offline';
+                            setSelectedLines(updatedSelectedLines);
+                          }}            
                           active={selectedLines[cardIndex] === 'offline'}
                           className={selectedLines[cardIndex] === 'offline' ? 'selected' : ''}
                         >
@@ -176,9 +184,9 @@ function SelectDoctor() {
                       <Nav.Item>
                         <Nav.Link
                           onClick={() => {
-                            const newSelectedLines = [...selectedLines];
-                            newSelectedLines[cardIndex] = 'online';
-                            setSelectedLines(newSelectedLines);
+                            const updatedSelectedLines = [...selectedLines];
+                            updatedSelectedLines[cardIndex] = 'online';
+                            setSelectedLines(updatedSelectedLines);
                           }}
                           active={selectedLines[cardIndex] === 'online'}
                           className={selectedLines[cardIndex] === 'online' ? 'selected' : ''}
@@ -187,31 +195,42 @@ function SelectDoctor() {
                         </Nav.Link>
                       </Nav.Item>
                     </Nav>
-                    {/* <div className="mt-3">
-                      {doctor[selectedLines[cardIndex]].map((session, index) => (
-                        <div key={index}>
-                          {session.timings.map((timing, timeIndex) => (
-                            <Button key={timeIndex} onClick={() => handleTimingClick(timing)}>
-                              {timing}
-                            </Button>
-                          ))}
-                        </div>
-                      ))}
-                      {doctor.showProceedButton && (
+                    <div className="mt-3">
+                      {doctor[selectedLines[cardIndex]] && doctor[selectedLines[cardIndex]].length > 0 ? (
+                        doctor[selectedLines[cardIndex]].map((session, index) => (
+                          <div key={index}>
+                            {session.timings.map((timing, timeIndex) => (
+                              <Button 
+                                key={timeIndex} 
+                                className='m-1'
+                                onClick={() => handleTimingClick(timing, daySelection, selectedLines[cardIndex], doctor.email, cardIndex)}
+                              >
+                                {timing}
+                              </Button>
+                            ))}
+                          </div>
+                        ))
+                      ) : (
+                        <p>Press Offline/Online to update appointment availability</p>
+                      )}
+                      {doctor.proceedButton && doctor.proceedButton.time !== null && (
                         <Button
                           variant="success"
                           className="mt-3"
                           onClick={() => handleProceedClick(doctor, cardIndex)}
                         >
-                          Proceed with {selectedLines[cardIndex] === "offline" ? 'Offline' : 'Online'} consultation
-                          at {doctor.selectedTiming.time}
+                          Proceed with {doctor.proceedButton.time}
                         </Button>
                       )}
-                    </div> */}
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>
-            ))}
+            ))):(
+              <div>
+                Loading
+              </div>
+            )}
           </Row>
         </div>
       </Container>
