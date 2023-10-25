@@ -34,6 +34,7 @@ class GetPatientProfileDetails(APIView):
 class FetchAvailableTimingDoctor(APIView):
     def get(self, request):
         try:
-            pass
+            email = request.user.email
+            account = Account.objects.get(email = email)
         except:
             pass

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { 
   Container, 
   Row, 
-  Col 
+  Col,
+  Card, 
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import axios from '../../api/axios'
 
 import Footer from '../../components/Common/Footer'
 import Header from '../../components/Common/Header'
-import BigCard from '../../components/Common/BigCard'
 import SmallCard from '../../components/Common/SmallCard'
 
 import pic1 from '../../assets/images/medical/medical-prescription-logo.svg'
@@ -57,7 +57,33 @@ function Home() {
       <Header />
 
       {/* Top big cards */}
-      <BigCard BigCardData ={BigCardData} />
+      <Container>
+        <div className="big-card-container">
+          <Row xs={1} md={3} lg={4} className="g-4 justify-content-center mt-3">
+            <Col>
+              <Link to="/doctor-at-specialization">
+                <Card>
+                  <Card.Img variant="top" src={pic1} />
+                  <Card.Body>
+                    <Card.Title className="justify-content-center" >Book a consultation with Doctor now</Card.Title>
+                  </Card.Body>
+                </Card>
+              </Link>
+            </Col>
+            <Col>
+              <Link to="/link-here">
+                <Card>
+                  <Card.Img variant="top" src={pic2} />
+                  <Card.Body>
+                    <Card.Title className="justify-content-center" >Book a Laboratory appointment now</Card.Title>
+                  </Card.Body>
+                </Card>
+              </Link>
+            </Col>
+            
+          </Row>
+        </div>
+      </Container>
       
       {/* Doctor specialties selection */}
       <div className="small-cards mt-3">

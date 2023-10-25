@@ -7,6 +7,7 @@ import {
   Button,
   Nav,
 } from 'react-bootstrap';
+import { format, addDays } from 'date-fns';
 
 import Header from './Common/Header'
 import Footer from './Common/Footer'
@@ -17,23 +18,53 @@ import axios from '../api/axios';
 
 // Get doctor's list of selected specialization
 const DOCTORS_OF_SELECTED_SPECIALIZATION = '/doctors-at-specific-specialization/'
-const FETCH_AVAILABLE_TIMING_DOCTOR = 'fetch-available-timing-doctor'
+const DOCTORS_OF_SELECTED_SPECIALIZATION_PER_DAY = 'fetch-per-day-availability-of-sepecialized-doctor'
 
 function SelectDoctor() {
   const { specialization_title } = useParams();
+
+  // Today's date
+  const currentDate = new Date();
+  const dayZeroDate = format(currentDate, 'yyyy-MM-dd');
+  // Tomorrow's date
+  const tomorrowDate = addDays(currentDate, 1);
+  const dayOneDate = format(tomorrowDate, 'yyyy-MM-dd');
+  // Day after tomorrow's date
+  const dayAfterTomorrowDate = addDays(currentDate, 2);
+  const dayTwoDate = format(dayAfterTomorrowDate, 'yyyy-MM-dd');
+  // Second day after tomorrow's date
+  const secondDayAfterTomorrowDate = addDays(currentDate, 3);
+  const dayThreeDate = format(secondDayAfterTomorrowDate, 'yyyy-MM-dd');
+
   const [doctorList, setDoctorList] =useState([]);
   const [selectedLines, setSelectedLines] = useState([]);
-  const [daySelection, setDaySelection] = useState('dayZero');
+  const [daySelection, setDaySelection] = useState(dayZeroDate);
   
 
 
-  const fetchTimeSlotDetails = async () => {
-  try {
+  const fetchDayDetails = async (requiredDate) => {
+    try {
+      console.log('Entered fetchDayDetails')
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(DOCTORS_OF_SELECTED_SPECIALIZATION_PER_DAY, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          title: specialization_title,
+          date: requiredDate,
+        },
+      });
+      const updatedSpecializations = response.data.map(item => ({
+        ...item,
+        img: pic1
+      }));
+      
+      console.log('Doctors list of selected ID: ', response.data )
 
-  } catch (error){
-    console.error('Error fetching data', error)
-  }
-  }
+    } catch (error){
+      console.error('Error fetching data', error)
+  }}
 
   const fetchDoctorListAtSpecialization = async () => {
     try {
@@ -54,7 +85,7 @@ function SelectDoctor() {
       setDoctorList(updatedSpecializations)
       console.log('Doctors list of selected ID: ', response.data )
     } catch (error){
-      console.error('Error fetching data', error)
+      console.error('Error fetching data: ', error)
     }
   };
   useEffect(() => {
@@ -87,8 +118,9 @@ function SelectDoctor() {
       ]
     }, 
   ]
+  const currentDayData = dayZeroDummyData
 
-  const [proceedButtonData, setProceedButtonData] = useState(Array(dayZeroDummyData.length).fill({
+  const [proceedButtonData, setProceedButtonData] = useState(Array(currentDayData.length).fill({
     email: null,
     date: null,
     line: null,
@@ -123,39 +155,51 @@ function SelectDoctor() {
 
       <Container className="text-center">
         <Button 
-          variant={daySelection ==='dayZero'?'success':'secondary'} 
+          variant={daySelection === dayZeroDate?'success':'secondary'} 
           className='m-2'
-          onClick={()=>setDaySelection('dayZero')}
+          onClick={()=> {
+            setDaySelection(dayZeroDate);
+            fetchDayDetails(dayZeroDate);
+          }}
         >
-          dayZero
+          {dayZeroDate}
         </Button>
         <Button 
-          variant={daySelection ==='dayOne'?'success':'secondary'} 
+          variant={daySelection === dayOneDate?'success':'secondary'} 
           className='m-2'
-          onClick={()=>setDaySelection('dayOne')}
+          onClick={()=> {
+            setDaySelection(dayOneDate);
+            fetchDayDetails(dayOneDate);
+          }}
         >
-          dayOne
+          {dayOneDate}
         </Button>
         <Button 
-          variant={daySelection ==='dayTwo'?'success':'secondary'} 
+          variant={daySelection === dayTwoDate?'success':'secondary'} 
           className='m-2'
-          onClick={()=>setDaySelection('dayTwo')}
+          onClick={()=> {
+            setDaySelection(dayTwoDate);
+            fetchDayDetails(dayTwoDate);
+          }}
         >
-          dayTwo
+          {dayTwoDate}
         </Button>
         <Button 
-          variant={daySelection ==='dayThree'?'success':'secondary'}  
+          variant={daySelection ===dayThreeDate?'success':'secondary'}  
           className='m-2'
-          onClick={()=>setDaySelection('dayThree')}
+          onClick={()=> {
+            setDaySelection(dayThreeDate);
+            fetchDayDetails(dayThreeDate);
+          }}
         >
-          dayThree
+          {dayThreeDate}
         </Button>
       </Container>
 
       <Container>
         <div className="big-card-container">
           <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-1">
-            {dayZeroDummyData.length > 0 ? (dayZeroDummyData.map((doctor, cardIndex) => (
+            {currentDayData.length > 0 ? (currentDayData.map((doctor, cardIndex) => (
               <Col key={doctor.email}>
                 <Card className="border">
                   <Card.Img variant="top" src={doctor.img} />
