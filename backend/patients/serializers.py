@@ -16,3 +16,6 @@ class PatientAccountSerializer(serializers.ModelSerializer):
             'profile_pic_url',
             'address',
             'is_verified',)
+        
+class DoctorAvailabilitySerializer(serializers.Serializer):
+    pass

@@ -40,6 +40,10 @@ function SelectDoctor() {
   const [selectedLines, setSelectedLines] = useState([]);
   const [daySelection, setDaySelection] = useState(dayZeroDate);
   
+  const [dayZeroData, setDayZeroData] = useState([]);
+  const [dayOneData, setDayOneData] = useState([]);
+  const [dayTwoData, setDayTwoData] = useState([]);
+  const [dayThreeData, setDayThreeData] = useState([]);
 
 
   const fetchDayDetails = async (requiredDate) => {
@@ -59,12 +63,23 @@ function SelectDoctor() {
         ...item,
         img: pic1
       }));
-      
-      console.log('Doctors list of selected ID: ', response.data )
+
+      if (requiredDate === dayZeroDate) {
+        setDayZeroData(updatedSpecializations)
+      } else if (requiredDate === dayOneDate) {
+        setDayOneData(updatedSpecializations)
+      } else if (requiredDate === dayTwoDate) {
+        setDayTwoData(updatedSpecializations)
+      } else {
+        setDayThreeData(updatedSpecializations)
+      }
+      console.log('Date: ', requiredDate)
+      console.log('Doctors list of selected ID: ', updatedSpecializations)
 
     } catch (error){
       console.error('Error fetching data', error)
-  }}
+    }
+  }
 
   const fetchDoctorListAtSpecialization = async () => {
     try {
