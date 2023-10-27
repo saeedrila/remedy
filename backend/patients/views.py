@@ -46,10 +46,9 @@ class FetchAvailableTimingDoctor(APIView):
         try:
             email = request.user.email
             account = Account.objects.get(email = email)
-
             try:
                 title = request.query_params.get('title', None)
-                required_date = request.query_params.get('required_date', None)
+                required_date = request.query_params.get('date', None)
                 if title and required_date is not None:
                     title = title.replace('-', ' ')
                     list_of_doctors = DoctorSpecializations.objects.filter(specialization_title=title).values('doctor')
@@ -64,14 +63,14 @@ class FetchAvailableTimingDoctor(APIView):
                             "online": [],
                             "offline": [],
                         }
-                        if doctor_availability.slots_status_online:
+                        if doctor_availability.slots_details_online:
                             online_slots = {
                                 "day": str(doctor_availability.date),
                                 "timings": doctor_availability.slots_details_online
                             }
                             doctor_data["online"].append(online_slots)
 
-                        if doctor_availability.slots_status_offline:
+                        if doctor_availability.slots_details_offline:
                             offline_slots = {
                                 "day": str(doctor_availability.date),
                                 "timings": doctor_availability.slots_details_offline
@@ -79,7 +78,7 @@ class FetchAvailableTimingDoctor(APIView):
                             doctor_data["offline"].append(offline_slots)
 
                         data.append(doctor_data)
-                        
+
                     print('List of doctors serializer: ',data)
                     return Response(data, status=status.HTTP_200_OK)
                 else:

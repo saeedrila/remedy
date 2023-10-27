@@ -18,7 +18,7 @@ import axios from '../api/axios';
 
 // Get doctor's list of selected specialization
 const DOCTORS_OF_SELECTED_SPECIALIZATION = '/doctors-at-specific-specialization/'
-const DOCTORS_OF_SELECTED_SPECIALIZATION_PER_DAY = 'fetch-per-day-availability-of-sepecialized-doctor'
+const DOCTORS_OF_SELECTED_SPECIALIZATION_PER_DAY = '/fetch-per-day-availability-of-specialized-doctor/'
 
 function SelectDoctor() {
   const { specialization_title } = useParams();
