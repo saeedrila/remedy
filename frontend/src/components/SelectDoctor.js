@@ -39,11 +39,7 @@ function SelectDoctor() {
   const [doctorList, setDoctorList] =useState([]);
   const [selectedLines, setSelectedLines] = useState([]);
   const [daySelection, setDaySelection] = useState(dayZeroDate);
-  
-  const [dayZeroData, setDayZeroData] = useState([]);
-  const [dayOneData, setDayOneData] = useState([]);
-  const [dayTwoData, setDayTwoData] = useState([]);
-  const [dayThreeData, setDayThreeData] = useState([]);
+  const [currentDayData, setCurrentDayData] =useState([]);
 
 
   const fetchDayDetails = async (requiredDate) => {
@@ -65,13 +61,13 @@ function SelectDoctor() {
       }));
 
       if (requiredDate === dayZeroDate) {
-        setDayZeroData(updatedSpecializations)
+        setCurrentDayData(updatedSpecializations)
       } else if (requiredDate === dayOneDate) {
-        setDayOneData(updatedSpecializations)
+        setCurrentDayData(updatedSpecializations)
       } else if (requiredDate === dayTwoDate) {
-        setDayTwoData(updatedSpecializations)
+        setCurrentDayData(updatedSpecializations)
       } else {
-        setDayThreeData(updatedSpecializations)
+        setCurrentDayData(updatedSpecializations)
       }
       console.log('Date: ', requiredDate)
       console.log('Doctors list of selected ID: ', updatedSpecializations)
@@ -105,35 +101,36 @@ function SelectDoctor() {
   };
   useEffect(() => {
     fetchDoctorListAtSpecialization();
+    fetchDayDetails(dayZeroDate);
   }, []);
 
 
-  const dayZeroDummyData = [
-    {
-      email: "example1@e.com",
-      img: pic1,
-      online: [
-        {day: "Monday", timings: ["09:00 AM", "09:15 PM"]},
-        {day: "Tuesday", timings: ["09:30 AM", "09:45 PM"]},
-      ],
-      offline: [
-        {day: "Wednesday", timings: ["08:00 AM", "08:15 PM"]},
-        {day: "Thursday", timings: ["08:30 AM", "08:45 PM"]},
-      ]
-    },{
-      email: "example2@e.com",
-      img: pic1,
-      online: [
-        {day: "Monday", timings: ["10:00 AM", "10:15 PM"]},
-        {day: "Tuesday", timings: ["10:30 AM", "10:45 PM"]},
-      ],
-      offline: [
-        {day: "Wednesday", timings: ["11:00 AM", "11:15 PM"]},
-        {day: "Thursday", timings: ["11:30 AM", "11:45 PM"]},
-      ]
-    }, 
-  ]
-  const currentDayData = dayZeroDummyData
+  // const dayZeroDummyData = [
+  //   {
+  //     email: "example1@e.com",
+  //     img: pic1,
+  //     online: [
+  //       {day: "Monday", timings: ["09:00 AM", "09:15 PM"]},
+  //       {day: "Tuesday", timings: ["09:30 AM", "09:45 PM"]},
+  //     ],
+  //     offline: [
+  //       {day: "Wednesday", timings: ["08:00 AM", "08:15 PM"]},
+  //       {day: "Thursday", timings: ["08:30 AM", "08:45 PM"]},
+  //     ]
+  //   },{
+  //     email: "example2@e.com",
+  //     img: pic1,
+  //     online: [
+  //       {day: "Monday", timings: ["10:00 AM", "10:15 PM"]},
+  //       {day: "Tuesday", timings: ["10:30 AM", "10:45 PM"]},
+  //     ],
+  //     offline: [
+  //       {day: "Wednesday", timings: ["11:00 AM", "11:15 PM"]},
+  //       {day: "Thursday", timings: ["11:30 AM", "11:45 PM"]},
+  //     ]
+  //   }, 
+  // ]
+
 
   const [proceedButtonData, setProceedButtonData] = useState(Array(currentDayData.length).fill({
     email: null,
@@ -265,19 +262,19 @@ function SelectDoctor() {
                         ))
                       ) : (
                         <p>Press Offline/Online to update appointment availability</p>
-                      )}
-                      {proceedButtonData[cardIndex].time !== null && (
+                      )};
+                      {proceedButtonData[cardIndex]?.time !== null && (
                         <Button
                           variant="success"
                           className="mt-3"
                           onClick={() => handleProceedClick(
-                            proceedButtonData[cardIndex].email, 
-                            proceedButtonData[cardIndex].date,
-                            proceedButtonData[cardIndex].line,
-                            proceedButtonData[cardIndex].time,
+                            proceedButtonData[cardIndex]?.email, 
+                            proceedButtonData[cardIndex]?.date,
+                            proceedButtonData[cardIndex]?.line,
+                            proceedButtonData[cardIndex]?.time,
                           )}
                         >
-                          Proceed with {proceedButtonData[cardIndex].time}
+                          Proceed with: {proceedButtonData[cardIndex]?.time || 'No time selected'}
                         </Button>
                       )}
                     </div>

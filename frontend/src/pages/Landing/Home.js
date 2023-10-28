@@ -39,10 +39,6 @@ function Home() {
     fetchDoctorSpecializationData();
   }, []);
 
-  const BigCardData =[
-    {title: "Book a consultation with Doctor now", img: pic1},
-    {title: "Book a Laboratory appointment now", img: pic2}
-  ]
 
   const LabSmallCardData =[
     {specialization_title: "Complete Blood Count", img: pic2},
@@ -65,7 +61,7 @@ function Home() {
                 <Card>
                   <Card.Img variant="top" src={pic1} />
                   <Card.Body>
-                    <Card.Title className="justify-content-center" >Book a consultation with Doctor now</Card.Title>
+                    <Card.Title className="justify-content-center hand-cursor" >Book a consultation with Doctor now</Card.Title>
                   </Card.Body>
                 </Card>
               </Link>
@@ -75,7 +71,7 @@ function Home() {
                 <Card>
                   <Card.Img variant="top" src={pic2} />
                   <Card.Body>
-                    <Card.Title className="justify-content-center" >Book a Laboratory appointment now</Card.Title>
+                    <Card.Title className="justify-content-center hand-cursor" >Book a Laboratory appointment now</Card.Title>
                   </Card.Body>
                 </Card>
               </Link>

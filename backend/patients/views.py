@@ -52,11 +52,9 @@ class FetchAvailableTimingDoctor(APIView):
                 if title and required_date is not None:
                     title = title.replace('-', ' ')
                     list_of_doctors = DoctorSpecializations.objects.filter(specialization_title=title).values('doctor')
-                    
                     doctors_availability_per_day = DoctorAvailability.objects.filter(doctor__in=list_of_doctors, date=required_date)
 
                     data = []
-
                     for doctor_availability in doctors_availability_per_day:
                         doctor_data = {
                             "email": doctor_availability.doctor.email,
@@ -66,16 +64,25 @@ class FetchAvailableTimingDoctor(APIView):
                         if doctor_availability.slots_details_online:
                             online_slots = {
                                 "day": str(doctor_availability.date),
-                                "timings": doctor_availability.slots_details_online
+                                "timings": []
                             }
-                            doctor_data["online"].append(online_slots)
-
+                            for key, slot_data in doctor_availability.slots_details_online.items():
+                                if slot_data.get('status') == 'available':
+                                    online_slots["timings"].append(slot_data.get('time'))
+                            if online_slots["timings"]:
+                                doctor_data["online"].append(online_slots)
+                        
                         if doctor_availability.slots_details_offline:
                             offline_slots = {
                                 "day": str(doctor_availability.date),
-                                "timings": doctor_availability.slots_details_offline
+                                "timings": []
                             }
-                            doctor_data["offline"].append(offline_slots)
+                            for key, slot_data in doctor_availability.slots_details_online.items():
+                                if slot_data.get('status') != 'available':
+                                    offline_slots["timings"].append(slot_data.get('time'))
+
+                            if offline_slots["timings"]:
+                                doctor_data["offline"].append(offline_slots)
 
                         data.append(doctor_data)
 

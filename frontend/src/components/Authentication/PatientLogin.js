@@ -21,12 +21,12 @@ const LOGIN_URL = '/account-login'
 
 
 const PatientLogin = () => {
-  const { auth, setAuth } = useAuth();
+  const [ auth, setAuth ] = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const [errMsg, setErrMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
 
@@ -55,22 +55,21 @@ const PatientLogin = () => {
       localStorage.setItem('email', email)
       localStorage.setItem('roles', JSON.stringify(roles))
       axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
-      console.log('Response.data:',response.data)
 
       navigate(from, {replace: true})
-    } catch (err){
-      if (!err?.response){
-        setErrMsg('No Server Response')
-      } else if (err.response?.status === 400){
-        setErrMsg('Email or Password missing');
-      } else if (err.response?.status === 401){
-        setErrMsg('Not authorized');
-      } else if (err.response?.status === 404){
-        setErrMsg('Server Error');
+    } catch (error){
+      if (!error?.response){
+        setErrorMsg('No Server Response')
+      } else if (error.response?.status === 400){
+        setErrorMsg('Email or Password missing');
+      } else if (error.response?.status === 401){
+        setErrorMsg('Not authorized');
+      } else if (error.response?.status === 404){
+        setErrorMsg('Server Error');
       } else{
-        setErrMsg('Login Failed');
+        setErrorMsg('Login Failed');
       }
-      toast.error(errMsg, {
+      toast.error(errorMsg, {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -80,7 +79,6 @@ const PatientLogin = () => {
         theme: 'light',
       });
     }
-    console.log(email, pwd);
   };
 
   return (
