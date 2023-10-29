@@ -20,7 +20,8 @@ import axios from '../../api/axios';
 const LOGIN_URL = '/account-login'
 
 
-const PatientLogin = () => {
+
+function Login() {
   const { auth, setAuth } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const PatientLogin = () => {
         { email: email, password: pwd },
         {headers: 
           {'Content-Type': 'application/json'}},
-           {withCredentials: true}
+            {withCredentials: true}
         );
       const accessToken = response?.data?.accessToken;
       const refreshToken = response?.data?.refreshToken;
@@ -201,4 +202,4 @@ const PatientLogin = () => {
   );
 };
 
-export default PatientLogin;
+export default Login

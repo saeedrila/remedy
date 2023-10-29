@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Container,
   Row,
@@ -23,8 +24,9 @@ const PatientRegister = () => {
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const [matchPwd, setMatchPwd] = useState('');
+  const navigate = useNavigate();
 
-  const [errMsg, setErrMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -33,7 +35,7 @@ const PatientRegister = () => {
     const v1 = EMAIL_REGEX.test(email);
     const v2 = PWD_REGEX.test(pwd);
     if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
+      setErrorMsg("Invalid Entry");
       return;
     }
     try {
@@ -48,16 +50,25 @@ const PatientRegister = () => {
       setEmail('');
       setPwd('');
       setMatchPwd('');
-    } catch (err) {
-      if (err.response) {
-        if (err.response.status === 409) {
-          setErrMsg('Email already exists');
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 409) {
+          setErrorMsg('Email already exists');
         } else {
-          setErrMsg('Registration Failed');
+          setErrorMsg('Registration Failed');
         }
       } else {
-        setErrMsg('No Server Response');
+        setErrorMsg('No Server Response');
       }
+      toast.error(errorMsg, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
     }
   }
 
@@ -136,9 +147,15 @@ const PatientRegister = () => {
                 </CardBody>
               </Card>
               <div className="mt-5 text-center">
+                <div className='d-flex justify-content-center'>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/register')}>Patient's Register{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/doctor-register')}>Doctor's Register{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/lab-register')}>Lab's Register{" "}</p>
+                  <p className="hand-cursor mx-2" onClick={() => navigate('/executive-register')}>Executive's Register{" "}</p>
+                </div>
                 <p>
                   Have an account ?{" "}
-                  <Link to="/" className="fw-medium text-primary">
+                  <Link to="/login" className="fw-medium text-primary">
                     {" "}
                     Login now{" "}
                   </Link>{" "}

@@ -7,14 +7,10 @@ import "./assets/scss/theme.scss";
 import { AuthProvider } from './Context/AuthProvider';
 import useAuth from './hooks/useAuth';
 
-// Login pages
-import ExecutiveLoginPage from './pages/Authentication/ExecutiveLoginPage';
-import DoctorLoginPage from './pages/Authentication/DoctorLoginPage';
-import LabLoginPage from './pages/Authentication/LabLoginPage';
-import PatientLoginPage from './pages/Authentication/PatientLoginPage';
+// Login page
+import Login from './components/Authentication/Login';
 
 // Profile Pages
-import ProfileDoctor from './pages/Profile/ProfileDoctor';
 import ProfilePatient from './pages/Profile/ProfilePatient';
 
 // Registration Pages
@@ -74,11 +70,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* Public pages */}
-          {/* Logins */}
-          <Route path="executive-login" element={<ExecutiveLoginPage />} />
-          <Route path="doctor-login" element={<DoctorLoginPage />} />
-          <Route path="lab-login" element={<LabLoginPage />} />
-          <Route path="login" element={<PatientLoginPage />} />
+          {/* Login */}
+          <Route path="login" element={<Login />} />
 
           {/* Account registration */}
           <Route path='executive-register' element={<ExecutiveRegisterPage />} />
