@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,14 +21,21 @@ const LOGIN_URL = '/account-login'
 
 
 const PatientLogin = () => {
-  const [ auth, setAuth ] = useAuth();
-  const navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
   const from = location.state?.from?.pathname || "/";
 
   const [errorMsg, setErrorMsg] = useState('')
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
+
+  useEffect(() => {
+    if (auth?.email) {
+      navigate('/');
+    }
+  }, [auth, navigate]);
 
 
   const handleSubmit = async (e) => {
