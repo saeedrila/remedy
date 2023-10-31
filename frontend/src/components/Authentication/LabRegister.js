@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
   Container,
   Row,
@@ -57,6 +58,15 @@ const PatientRegister = () => {
       } else {
         setErrorMsg('No Server Response');
       }
+      toast.error(errorMsg, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'light',
+      });
     }
   }
 

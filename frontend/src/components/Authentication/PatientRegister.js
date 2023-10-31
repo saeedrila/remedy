@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   Container,
   Row,
@@ -24,10 +24,8 @@ const PatientRegister = () => {
   const [email, setEmail] = useState('');
   const [pwd, setPwd] = useState('');
   const [matchPwd, setMatchPwd] = useState('');
-  const navigate = useNavigate();
-
   const [errorMsg, setErrorMsg] = useState('');
-  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +44,6 @@ const PatientRegister = () => {
       });
       console.log(response.data);
       console.log(response.accessToken);
-      setSuccess(true);
       setEmail('');
       setPwd('');
       setMatchPwd('');

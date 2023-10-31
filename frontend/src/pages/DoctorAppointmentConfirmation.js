@@ -6,18 +6,25 @@ import {
   Row,
   Button,
 } from 'react-bootstrap';
+import { Container } from 'reactstrap';
+import axios from '../api/axios';
+import useRazorpay from 'react-razorpay';
 
+import pic1 from '../assets/images/medical/online-doctor.svg'
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
 
-import pic1 from '../assets/images/medical/online-doctor.svg'
-import { Container } from 'reactstrap';
+
+
+//API Endpoint
+const RAZORPAY_ORDER_CREATE = '/razorpay/order/create'
+const RAZORPAY_ORDER_COMPLETE = '/razorpay/order/complete'
 
 function DoctorAppointmentConfirmation() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-
   const navigate = useNavigate();
+  const Razorpay = useRazorpay();
 
   const doctor_email = queryParams.get('email');
   const date = queryParams.get('date');
@@ -25,17 +32,132 @@ function DoctorAppointmentConfirmation() {
   const time_slot = queryParams.get('time');
   const fee = 400
 
+  const complete_order = (paymentID, orderID, signature)=>{
+    axios({
+        method: 'post',
+        url: RAZORPAY_ORDER_COMPLETE,
+        data: {
+            "payment_id": paymentID,
+            "order_id": orderID,
+            "signature": signature,
+            "amount": fee
+        }
+    })
+    .then((response)=>{
+        console.log(response.data);
+    })
+    .catch((error)=>{
+        console.log(error.response.data);
+    })
+}
+
   const handleProceedToPaymentClick = () => {
-    navigate('payment-confirmation', {
-      state: {
-        doctor_email,
-        line,
-        time_slot,
-        fee,
-        date,
+    axios({
+      method: 'post',
+      url: RAZORPAY_ORDER_CREATE,
+      data: {
+        amount: fee,
+        currency: "INR"
       }
+  })
+  .then((response)=>{
+    // get order id
+    const order_id = response.data.id
+    
+    // handle payment
+    const options = {
+      key: 'rzp_test_mQAMplAzeJefDh',
+      name: "Remedy",
+      description: "Test Transaction",
+      order_id: order_id,
+      handler: function (response) {
+        //complete order
+        complete_order(
+          response.razorpay_payment_id,
+          response.razorpay_order_id,
+          response.razorpay_signature
+        )
+      },
+      prefill: {
+      name: "Customer",
+      email: "customer@example.com",
+      contact: "9999999999",
+      },
+      notes: {
+      address: "Address",
+      },
+      theme: {
+      color: "#3399cc",
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+      console.log(response.error);
+      alert(response.error.code);
+      alert(response.error.description);
+
+    });
+    rzp1.open();
+  })
+  .catch((error)=>{
+    console.log(error);
     })
   }
+
+  // const handleProceedToPaymentClick = async () => {
+  //   try {
+  //     const accessToken = localStorage.getItem('accessToken');
+  //     const response_create_order = await axios.post(RAZORPAY_ORDER_CREATE, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+  //     console.log('Order ID created: ', response_create_order.data)
+  //     var order_id = response_create_order.data.id
+  //     // handle payment
+  //     const options = {
+  //       key: process.env.RAZORPAY_KEY,
+  //       name: "Remedy",
+  //       description: "Test Transaction",
+  //       image: "https://example.com/your_logo",
+  //       order_id: order_id,
+  //       handler: function (response) {
+  //           complete_order(
+  //               response.razorpay_payment_id,
+  //               response.razorpay_order_id,
+  //               response.razorpay_signature
+  //           )
+  //       },
+  //       prefill: {
+  //       name: "Customer",
+  //       email: "youremail@example.com",
+  //       contact: "9999999999",
+  //       },
+  //       notes: {
+  //       address: "Remedy",
+  //       },
+  //       theme: {
+  //       color: "#3399cc",
+  //       },
+  //     };
+
+  //     const rzp1 = new Razorpay(options);
+  //     rzp1.on("payment.failed", function (response) {
+  //         alert(response.error.code);
+  //         alert(response.error.description);
+  //         alert(response.error.source);
+  //         alert(response.error.step);
+  //         alert(response.error.reason);
+  //         alert(response.error.metadata.order_id);
+  //         alert(response.error.metadata.payment_id);
+  //     });
+  //     rzp1.open();
+      
+  //   } catch (error) {
+  //     console.error('Error fetching data: ', error)
+  //   }
+  // }
 
   return (
     <>

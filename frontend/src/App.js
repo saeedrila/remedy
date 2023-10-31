@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
 import "./assets/scss/theme.scss";
-import { AuthProvider } from './Context/AuthProvider';
 import useAuth from './hooks/useAuth';
 
 // Login page
@@ -62,7 +61,7 @@ function App() {
         });
       }
     } catch (error){
-
+      console.log(error);
     }
   }, []);
   return (

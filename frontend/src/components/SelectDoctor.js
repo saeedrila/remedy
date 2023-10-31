@@ -20,6 +20,7 @@ import axios from '../api/axios';
 const DOCTORS_OF_SELECTED_SPECIALIZATION = '/doctors-at-specific-specialization/'
 const DOCTORS_OF_SELECTED_SPECIALIZATION_PER_DAY = '/fetch-per-day-availability-of-specialized-doctor/'
 
+
 function SelectDoctor() {
   const { specialization_title } = useParams();
 
@@ -40,6 +41,9 @@ function SelectDoctor() {
   const [selectedLines, setSelectedLines] = useState([]);
   const [daySelection, setDaySelection] = useState(dayZeroDate);
   const [currentDayData, setCurrentDayData] =useState([]);
+  const [proceedButtonData, setProceedButtonData] = useState([]);
+
+  const navigate = useNavigate();
 
 
   const fetchDayDetails = async (requiredDate) => {
@@ -72,6 +76,7 @@ function SelectDoctor() {
       console.log('Date: ', requiredDate)
       console.log('Doctors list of selected ID: ', updatedSpecializations)
 
+      changeProceedButtonData();
     } catch (error){
       console.error('Error fetching data', error)
     }
@@ -99,47 +104,22 @@ function SelectDoctor() {
       console.error('Error fetching data: ', error)
     }
   };
+
   useEffect(() => {
     fetchDoctorListAtSpecialization();
     fetchDayDetails(dayZeroDate);
   }, []);
 
-
-  // const dayZeroDummyData = [
-  //   {
-  //     email: "example1@e.com",
-  //     img: pic1,
-  //     online: [
-  //       {day: "Monday", timings: ["09:00 AM", "09:15 PM"]},
-  //       {day: "Tuesday", timings: ["09:30 AM", "09:45 PM"]},
-  //     ],
-  //     offline: [
-  //       {day: "Wednesday", timings: ["08:00 AM", "08:15 PM"]},
-  //       {day: "Thursday", timings: ["08:30 AM", "08:45 PM"]},
-  //     ]
-  //   },{
-  //     email: "example2@e.com",
-  //     img: pic1,
-  //     online: [
-  //       {day: "Monday", timings: ["10:00 AM", "10:15 PM"]},
-  //       {day: "Tuesday", timings: ["10:30 AM", "10:45 PM"]},
-  //     ],
-  //     offline: [
-  //       {day: "Wednesday", timings: ["11:00 AM", "11:15 PM"]},
-  //       {day: "Thursday", timings: ["11:30 AM", "11:45 PM"]},
-  //     ]
-  //   }, 
-  // ]
+  const changeProceedButtonData = () =>{
+    setProceedButtonData(Array(currentDayData.length).fill({
+      email: null,
+      date: null,
+      line: null,
+      time: null,
+    }));
+  }
 
 
-  const [proceedButtonData, setProceedButtonData] = useState(Array(currentDayData.length).fill({
-    email: null,
-    date: null,
-    line: null,
-    time: null,
-  }));
-
-  const navigate = useNavigate();
 
   const handleProceedClick = (proceedDataEmail, proceedDataDate, proceedDataLine, proceedDataTime) => {
     const url = `/doctor-at-specialization/doctor-appointment-confirmation?email=${proceedDataEmail}&date=${proceedDataDate}&line=${proceedDataLine}&time=${proceedDataTime}`;
@@ -211,79 +191,95 @@ function SelectDoctor() {
       <Container>
         <div className="big-card-container">
           <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center mt-1">
-            {currentDayData.length > 0 ? (currentDayData.map((doctor, cardIndex) => (
-              <Col key={doctor.email}>
-                <Card className="border">
-                  <Card.Img variant="top" src={doctor.img} />
-                  <Card.Body>
-                    <Card.Title className="justify-content-center">Dr. {doctor.email}</Card.Title>
-                    <Nav variant="tabs">
-                      <Nav.Item>
-                        <Nav.Link
-                          onClick={() => {
-                            const updatedSelectedLines = [...selectedLines];
-                            updatedSelectedLines[cardIndex] = 'offline';
-                            setSelectedLines(updatedSelectedLines);
-                          }}            
-                          active={selectedLines[cardIndex] === 'offline'}
-                          className={selectedLines[cardIndex] === 'offline' ? 'selected' : ''}
-                        >
-                          Offline
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link
-                          onClick={() => {
-                            const updatedSelectedLines = [...selectedLines];
-                            updatedSelectedLines[cardIndex] = 'online';
-                            setSelectedLines(updatedSelectedLines);
-                          }}
-                          active={selectedLines[cardIndex] === 'online'}
-                          className={selectedLines[cardIndex] === 'online' ? 'selected' : ''}
-                        >
-                          Online
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                    <div className="mt-3">
-                      {doctor[selectedLines[cardIndex]] && doctor[selectedLines[cardIndex]].length > 0 ? (
-                        doctor[selectedLines[cardIndex]].map((session, index) => (
-                          <div key={index}>
-                            {session.timings.map((timing, timeIndex) => (
-                              <Button 
-                                key={timeIndex} 
-                                className='m-1'
-                                onClick={() => handleTimingClick(timing, daySelection, selectedLines[cardIndex], doctor.email, cardIndex)}
+            {currentDayData.some((doctor) => {
+              const hasOnlineSessions = doctor.online && doctor.online.length > 0;
+              const hasOfflineSessions = doctor.offline && doctor.offline.length > 0;
+              return hasOnlineSessions || hasOfflineSessions;
+            }) ? (
+              currentDayData.map((doctor, cardIndex) => {
+                const hasOnlineSessions = doctor.online && doctor.online.length > 0;
+                const hasOfflineSessions = doctor.offline && doctor.offline.length > 0;
+
+                // Check if either 'online' or 'offline' has sessions to display the card
+                if (hasOnlineSessions || hasOfflineSessions) {
+                  return (
+                    <Col key={doctor.email}>
+                      <Card className="border">
+                        <Card.Img variant="top" src={doctor.img} />
+                        <Card.Body>
+                          <Card.Title className="justify-content-center">Dr. {doctor.email}</Card.Title>
+                          <Nav variant="tabs">
+                            <Nav.Item>
+                              <Nav.Link
+                                onClick={() => {
+                                  const updatedSelectedLines = [...selectedLines];
+                                  updatedSelectedLines[cardIndex] = 'offline';
+                                  setSelectedLines(updatedSelectedLines);
+                                }}            
+                                active={selectedLines[cardIndex] === 'offline'}
+                                className={selectedLines[cardIndex] === 'offline' ? 'selected' : ''}
                               >
-                                {timing}
+                                Offline
+                              </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                              <Nav.Link
+                                onClick={() => {
+                                  const updatedSelectedLines = [...selectedLines];
+                                  updatedSelectedLines[cardIndex] = 'online';
+                                  setSelectedLines(updatedSelectedLines);
+                                }}
+                                active={selectedLines[cardIndex] === 'online'}
+                                className={selectedLines[cardIndex] === 'online' ? 'selected' : ''}
+                              >
+                                Online
+                              </Nav.Link>
+                            </Nav.Item>
+                          </Nav>
+                          <div className="mt-3">
+                            {doctor[selectedLines[cardIndex]] && doctor[selectedLines[cardIndex]].length > 0 ? (
+                              doctor[selectedLines[cardIndex]].map((session, index) => (
+                                <div key={index}>
+                                  {session.timings.map((timing, timeIndex) => (
+                                    <Button 
+                                      key={timeIndex} 
+                                      className='m-1'
+                                      onClick={() => handleTimingClick(timing, daySelection, selectedLines[cardIndex], doctor.email, cardIndex)}
+                                    >
+                                      {timing}
+                                    </Button>
+                                  ))}
+                                </div>
+                              ))
+                            ) : (
+                              <p>Press Offline/Online to update appointment availability</p>
+                            )}
+                            {proceedButtonData[cardIndex]?.time !== null ? (
+                              <Button
+                                variant="success"
+                                className="mt-3"
+                                onClick={() => handleProceedClick(
+                                  proceedButtonData[cardIndex]?.email, 
+                                  proceedButtonData[cardIndex]?.date,
+                                  proceedButtonData[cardIndex]?.line,
+                                  proceedButtonData[cardIndex]?.time,
+                                )}
+                              >
+                                Proceed with: {proceedButtonData[cardIndex]?.time}
                               </Button>
-                            ))}
+                            ) : null}
                           </div>
-                        ))
-                      ) : (
-                        <p>Press Offline/Online to update appointment availability</p>
-                      )};
-                      {proceedButtonData[cardIndex]?.time !== null && (
-                        <Button
-                          variant="success"
-                          className="mt-3"
-                          onClick={() => handleProceedClick(
-                            proceedButtonData[cardIndex]?.email, 
-                            proceedButtonData[cardIndex]?.date,
-                            proceedButtonData[cardIndex]?.line,
-                            proceedButtonData[cardIndex]?.time,
-                          )}
-                        >
-                          Proceed with: {proceedButtonData[cardIndex]?.time || 'No time selected'}
-                        </Button>
-                      )}
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))):(
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                } else {
+                  return null;
+                }
+              })
+            ):(
               <div>
-                Loading
+                There are no doctors available today.
               </div>
             )}
           </Row>

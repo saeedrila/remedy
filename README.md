@@ -221,7 +221,14 @@ Install react toastify for pop-up messages
 ```
 npm install react-toastify
 ```
-
+Install razorpay package
+```
+npm install razorpay
+```
+Install .env to load keys directly from .env file
+```
+npm install dotenv
+```
 
 Thanks to:
 

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 
 class Payments(models.Model):
-    appointment = models.CharField(max_length=20)
+    appointment = models.CharField(max_length=20, null=True)
     amount = models.PositiveIntegerField()
     date = models.DateTimeField(default=now)
     mode_of_payment = models.CharField(max_length=20)
