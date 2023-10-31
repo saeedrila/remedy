@@ -3,10 +3,17 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework import status
+from django.db import transaction
 import razorpay
 
-from .serializers import RazorpayTransactionSerializer
+from .serializers import (
+    RazorpayTransactionSerializer,
+    RazorpayOrderSerializer,
+)
 from .models import Payments
+from appointments.models import Appointments
+from authentication.models import Account
+from doctors_and_labs.models import DoctorAvailability
 
 
 
@@ -28,17 +35,49 @@ class CheckoutPayment(APIView):
 class RazorpayOrder(APIView):
     def post(self, request):
         try:
-            net_total = 40000
-            amount = int(net_total)
+            serializer = RazorpayOrderSerializer(data=request.data)
+            if serializer.is_valid():
+                account = Account.objects.get(id=request.user.id)
+                amount = serializer.validated_data.get('amount')
+                currency = serializer.validated_data.get('currency')
+                doctor_email = serializer.validated_data.get('doctor_email')
+                date = serializer.validated_data.get('date')
+                line = serializer.validated_data.get('line')
+                time_slot = serializer.validated_data.get('time_slot')
+
+            if not doctor_email:
+                return Response({'error': 'Doctor email is missing in request data.'}, status=status.HTTP_BAD_REQUEST)
+            
+            try:
+                doctor_account = Account.objects.get(email=doctor_email)
+            except Account.DoesNotExist:
+                    return Response({'error': 'Doctor with the provided email does not exist.'}, status=status.HTTP_BAD_REQUEST)
+
+            amount_in_ps = amount * 100
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY, settings.RAZORPAY_SECRET))
-            payment = client.order.create({'amount': amount, 'currency': 'INR'})
+            payment = client.order.create({'amount': amount_in_ps, 'currency': currency})
             print('Razorpay Integration',payment)
+
             payment_entry = Payments.objects.create(
-                amount = amount, 
+                amount = amount_in_ps, 
                 mode_of_payment = 'Razorpay', 
                 razorpay_paid = False,
                 razorpay_order_id = payment['id']
             )
+            appointment_entry = Appointments.objects.create(
+                patient = account,
+                doctor = doctor_account,
+                date = date,
+                slot_type = line,
+                time = time_slot,
+                status = 'Draft',
+                payment = payment_entry,
+            )
+            payment_entry.appointment = appointment_entry.appointment_id
+            payment_entry.save()
+
+            print('Payment Entry: ', payment_entry)
+            print('Appointment Entry: ', appointment_entry)
             return Response(payment, status=status.HTTP_201_CREATED)
         
         except Exception as error:
@@ -47,8 +86,45 @@ class RazorpayOrder(APIView):
         
 class RazorpayOrderComplete(APIView):
     def post(self, request):
-        transaction_serializer = RazorpayTransactionSerializer(data=request.data)
-        if transaction_serializer.is_valid():
+        serializer = RazorpayTransactionSerializer(data=request.data)
+        if serializer.is_valid():
+            payment_id = serializer.validated_data.get('payment_id')
+            order_id = serializer.validated_data.get('order_id')
+            signature = serializer.validated_data.get('signature')
+            try:
+                with transaction.atomic():
+                    payment_obj = Payments.objects.get(razorpay_order_id=order_id)
+                    if payment_obj.razorpay_paid:
+                        return Response({'error': 'Payment already marked as complete'}, status=status.HTTP_BAD_REQUEST)
+                    payment_obj.razorpay_payment_id = payment_id
+                    payment_obj.signature = signature
+                    payment_obj.save()
+                    appointment_obj = Appointments.objects.get(appointment_id=payment_obj.appointment)
+                    appointment_obj.status = 'Booked'
+                    appointment_obj.save()
+
+                doctor_availability_obj = DoctorAvailability.objects.get(date=appointment_obj.date, doctor_id=appointment_obj.doctor_id)
+                target_time = appointment_obj.time
+                new_status = "1"
+
+                if appointment_obj.slot_type == 'offline':
+                    slots_details = doctor_availability_obj.slots_details_offline
+                else:
+                    slots_details = doctor_availability_obj.slots_details_online
+
+                for slot_key, slot_info in slots_details.items():
+                    if slot_info["time"] == target_time:
+                        slot_info["status"] = new_status
+
+                if appointment_obj.slot_type == 'offline':
+                    doctor_availability_obj.slots_details_offline = slots_details
+                else:
+                    doctor_availability_obj.slots_details_online = slots_details
+
+                doctor_availability_obj.save()
+
+            except Payments.DoesNotExist:
+                    return Response({'error': 'Payment error saving on db error'}, status=status.HTTP_BAD_REQUEST)
             return Response(status=status.HTTP_202_ACCEPTED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

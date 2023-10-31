@@ -30,21 +30,26 @@ function DoctorAppointmentConfirmation() {
   const date = queryParams.get('date');
   const line = queryParams.get('line');
   const time_slot = queryParams.get('time');
-  const fee = 400
-
+  const fee = 500
+  const accessToken = localStorage.getItem('accessToken');
+  
   const complete_order = (paymentID, orderID, signature)=>{
     axios({
-        method: 'post',
-        url: RAZORPAY_ORDER_COMPLETE,
-        data: {
-            "payment_id": paymentID,
-            "order_id": orderID,
-            "signature": signature,
-            "amount": fee
-        }
+      method: 'post',
+      url: RAZORPAY_ORDER_COMPLETE,
+      data: {
+          "payment_id": paymentID,
+          "order_id": orderID,
+          "signature": signature,
+          "amount": fee
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    
     })
     .then((response)=>{
-        console.log(response.data);
+      console.log(response.data);
     })
     .catch((error)=>{
         console.log(error.response.data);
@@ -57,8 +62,16 @@ function DoctorAppointmentConfirmation() {
       url: RAZORPAY_ORDER_CREATE,
       data: {
         amount: fee,
-        currency: "INR"
-      }
+        currency: "INR",
+        doctor_email: doctor_email,
+        date: date,
+        line: line,
+        time_slot: time_slot,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+  
   })
   .then((response)=>{
     // get order id
@@ -77,26 +90,26 @@ function DoctorAppointmentConfirmation() {
           response.razorpay_order_id,
           response.razorpay_signature
         )
+        // Navigate from here.
+        const url = `/payment-confirmation/?orderId=${order_id}`
+        navigate(url)
       },
       prefill: {
-      name: "Customer",
-      email: "customer@example.com",
-      contact: "9999999999",
+        name: "Customer",
+        email: "customer@example.com",
+        contact: "9999999999",
       },
       notes: {
-      address: "Address",
+        address: "Address",
       },
       theme: {
-      color: "#3399cc",
+        color: "#3399cc",
       },
     };
 
     const rzp1 = new window.Razorpay(options);
     rzp1.on("payment.failed", function (response) {
       console.log(response.error);
-      alert(response.error.code);
-      alert(response.error.description);
-
     });
     rzp1.open();
   })
@@ -105,59 +118,6 @@ function DoctorAppointmentConfirmation() {
     })
   }
 
-  // const handleProceedToPaymentClick = async () => {
-  //   try {
-  //     const accessToken = localStorage.getItem('accessToken');
-  //     const response_create_order = await axios.post(RAZORPAY_ORDER_CREATE, {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     });
-  //     console.log('Order ID created: ', response_create_order.data)
-  //     var order_id = response_create_order.data.id
-  //     // handle payment
-  //     const options = {
-  //       key: process.env.RAZORPAY_KEY,
-  //       name: "Remedy",
-  //       description: "Test Transaction",
-  //       image: "https://example.com/your_logo",
-  //       order_id: order_id,
-  //       handler: function (response) {
-  //           complete_order(
-  //               response.razorpay_payment_id,
-  //               response.razorpay_order_id,
-  //               response.razorpay_signature
-  //           )
-  //       },
-  //       prefill: {
-  //       name: "Customer",
-  //       email: "youremail@example.com",
-  //       contact: "9999999999",
-  //       },
-  //       notes: {
-  //       address: "Remedy",
-  //       },
-  //       theme: {
-  //       color: "#3399cc",
-  //       },
-  //     };
-
-  //     const rzp1 = new Razorpay(options);
-  //     rzp1.on("payment.failed", function (response) {
-  //         alert(response.error.code);
-  //         alert(response.error.description);
-  //         alert(response.error.source);
-  //         alert(response.error.step);
-  //         alert(response.error.reason);
-  //         alert(response.error.metadata.order_id);
-  //         alert(response.error.metadata.payment_id);
-  //     });
-  //     rzp1.open();
-      
-  //   } catch (error) {
-  //     console.error('Error fetching data: ', error)
-  //   }
-  // }
 
   return (
     <>

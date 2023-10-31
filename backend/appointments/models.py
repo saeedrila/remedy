@@ -12,7 +12,7 @@ class Appointments(models.Model):
     lab = models.ForeignKey(Account, on_delete=models.CASCADE, null=True, related_name='lab_appointments')
     lab_test = models.ForeignKey(LabTestsAvailable, on_delete=models.CASCADE, null=True)
     date = models.DateField()
-    time = models.TimeField()
+    time = models.CharField(max_length=20)
     status = models.CharField(max_length=20)
     payment = models.ForeignKey(Payments, on_delete=models.CASCADE)
     slot_type = models.CharField(max_length=10)
@@ -21,7 +21,9 @@ class Appointments(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.appointment_id:
-            prefix = 'rmdy-'
+            prefix = 'rmdy'
             uuid_string = str(uuid.uuid4())[:8]
             self.appointment_id = prefix + uuid_string
         super(Appointments, self).save(*args, **kwargs)
+
+    # Status can be: Draft, Booked, Completed, Cancelled

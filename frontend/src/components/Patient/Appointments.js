@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -10,9 +10,31 @@ import {
   CardBody,
   CardTitle,
 } from 'reactstrap'
+import axios from "../../api/axios";
 
+const FETCH_PATIENT_APPOINTMENTS = '/fetch-patient-appointments'
 
 function Appointments() {
+  const [patientAppointmentList, setPatientAppointmentList] = useState([])
+  const fetchPatientAppointmentDetails = async ()=> {
+    try{
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(FETCH_PATIENT_APPOINTMENTS, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setPatientAppointmentList(response.data)
+      console.log('Patient appointment data: ', response.data)
+    } catch (error){
+      console.error('Error fetching data', error)
+    }
+  }
+
+  useEffect(()=> {
+    fetchPatientAppointmentDetails();
+  }, [])
+
   return (
     <>
       <Row>
@@ -25,7 +47,7 @@ function Appointments() {
                   <thead>
                     <tr>
                       <th>Sl. No.</th>
-                      <th>ID</th>
+                      <th>Appointment ID</th>
                       <th>Doctor/Lab's Name</th>
                       <th>Day and time</th>
                       <th>Action</th>

@@ -279,7 +279,7 @@ function SelectDoctor() {
               })
             ):(
               <div>
-                There are no doctors available today.
+                There are no doctors available for the day.
               </div>
             )}
           </Row>

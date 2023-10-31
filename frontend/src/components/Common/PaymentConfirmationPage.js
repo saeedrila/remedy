@@ -16,7 +16,8 @@ import { Container } from 'reactstrap';
 function PaymentConfirmationPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { doctor_email, patient_email, line, time_slot, fee, date } = location.state;
+  const queryParams = new URLSearchParams(location.search);
+  const orderId = queryParams.get('orderId');
 
   return (
     <>
@@ -32,19 +33,21 @@ function PaymentConfirmationPage() {
                   <Card.Img variant="top" src={success_tick} style={{ width: '200px', height: '200px' }} />
                 </div>
                 <Card.Body>
-                  <Card.Title className="justify-content-center" >Doctor: Dr.{doctor_email}</Card.Title>
+                  {/* <Card.Title className="justify-content-center" >Doctor: Dr.{doctor_email}</Card.Title>
                   <Card.Title className="justify-content-center" >Fee: ₹{fee}</Card.Title>
                   <Card.Title className="justify-content-center" >Date: {date}</Card.Title>
                   <Card.Title className="justify-content-center" >Time: {time_slot}</Card.Title>
                   <Card.Title className="justify-content-center" >Patient Email: {patient_email}</Card.Title>
-                  <Card.Title className="justify-content-center" >Mode: {line}</Card.Title>
+                  <Card.Title className="justify-content-center" >Mode: {line}</Card.Title> */}
+                  <Card.Title className="justify-content-center" >Order has been placed successfully</Card.Title>
+                  <Card.Title className="justify-content-center" >Order ID: ₹{orderId}</Card.Title>
                   <div className="d-flex justify-content-center">
                     <Button variant="success" className="m-3" onClick={() => navigate('/')}>
                       Home
                     </Button>
-                    {/* <Button variant="success" className="m-3">
+                    <Button variant="success" className="m-3" onClick={()=>{navigate('/dashboard-patient')}}>
                       My Appintments
-                    </Button> */}
+                    </Button>
                   </div>
                 </Card.Body>
               </Card>
