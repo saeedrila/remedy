@@ -20,13 +20,9 @@ import Footer from '../../components/Common/Footer'
 import Dashboard from '../../components/Executive/Dashboard'
 
 import classnames from "classnames";
-import AvailabilityDoctors from '../../components/Executive/AvailabilityDoctors'
 import Payments from '../../components/Executive/Payments'
-import AppointmentsDoctors from '../../components/Executive/AppointmentsDoctors'
-import AppointmentsLabs from '../../components/Executive/AppointmentsLabs'
-import AvailabilityLabs from '../../components/Executive/AvailabilityLabs'
+import Appointments from '../../components/Executive/Appointments'
 import Staff from '../../components/Executive/Staff'
-import axios from '../../api/axios'
 
 
 
@@ -53,7 +49,6 @@ function DashboardExecutive() {
             <Col lg={12}>
               <Card>
                 <CardBody>
-
                   <Row>
                     <Col md="3">
                     <CardTitle className="h4">Executive's Dashboard</CardTitle>
@@ -86,7 +81,7 @@ function DashboardExecutive() {
                               toggleVertical("2");
                             }}
                           >
-                            Appointmets (Doctors)
+                            Appointmets
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -100,7 +95,7 @@ function DashboardExecutive() {
                               toggleVertical("3");
                             }}
                           >
-                            Appointments (Labs)
+                            Staff
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -112,48 +107,6 @@ function DashboardExecutive() {
                             })}
                             onClick={() => {
                               toggleVertical("4");
-                            }}
-                          >
-                            Availability (Doctors)
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            style={{ cursor: "pointer" }}
-                            className={classnames({
-                              "mb-2": true,
-                              active: verticalActiveTab === "5",
-                            })}
-                            onClick={() => {
-                              toggleVertical("5");
-                            }}
-                          >
-                            Availability (Labs)
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            style={{ cursor: "pointer" }}
-                            className={classnames({
-                              "mb-2": true,
-                              active: verticalActiveTab === "6",
-                            })}
-                            onClick={() => {
-                              toggleVertical("6");
-                            }}
-                          >
-                            Staff
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            style={{ cursor: "pointer" }}
-                            className={classnames({
-                              "mb-2": true,
-                              active: verticalActiveTab === "7",
-                            })}
-                            onClick={() => {
-                              toggleVertical("7");
                             }}
                           >
                             Payments
@@ -172,33 +125,18 @@ function DashboardExecutive() {
                           <Dashboard />
                         </TabPane>
 
-                        {/* Appointments (Doctors) */}
+                        {/* Appointments */}
                         <TabPane tabId="2">
-                          <AppointmentsDoctors />
-                        </TabPane>
-
-                        {/* Appointments (Labs) */}
-                        <TabPane tabId="3">
-                          <AppointmentsLabs />
-                        </TabPane>
-
-                        {/* Availability (Doctors) */}
-                        <TabPane tabId="4">
-                        <AvailabilityDoctors />
-                        </TabPane>
-
-                        {/* Availability (Labs) */}
-                        <TabPane tabId="5">
-                          <AvailabilityLabs />
+                          <Appointments />
                         </TabPane>
 
                         {/* Staff */}
-                        <TabPane tabId="6">
+                        <TabPane tabId="3">
                           <Staff />
                         </TabPane>
 
                         {/* Payments */}
-                        <TabPane tabId="7">
+                        <TabPane tabId="4">
                           <Payments />
                         </TabPane>
                       </TabContent>

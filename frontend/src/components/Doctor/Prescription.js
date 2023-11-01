@@ -26,7 +26,6 @@ function Prescription() {
         },
       });
       setDoctorAppointmentList(response.data)
-      console.log('Doctor appointment list: ', response.data)
     } catch (error){
       console.error('Error fetching data', error)
     }

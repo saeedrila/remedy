@@ -25,7 +25,6 @@ function Appointments() {
         },
       });
       setPatientAppointmentList(response.data)
-      console.log('Patient appointment data: ', response.data)
     } catch (error){
       console.error('Error fetching data', error)
     }

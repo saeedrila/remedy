@@ -1,117 +1,73 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Row,
   Col,
   Card,
+  Table,
 } from 'react-bootstrap'
 import {
   CardBody,
   CardTitle,
 } from 'reactstrap'
+import axios from '../../api/axios';
+
+const FETCH_ALL_APPOINTMENTS = '/fetch-all-appointments'
 
 function Appointments() {
-  {/* Appointment related */}
-  const todayAppointmentButtons = [];
-  const tomorrowAppointmentButtons = [];
-  const dayAfterTomorrowAppointmentButtons = [];
-  const secondDayAfterTomorrowAppointmentButtons = [];
-
-  const startTime = new Date();
-  startTime.setHours(9, 0, 0);
-
-  const endTime = new Date();
-  endTime.setHours(17, 30, 0);
-
-  const getRandomColor = () => {
-    const colors = ['success', 'secondary'];
-    return colors[Math.floor(Math.random() * colors.length)];
+  const [appointmentList, setAppointmentList] = useState([])
+  const fetchAppointmentList = async ()=> {
+    try{
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(FETCH_ALL_APPOINTMENTS, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setAppointmentList(response.data)
+      console.log('Appointment list: ', response.data)
+    } catch (error){
+      console.error('Error fetching data', error)
+    }
   }
-
-  while (startTime <= endTime){
-    const timeString = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const id = `button-${timeString.replace(':', '-')}`;
-    const todayColor = getRandomColor();
-    const tomorrowColor = getRandomColor();
-    const dayAfterTomorrowColor = getRandomColor();
-    const secondDayAfterTomorrowColor = getRandomColor();
-
-    todayAppointmentButtons.push(
-      <Button key={id} color={todayColor} className={`btn btn-${todayColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-
-    tomorrowAppointmentButtons.push(
-      <Button key={id} color={tomorrowColor} className={`btn btn-${tomorrowColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-
-    dayAfterTomorrowAppointmentButtons.push(
-      <Button key={id} color={dayAfterTomorrowColor} className={`btn btn-${dayAfterTomorrowColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-
-    secondDayAfterTomorrowAppointmentButtons.push(
-      <Button key={id} color={secondDayAfterTomorrowColor} className={`btn btn-${secondDayAfterTomorrowColor} waves-effect waves-light`}>
-        {timeString}
-      </Button>
-    );
-    startTime.setMinutes(startTime.getMinutes() + 15);
-  }
-
+  useEffect(()=> {
+    fetchAppointmentList();
+  }, [])
   
   return (
     <>
       <Row>
-        <Col sm={6}>
+        <Col md={12}>
           <Card>
-            <CardTitle className='text-center'>
-              Today
-            </CardTitle>
             <CardBody>
-              <div className="d-flex flex-wrap gap-2">
-                {todayAppointmentButtons}
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col sm={6}>
-          <Card>
-            <CardTitle className='text-center'>
-              Tomorrow
-            </CardTitle>
-            <CardBody>
-              <div className="d-flex flex-wrap gap-2">
-                {tomorrowAppointmentButtons}
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={6}>
-          <Card>
-            <CardTitle className='text-center'>
-              Day after Tomorrow
-            </CardTitle>
-            <CardBody>
-              <div className="d-flex flex-wrap gap-2">
-                {dayAfterTomorrowAppointmentButtons}
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col sm={6}>
-          <Card>
-            <CardTitle className='text-center'>
-              2nd day after Tomorrow
-            </CardTitle>
-            <CardBody>
-              <div className="d-flex flex-wrap gap-2">
-                {secondDayAfterTomorrowAppointmentButtons}
+              <CardTitle className="h2">Documents </CardTitle>
+              <div className="table-responsive">
+                <Table className="table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Sl. No.</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Type</th>
+                      <th>Doctor/Lab</th>
+                      <th>Appointment ID</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointmentList.map((appointment, index)=>(
+                      <tr key={appointment.appointment_id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{appointment.date}</td>
+                      <td>{appointment.time}</td>
+                      <td>{appointment.slot_type}</td>
+                      <td>{appointment.doctor_email}</td>
+                      <td>{appointment.appointment_id}</td>
+                      <td>{appointment.status}</td>
+                    </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </div>
             </CardBody>
           </Card>
