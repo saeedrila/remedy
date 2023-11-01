@@ -25,7 +25,7 @@ const PWD_REGEX = /^.{4,23}$/;
 
 // API endpoints
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
-const UPDATE_PROFILE_DETAILS = '/get-patient-profile-details'
+const UPDATE_PROFILE_DETAILS = '/patch-profile-details'
 const CHANGE_PASSWORD = '/change-password'
 
 
@@ -122,57 +122,21 @@ function Profile() {
     fetchProfileData();
   }, []);
 
-  // Form data storage
-  const [formData, setFormData] = useState({
-    username: profileDetails.username || '',
-    mobile: profileDetails.mobile || '',
-    gender: profileDetails.gender || '',
-    age: profileDetails.age || '',
-    blood_group: profileDetails.blood_group || '',
-    address: profileDetails.address || '',
-  })
   const formik = useFormik({
     initialValues: {
-    }
-  })
-
-  // Handle form input data
-  const handleInputChangeProfileEdit = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  // Handle submit of input data
-  const handleProfileEditSubmit = async () => {
-    const updatedData = {};
-    for (const[key, value] of Object.entries(formData)) {
-      if (value !== '') {
-        updatedData[key] = value;
-      }
-    }
-    try {
-      const response = await axios.patch(UPDATE_PROFILE_DETAILS, updatedData);
-      fetchProfileData();
-      toast.success('Successfully updated', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
-      setFormData({
-        username: '',
-        mobile: '',
-        gender: '',
-        age: '',
-        blood_group: '',
-        address: '',
-      });
-    } catch (error) {
-      if (error.response){
-        toast.error('Error', {
+      username: '',
+      mobile: '',
+      gender: '',
+      age: '',
+      blood_group: '',
+      address: '',
+    },
+    onSubmit: async(values) => {
+      console.log('Form data: ', values)
+      try {
+        const response = await axios.patch(UPDATE_PROFILE_DETAILS, values);
+        fetchProfileData();
+        toast.success('Successfully updated', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -181,10 +145,60 @@ function Profile() {
           draggable: true,
           theme: 'light',
         });
+      } catch (error) {
+        if (error.response){
+          toast.error('Error', {
+            position: 'top-right',
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: 'light',
+          });
+        }
       }
-    }
-    setProfileEditModalShow(false)
-  }
+      setProfileEditModalShow(false)
+    },
+    validate: (values) => {
+      let errors = {};
+    
+      if (values.username && values.username.trim() === '') {
+        errors.username = 'Username cannot be blank';
+      }
+    
+      if (values.mobile) {
+        if (values.mobile.trim() === '') {
+          errors.mobile = 'Mobile number cannot be blank';
+        } else if (!/^\d{10}$/.test(values.mobile)) {
+          errors.mobile = 'Mobile number must be exactly 10 digits';
+        }
+      }
+    
+      if (values.gender && !['Male', 'Female'].includes(values.gender)) {
+        errors.gender = 'Gender must be either Male or Female';
+      }
+    
+      if (values.age !== '' && (values.age < 0 || values.age > 100)) {
+        errors.age = 'Age must be between 0 and 100';
+      }
+    
+      if (values.blood_group) {
+        if (!/^(A|B|AB|O)[+-]$/.test(values.blood_group)) {
+          errors.blood_group = 'Invalid blood group';
+        }
+      }
+    
+      if (values.address && values.address.length > 200) {
+        errors.address = 'Address should be at most 200 characters';
+      }
+    
+      return errors;
+    },
+  })
+  console.log('Form data: ', formik.values)
+  console.log('Form errors: ', formik.errors)
+
 
   return (
     <>
@@ -265,10 +279,14 @@ function Profile() {
               <Form.Control 
                 type="text" 
                 placeholder={profileDetails.username || "Enter your user name"} 
-                value={formData.username}
+                value={formik.values.username}
                 name="username"
-                onChange={handleInputChangeProfileEdit}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.username && formik.errors.username}
               />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.username}
+              </Form.Control.Feedback>
             </Col>
           </Row>
           <Row>
@@ -278,10 +296,15 @@ function Profile() {
                 type="text" 
                 placeholder={profileDetails.mobile || "Enter your phone number"}
                 pattern="[0-9]{10}|"
-                value={formData.mobile}
+                value={formik.values.mobile}
                 name="mobile"
-                onChange={handleInputChangeProfileEdit}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.mobile && formik.errors.mobile}
               />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.mobile}
+              </Form.Control.Feedback>
+
             </Col>
           </Row>
           <Row>
@@ -289,14 +312,19 @@ function Profile() {
             <Col>
               <Form.Control 
                 as="select"
-                value={formData.gender}
+                value={formik.values.gender}
                 name="gender"
-                onChange={handleInputChangeProfileEdit}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.gender && formik.errors.gender}
                 >
                 <option>Select Gender</option>
                 <option>Male</option>
                 <option>Female</option>
               </Form.Control>
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.gender}
+              </Form.Control.Feedback>
+
             </Col>
           </Row>
           <Row>
@@ -307,10 +335,14 @@ function Profile() {
                 placeholder={profileDetails.age || "Enter your age"}
                 min={0} 
                 max={99}
-                value={formData.age}
+                value={formik.values.age}
                 name="age"
-                onChange={handleInputChangeProfileEdit}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.age && formik.errors.age}
               />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.age}
+              </Form.Control.Feedback>
             </Col>
           </Row>
           <Row>
@@ -319,10 +351,14 @@ function Profile() {
               <Form.Control 
                 type="text" 
                 placeholder={profileDetails.blood_group || "Enter your Blood Group"}
-                value={formData.blood_group}
+                value={formik.values.blood_group}
                 name="blood_group"
-                onChange={handleInputChangeProfileEdit}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.blood_group && formik.errors.blood_group}
               />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.blood_group}
+              </Form.Control.Feedback>
             </Col>
           </Row>
           <Row>
@@ -332,10 +368,14 @@ function Profile() {
                 as="textarea" 
                 rows={3}
                 placeholder={profileDetails.address || "Enter your Address"}
-                value={formData.address}
+                value={formik.values.address}
                 name="address"
-                onChange={handleInputChangeProfileEdit}
+                onChange={formik.handleChange}
+                isInvalid={formik.touched.address && formik.errors.address}
               />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.address}
+              </Form.Control.Feedback>
             </Col>
           </Row>
         </Container>
@@ -344,7 +384,7 @@ function Profile() {
           <Button variant="secondary" onClick={() => setProfileEditModalShow(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleProfileEditSubmit}>Save</Button>
+          <Button variant="primary" onClick={formik.handleSubmit}>Save</Button>
         </Modal.Footer>
       </Modal>
 

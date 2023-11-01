@@ -16,7 +16,7 @@ from doctors_and_labs.serializers import (
     AccountSerializerDoctorAtSpecialization,
 )
 from .serializers import (
-    DoctorAvailabilitySerializer,
+    PatchProfileDetailsSerializer,
 )
 
 class GetPatientProfileDetails(APIView):
@@ -38,6 +38,30 @@ class GetPatientProfileDetails(APIView):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Account.DoesNotExist:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+class PatchProfileDetails(APIView):
+    def clean_data(self, data):
+        cleaned_data = {}
+        for key, value in data.items():
+            if value:
+                cleaned_data[key] = value
+        return cleaned_data
+
+    def patch(self, request):
+        try:
+            print('Data before cleaning: ', request.data)
+            cleaned_data = self.clean_data(request.data)
+            print('Data after cleaning: ', cleaned_data)
+            account = Account.objects.get(id = request.user.id)
+            serializer = PatchProfileDetailsSerializer(account, data = cleaned_data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                print('Serializer error: ',serializer.errors)
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Account.DoesNotExist:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
