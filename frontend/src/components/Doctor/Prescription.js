@@ -1,17 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "../../api/axios";
 import {
   Row,
   Col,
   Card,
   Table,
+  Button,
 } from 'react-bootstrap'
 import {
   CardBody,
   CardTitle,
 } from 'reactstrap'
 
+const FETCH_DOCTOR_APPOINTMENTS = '/fetch-doctor-appointments'
 
 function Prescription() {
+  const [doctorAppointmentList, setDoctorAppointmentList] = useState([]);
+  const [prescriptionOpenButton, setPrescriptionOpenButton] = useState(false)
+  const fetchDoctorAppointmentList = async ()=>{
+    try{
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(FETCH_DOCTOR_APPOINTMENTS, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setDoctorAppointmentList(response.data)
+      console.log('Doctor appointment list: ', response.data)
+    } catch (error){
+      console.error('Error fetching data', error)
+    }
+  }
+
+  useEffect(()=> {
+    fetchDoctorAppointmentList();
+  }, [])
+
+
   return (
     <>
       <Row>
@@ -24,26 +49,32 @@ function Prescription() {
                   <thead>
                     <tr>
                       <th>Sl. No.</th>
-                      <th>ID</th>
-                      <th>Patient's Name</th>
-                      <th>Sharing Status</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Type</th>
+                      <th>Patient email</th>
+                      <th>Appointment ID</th>
+                      <th>Status</th>
                       <th>Action</th>
-                      <th>Updated Time</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>id*</td>
-                      <td>Megan*</td>
-                      <td>Shared*</td>
-                      <td>
-                        <a href="#">View</a>{'  '}
-                        <a href="#">Edit</a>{'  '}
-                        <a href="#">Delete</a>
-                      </td>
-                      <td>Time*</td>
-                    </tr>
+                    {doctorAppointmentList.map((appointment, index)=>(
+                      <tr key={appointment.appointment_id}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{appointment.date}</td>
+                        <td>{appointment.time}</td>
+                        <td>{appointment.slot_type}</td>
+                        <td>{appointment.patient_email}</td>
+                        <td>{appointment.appointment_id}</td>
+                        <td>{appointment.status}</td>
+                        <td>
+                          <Button onClick={()=>setPrescriptionOpenButton(true)}>
+                            Prescription
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>

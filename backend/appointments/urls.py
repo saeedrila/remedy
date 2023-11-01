@@ -3,5 +3,7 @@ from .import views
 
 urlpatterns = [
     path('fetch-patient-appointments', views.FetchPatientAppointData.as_view(), name='fetch_patient_appointments'),
-    
+    path('fetch-doctor-appointments', views.FetchDoctorAppointData.as_view(), name='fetch_doctor_appointments'),
+
+
 ]
