@@ -47,28 +47,26 @@ function Appointments() {
                   <thead>
                     <tr>
                       <th>Sl. No.</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Type</th>
+                      <th>Doctor/Lab</th>
                       <th>Appointment ID</th>
-                      <th>Doctor/Lab's Name</th>
-                      <th>Day and time</th>
-                      <th>Action</th>
-                      <th>Share document</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>id*</td>
-                      <td>Megan*</td>
-                      <td>Time*</td>
-                      <td>
-                        <a href="#">Cancel</a>
-                      </td>
-                      <td>
-                        <Button>
-                          Upload
-                        </Button>
-                      </td>
+                    {patientAppointmentList.map((appointment, index)=>(
+                      <tr key={appointment.appointment_id}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{appointment.date}</td>
+                      <td>{appointment.time}</td>
+                      <td>{appointment.slot_type}</td>
+                      <td>{appointment.doctor_email}</td>
+                      <td>{appointment.appointment_id}</td>
+                      <td>{appointment.status}</td>
                     </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>
