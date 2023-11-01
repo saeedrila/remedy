@@ -9,8 +9,8 @@ import useAuth from './hooks/useAuth';
 // Login page
 import Login from './components/Authentication/Login';
 
-// Profile Pages
-import ProfilePatient from './pages/Profile/ProfilePatient';
+// Profile Page
+import Profile from '../src/components/Common/Profile'
 
 // Registration Pages
 import ExecutiveRegisterPage from './pages/Authentication/ExecutiveRegisterPage';
@@ -83,7 +83,7 @@ function App() {
 
           {/* Profile Page */}
           <Route element={<RequireAuth allowedRoles={['is_patient', 'is_doctor', 'is_lab', 'is_executive']}/>}>
-            <Route path='profile-patient' element={<ProfilePatient/>} />
+            <Route path='profile' element={<Profile/>} />
           </Route>
 
           {/* Patient specific pages */}

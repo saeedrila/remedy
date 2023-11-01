@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react'
+import { useFormik } from 'formik'
 import {
   Container,
   Row,
@@ -12,8 +13,8 @@ import {
   CardBody,
   Table,
 } from 'reactstrap'
-import axios from '../../api/axios'
 import { toast } from 'react-toastify'
+import axios from '../../api/axios'
 
 import user1 from '../../assets/images/users/avatar-1.png'
 import Header from '../../components/Common/Header'
@@ -28,7 +29,7 @@ const UPDATE_PROFILE_DETAILS = '/get-patient-profile-details'
 const CHANGE_PASSWORD = '/change-password'
 
 
-function ProfilePatient() {
+function Profile() {
   // Profile details recieved from backend
   const [profileDetails, setProfileDetails] = useState([]);
 
@@ -130,6 +131,10 @@ function ProfilePatient() {
     blood_group: profileDetails.blood_group || '',
     address: profileDetails.address || '',
   })
+  const formik = useFormik({
+    initialValues: {
+    }
+  })
 
   // Handle form input data
   const handleInputChangeProfileEdit = (e) => {
@@ -178,7 +183,6 @@ function ProfilePatient() {
         });
       }
     }
-    console.log('Updated data:', updatedData)
     setProfileEditModalShow(false)
   }
 
@@ -340,7 +344,7 @@ function ProfilePatient() {
           <Button variant="secondary" onClick={() => setProfileEditModalShow(false)}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleProfileEditSubmit}>*Save</Button>
+          <Button variant="primary" onClick={handleProfileEditSubmit}>Save</Button>
         </Modal.Footer>
       </Modal>
 
@@ -418,4 +422,4 @@ function ProfilePatient() {
   )
 }
 
-export default ProfilePatient
+export default Profile

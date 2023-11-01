@@ -229,6 +229,10 @@ Install .env to load keys directly from .env file
 ```
 npm install dotenv
 ```
+Install formik for form validation
+```
+npm install formik
+```
 
 Thanks to:
 

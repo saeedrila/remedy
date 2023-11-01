@@ -76,7 +76,7 @@ const ProfileMenu = props => {
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <DropdownItem tag="a" onClick={() => navigate('/profile-patient')}>
+          <DropdownItem tag="a" onClick={() => navigate('/profile')}>
             {" "}
             <i className="bx bx-user font-size-16 align-middle me-1" />
             {"Profile"}{" "}
