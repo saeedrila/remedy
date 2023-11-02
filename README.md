@@ -241,6 +241,10 @@ Install react scrollbar
 ```
 npm i react-perfect-scrollbar
 ```
+Install Pusher for chat
+```
+npm install pusher-js
+```
 
 Thanks to:
 

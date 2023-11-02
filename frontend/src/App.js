@@ -87,8 +87,9 @@ function App() {
           {/* Profile Page */}
           <Route element={<RequireAuth allowedRoles={['is_patient', 'is_doctor', 'is_lab', 'is_executive']}/>}>
             <Route path='profile' element={<Profile/>} />
-            <Route path='chat' element={<Chat/>} />
           </Route>
+          
+          <Route path='chat' element={<Chat/>} />
 
           {/* Patient specific pages */}
           <Route element={<RequireAuth allowedRoles={['is_patient']}/>}>

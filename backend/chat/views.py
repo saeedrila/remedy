@@ -6,8 +6,8 @@ from rest_framework.response import Response
 
 class ChatAPIView(APIView):
     def post(self, request):
-        pusher_client.trigger('chat', 'message', {
-            'email': request.data['email'],
+        pusher_client.trigger('Remedy-development', 'message', {
+            'email': request.data['myEmail'],
             'message': request.data['message'],
         })
 
