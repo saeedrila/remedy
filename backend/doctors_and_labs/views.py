@@ -127,20 +127,20 @@ class DoctorAvailabilityRegistration(APIView):
                 line = serializer.validated_data.get('line')
                 slot_id = serializer.validated_data.get('slot_id')
                 slot_status_script = 'available' if slot_status else 'notAvailable'
-                print('Date: ', date, 'Line: ', line, 'Slot_id: ', slot_id, 'Status: ', slot_status_script)
+                # print('Date: ', date, 'Line: ', line, 'Slot_id: ', slot_id, 'Status: ', slot_status_script)
 
-                column_name = 'slots_status_offline' if line == 'offline' else 'slots_status_online'
+                # column_name = 'slots_status_offline' if line == 'offline' else 'slots_status_online'
                 
                 time_slot_object = DoctorAvailability.objects.get(doctor=request.user, date=date)
-                print('Time slot obj: ', time_slot_object)
+                # print('Time slot obj: ', time_slot_object)
 
                 # Assuming the model has attributes or fields named 'slots_status_offline' and 'slots_status_online'
                 if line == 'offline':
                     column_data = time_slot_object.slots_details_offline
                 else:
                     column_data = time_slot_object.slots_details_online
-                print('Column name: ', column_name)
-                print('Column data: ', column_data)
+                # print('Column name: ', column_name)
+                # print('Column data: ', column_data)
                 if isinstance(column_data, dict):
                     if slot_id in column_data:
                         updated_column_data = dict(column_data)
@@ -160,7 +160,7 @@ class DoctorAvailabilityRegistration(APIView):
                         # Save the changes to the model
                         time_slot_object.save()
                         
-                        print('Column data updated: ', updated_column_data)
+                        # print('Column data updated: ', updated_column_data)
                         return Response({"details": "Successfully updated"}, status=status.HTTP_200_OK)
                     else:
                         print('Slot ID not found in column_data')
@@ -268,55 +268,6 @@ class DoctorsListAtSpecialization(APIView):
 
 
 # Have to check the below classes and have to delete those which are not required in production.
-# Register Specialization
-class RegisterSpecialization(APIView):
-    @csrf_exempt
-    def post(self, request):
-        serializer = RegisterSpecialization(data=request.data)
-        if serializer.is_valid():
-            specialization_title = serializer.validated_data.get('specialization')
-
-            if request.user.is_doctor:
-                doctor = request.user
-                specialization, created = DoctorSpecializationsAvailable.objects.get_or_create(specialization_title=specialization_title)
-                already_exist = DoctorSpecializations.objects.filter(doctor=doctor, specialization=specialization).exists()
-                if not already_exist:
-                    doctor_specialization = DoctorSpecializations(doctor=doctor, specialization=specialization)
-                    doctor_specialization.save()
-                    return Response({"details": "Specialization successfully added to your profile"}, status=status.HTTP_201_CREATED)
-                else:
-                    return Response({"details": "You already have this specialization"}, status=status.HTTP_200_OK)
-
-            elif request.user.is_executive:
-                specialization_available, created = DoctorSpecializationsAvailable.objects.get_or_create(specialization_title=specialization_title)
-                if created:
-                    return Response({"details": "Specialization successfully created"}, status=status.HTTP_201_CREATED)
-                else:
-                    return Response({"details": "Specialization already exists"}, status=status.HTTP_200_OK)
-            else:
-                return Response({"details": "You are not authorized to add specialization"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# Request from frontend
-# Doctor specialization
-class DoctorSpecializationData(APIView):
-    @csrf_exempt
-    def get(self, request):
-        specialization_data = DoctorSpecializationsAvailable.objects.all()
-        if not specialization_data:
-            return Response({"details": "No specialization data available"}, status=status.HTTP_412_PRECONDITION_FAILED)
-        serialized_data = [
-            {
-                'id': item.id,
-                'title': item.specialization_title
-            }
-            for item in specialization_data
-        ]
-        return Response(serialized_data)
-
-
-
 # Doctor time slots available
 class DoctorsAtSpecialization(APIView):
     @csrf_exempt

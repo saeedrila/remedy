@@ -14,26 +14,4 @@ urlpatterns = [
 
     # Fetch available doctors on a particular specialization
     path('doctors-at-specific-specialization/', views.DoctorsListAtSpecialization.as_view(), name='doctors-at-specialization'),
-    
-
-
-
-
-    # Old urls, have to delete unwanted before production run.
-    # Register specialization
-    path('register-specialization', views.RegisterSpecialization.as_view(), name='register-specialization'),
-
-    # Frontend
-    # Get doctor specialization details
-    path('doctor-specialization-data', views.DoctorSpecializationData.as_view(), name='doctor-specialization-data'),
-
-
-    # Register doctor's available timing
-    # Not using currently
-    path('doctor-availability-registration', views.DoctorAvailabilityRegistration.as_view(), name='doctor-availability-registration'),
-
-
-
-
-
 ]

@@ -176,6 +176,15 @@ Install pusher for chatting
 ```
 pip install pusher
 ```
+Install boto3 for AWS S3
+```
+pip install boto3
+```
+Install django-storages
+```
+pip install django-storages
+```
+
 
 
 # React

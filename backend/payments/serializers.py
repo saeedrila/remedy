@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 
-
 class RazorpayTransactionSerializer(serializers.Serializer):
     payment_id = serializers.CharField()
     order_id = serializers.CharField()
@@ -15,3 +14,4 @@ class RazorpayOrderSerializer(serializers.Serializer):
     date = serializers.CharField()
     line = serializers.CharField()
     time_slot = serializers.CharField()
+

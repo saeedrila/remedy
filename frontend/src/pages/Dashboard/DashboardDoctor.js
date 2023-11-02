@@ -123,7 +123,7 @@ function DashboardDoctor() {
                               toggleVertical("4");
                             }}
                           >
-                            My Prescription
+                            Appointments
                           </NavLink>
                         </NavItem>
                         <NavItem>

@@ -58,3 +58,8 @@ class AllAppointmentsSerializer(serializers.ModelSerializer):
 
     def get_lab_email(self, obj):
         return obj.lab.email if obj.lab else None
+
+class PrescriptionSerializer(serializers.Serializer):
+    appointment_id = serializers.CharField()
+    prescription = serializers.CharField(max_length=500)
+    

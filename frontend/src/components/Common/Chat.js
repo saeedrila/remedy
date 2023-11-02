@@ -21,13 +21,12 @@ const MESSAGE_API = 'http://127.0.0.1:8000/api/chat'
 
 function Chat() {
   const [myEmail, setMyEmail] = useState(localStorage.getItem('email'));
-  const [recipientEmail, setRecipientEmail] = useState('doctor5@g.com');
+  const [recipientEmail, setRecipientEmail] = useState('');
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   let allMessages = [];
 
   useEffect(()=>{
-    Pusher.logToConsole = true;
     var pusher = new Pusher('f9b8560bd1453f12aead', {
       cluster: 'ap2'
     });
@@ -44,7 +43,8 @@ function Chat() {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        myEmail,
+        senderEmail: myEmail,
+        recipientEmail,
         message
       })
     });

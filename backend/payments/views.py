@@ -128,3 +128,12 @@ class RazorpayOrderComplete(APIView):
             return Response(status=status.HTTP_202_ACCEPTED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class GetExecutivePaymentList(APIView):
+    def get(self, request):
+        payments_obj = Payments.objects.filter(appointment_completion = True)
+        
+
+class GetDoctorPaymentList(APIView):
+    def get(self, request):
+        pass

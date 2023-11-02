@@ -18,6 +18,7 @@ class Appointments(models.Model):
     slot_type = models.CharField(max_length=10)
     order_created = models.DateTimeField(auto_now_add=True)
     document = models.FileField(upload_to='appointment_documents/', null=True)
+    prescription = models.TextField(max_length=500, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.appointment_id:
