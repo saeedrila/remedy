@@ -36,6 +36,9 @@ import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
 import Error404 from './pages/Error404';
 import Error401 from './pages/Error401';
 
+//Chat
+import Chat from '../src/components/Common/Chat'
+
 // Sitemap
 import SiteMap from './pages/SiteMap';
 
@@ -84,6 +87,7 @@ function App() {
           {/* Profile Page */}
           <Route element={<RequireAuth allowedRoles={['is_patient', 'is_doctor', 'is_lab', 'is_executive']}/>}>
             <Route path='profile' element={<Profile/>} />
+            <Route path='chat' element={<Chat/>} />
           </Route>
 
           {/* Patient specific pages */}

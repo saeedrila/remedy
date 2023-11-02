@@ -165,3 +165,10 @@ LOGGING = {
 # Razorpay payment keys
 RAZORPAY_KEY = config("RAZORPAY_KEY")
 RAZORPAY_SECRET = config("RAZORPAY_SECRET")
+
+# Pusher keys for chatting
+PUSHER_APP_ID = config("PUSHER_APP_ID")
+PUSHER_KEY = config("PUSHER_KEY")
+PUSHER_SECRET = config("PUSHER_SECRET")
+PUSHER_CLUSTER = config("PUSHER_CLUSTER")
+PUSHER_SSL = config("PUSHER_SSL").lower() == "true"

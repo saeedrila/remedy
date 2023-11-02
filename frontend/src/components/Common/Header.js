@@ -51,7 +51,7 @@ const Header = (props) => {
               <i className="fa fa-fw fa-bars" />
             </button>
 
-            <form className="app-search d-none d-lg-block">
+            {/* <form className="app-search d-none d-lg-block">
               <div className="position-relative">
                 <input
                   type="text"
@@ -60,11 +60,11 @@ const Header = (props) => {
                 />
                 <span className="bx bx-search-alt" />
               </div>
-            </form>
+            </form> */}
           </div>
 
           <div className="d-flex">
-            <div className="dropdown d-inline-block d-lg-none ms-2">
+            {/* <div className="dropdown d-inline-block d-lg-none ms-2">
               <button
                 type="button"
                 className="btn header-item noti-icon "
@@ -99,7 +99,7 @@ const Header = (props) => {
                   </div>
                 </form>
               </div>
-            </div>
+            </div> */}
             {isLoggedIn ? (
               <ProfileMenu />
             ) : (

@@ -113,7 +113,6 @@ function Profile() {
         },
       })
       setProfileDetails(response.data)
-      console.log('Profile data: ', response.data)
     } catch(error){
       console.error('Error fetching data', error)
     }};
@@ -132,7 +131,6 @@ function Profile() {
       address: '',
     },
     onSubmit: async(values) => {
-      console.log('Form data: ', values)
       try {
         const response = await axios.patch(UPDATE_PROFILE_DETAILS, values);
         fetchProfileData();
@@ -196,8 +194,6 @@ function Profile() {
       return errors;
     },
   })
-  console.log('Form data: ', formik.values)
-  console.log('Form errors: ', formik.errors)
 
 
   return (

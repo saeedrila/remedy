@@ -40,7 +40,6 @@ const ProfileMenu = props => {
   }, []);
 
   const handleDashboard = () => {
-    console.log('Dashboard');
     if (auth.roles.is_executive){
       navigate('/dashboard-executive')
     }
@@ -80,6 +79,10 @@ const ProfileMenu = props => {
             {" "}
             <i className="bx bx-user font-size-16 align-middle me-1" />
             {"Profile"}{" "}
+          </DropdownItem>
+          <DropdownItem tag="a" onClick={() => navigate('/chat')}>
+            <i className="bx bx-chat font-size-16 align-middle me-1" />
+            {"Chat"}
           </DropdownItem>
           <DropdownItem tag="a" onClick={() => handleDashboard()}>
             <i className="bx bx-wallet font-size-16 align-middle me-1" />

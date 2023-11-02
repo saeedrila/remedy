@@ -172,6 +172,10 @@ Install Razorpay for payment integration
 ```
 pip install razorpay
 ```
+Install pusher for chatting
+```
+pip install pusher
+```
 
 
 # React
@@ -232,6 +236,10 @@ npm install dotenv
 Install formik for form validation
 ```
 npm install formik
+```
+Install react scrollbar
+```
+npm i react-perfect-scrollbar
 ```
 
 Thanks to:
