@@ -78,20 +78,6 @@ function DashboardPatient(props) {
                               toggleVertical("2");
                             }}
                           >
-                            My Documents
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            style={{ cursor: "pointer" }}
-                            className={classnames({
-                              "mb-2": true,
-                              active: verticalActiveTab === "3",
-                            })}
-                            onClick={() => {
-                              toggleVertical("3");
-                            }}
-                          >
                             Payments
                           </NavLink>
                         </NavItem>
@@ -109,13 +95,8 @@ function DashboardPatient(props) {
                           <Appointments />
                         </TabPane>
 
-                        {/* My Documents */}
-                        <TabPane tabId="2">
-                          <Documents />
-                        </TabPane>
-
                         {/* Payments */}
-                        <TabPane tabId="3">
+                        <TabPane tabId="2">
                           <Payments />
                         </TabPane>
 

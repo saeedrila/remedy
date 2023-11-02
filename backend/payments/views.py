@@ -9,6 +9,8 @@ import razorpay
 from .serializers import (
     RazorpayTransactionSerializer,
     RazorpayOrderSerializer,
+    ExecutivePaymentListSerializer,
+    PatientPaymentListSerializer,
 )
 from .models import Payments
 from appointments.models import Appointments
@@ -132,8 +134,54 @@ class RazorpayOrderComplete(APIView):
 class GetExecutivePaymentList(APIView):
     def get(self, request):
         payments_obj = Payments.objects.filter(appointment_completion = True)
-        
+        payments_data = [{'appointment': payment.appointment, 'staff_payment': payment.staff_payment, 'platform_fee': payment.platform_fee, 'amount': payment.amount} for payment in payments_obj]
+        for payment_data in payments_data:
+            appointment_id = payment_data['appointment']
+            try:
+                appointment_obj = Appointments.objects.get(appointment_id=appointment_id)
+                payment_data['date'] = appointment_obj.date
+            except Appointments.DoesNotExist:
+                payment_data['date'] = None
+
+        serializer = ExecutivePaymentListSerializer(data=payments_data, many=True)
+        if not serializer.is_valid():
+            print('Serializer Error: ', serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class GetDoctorPaymentList(APIView):
     def get(self, request):
-        pass
+        payments_obj = Payments.objects.filter(appointment_completion=True)
+        payments_data = [{'appointment': payment.appointment, 'staff_payment': payment.staff_payment, 'platform_fee': payment.platform_fee, 'amount': payment.amount} for payment in payments_obj]
+        for payment_data in payments_data:
+            appointment_id = payment_data['appointment']
+            try:
+                appointment_obj = Appointments.objects.get(appointment_id=appointment_id)
+                if not appointment_obj.doctor_id==request.user:
+                    pass
+                payment_data['date'] = appointment_obj.date
+            except Appointments.DoesNotExist:
+                payment_data['date'] = None
+
+        serializer = ExecutivePaymentListSerializer(data=payments_data, many=True)
+        if not serializer.is_valid():
+            print('Serializer Error: ', serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class GetPatientPaymentList(APIView):
+    def get(self, request):
+        appointments_obj = Appointments.objects.filter(patient=request.user)
+        appointment_data = [{
+            'appointment': appointment.appointment_id,
+            'amount': appointment.payment.amount/100, 
+            'date': appointment.date, 
+            'status': appointment.status
+            } for appointment in appointments_obj]
+
+        serializer = PatientPaymentListSerializer(data=appointment_data, many=True)
+        if not serializer.is_valid():
+            print('Serializer Error: ', serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_200_OK)

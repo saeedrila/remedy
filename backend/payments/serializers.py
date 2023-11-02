@@ -15,3 +15,15 @@ class RazorpayOrderSerializer(serializers.Serializer):
     line = serializers.CharField()
     time_slot = serializers.CharField()
 
+class ExecutivePaymentListSerializer(serializers.Serializer):
+    date = serializers.DateField(required=False)
+    appointment = serializers.CharField()
+    staff_payment = serializers.IntegerField()
+    platform_fee = serializers.IntegerField()
+    amount = serializers.IntegerField()
+
+class PatientPaymentListSerializer(serializers.Serializer):
+    date = serializers.DateField(required=False)
+    appointment = serializers.CharField()
+    amount = serializers.IntegerField()
+    status = serializers.CharField()

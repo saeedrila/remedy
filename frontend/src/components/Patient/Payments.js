@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Row,
   Col,
@@ -9,36 +9,59 @@ import {
   CardBody,
   CardTitle,
 } from 'reactstrap'
+import axios from '../../api/axios'
+
+const FETCH_PAYMENTS = '/fetch-patient-payments'
 
 function Payments() {
+  const [patientPaymentList, setPatientPaymentList] = useState([])
+  // Fetch payments list
+  const fetchPatientPaymentList = async ()=>{
+    try{
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(FETCH_PAYMENTS, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setPatientPaymentList(response.data)
+    } catch (error){
+      console.error('Error fetching data', error)
+    }
+  }
+  useEffect(()=> {
+    fetchPatientPaymentList();
+  }, [])
+
+
   return (
     <>
       <Row>
         <Col md={12}>
           <Card>
             <CardBody>
-              <CardTitle className="h2">Prescriptions </CardTitle>
+              <CardTitle className="h2">Payment </CardTitle>
               <div className="table-responsive">
                 <Table className="table mb-0">
                   <thead>
-                    <tr>
+                  <tr>
                       <th>Sl. No.</th>
-                      <th>ID</th>
-                      <th>Payment status</th>
-                      <th>Payment Date</th>
-                      <th>Doctor/Lab</th>
-                      <th>Amount</th>
+                      <th>Appointment ID</th>
+                      <th>Date</th>
+                      <th>Payment</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>id*</td>
-                      <td>Payment processed*</td>
-                      <td>10-Jul-2023*</td>
-                      <td>Doctor*</td>
-                      <td>₹5000*</td>
+                    {patientPaymentList.map((payment, index)=>(
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{payment.appointment}</td>
+                      <td>{payment.date}</td>
+                      <td>{payment.amount}</td>
+                      <td>{payment.status}</td>
                     </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>

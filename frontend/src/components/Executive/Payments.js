@@ -55,14 +55,16 @@ function Payments() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>id*</td>
-                      <td>Payment processed*</td>
-                      <td>10-Jul-2023*</td>
-                      <td>1-Jul-2023 to 10-Jul-2023*</td>
-                      <td>₹5000*</td>
+                    {executivePaymentList.map((payment, index)=>(
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{payment.appointment}</td>
+                      <td>{payment.date}</td>
+                      <td>{payment.staff_payment}</td>
+                      <td>{payment.platform_fee}</td>
+                      <td>{payment.amount}</td>
                     </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>

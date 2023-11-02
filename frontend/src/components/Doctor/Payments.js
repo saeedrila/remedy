@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Row,
   Col,
@@ -9,36 +9,59 @@ import {
   CardBody,
   CardTitle,
 } from 'reactstrap'
+import axios from '../../api/axios'
+
+const FETCH_PAYMENTS = '/fetch-doctor-payments'
 
 function Payments() {
+  const [doctorPaymentList, setDoctorPaymentList] = useState([])
+    // Fetch payments list
+    const fetchDoctorPaymentList = async ()=>{
+      try{
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.get(FETCH_PAYMENTS, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setDoctorPaymentList(response.data)
+      } catch (error){
+        console.error('Error fetching data', error)
+      }
+    }
+    useEffect(()=> {
+      fetchDoctorPaymentList();
+    }, [])
+
+
   return (
     <>
       <Row>
         <Col md={12}>
           <Card>
             <CardBody>
-              <CardTitle className="h2">Prescriptions </CardTitle>
+              <CardTitle className="h2">Payment </CardTitle>
               <div className="table-responsive">
                 <Table className="table mb-0">
                   <thead>
-                    <tr>
+                  <tr>
                       <th>Sl. No.</th>
-                      <th>ID</th>
-                      <th>Payment status</th>
-                      <th>Payment Date</th>
-                      <th>Duration</th>
-                      <th>Amount</th>
+                      <th>Appointment ID</th>
+                      <th>Date</th>
+                      <th>Payment</th>
+                      <th>Platform fee</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>id*</td>
-                      <td>Payment processed*</td>
-                      <td>10-Jul-2023*</td>
-                      <td>1-Jul-2023 to 10-Jul-2023*</td>
-                      <td>₹5000*</td>
+                    {doctorPaymentList.map((payment, index)=>(
+                    <tr key={index}>
+                      <th scope="row">{index + 1}</th>
+                      <td>{payment.appointment}</td>
+                      <td>{payment.date}</td>
+                      <td>{payment.staff_payment}</td>
+                      <td>{payment.platform_fee}</td>
                     </tr>
+                    ))}
                   </tbody>
                 </Table>
               </div>

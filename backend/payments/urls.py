@@ -11,4 +11,6 @@ urlpatterns = [
     #Payment list fetching
     path('fetch-executive-payments', views.GetExecutivePaymentList.as_view(), name='fetch-executive-payments'),
     path('fetch-doctor-payments', views.GetDoctorPaymentList.as_view(), name='fetch-doctor-payments'),
+    path('fetch-patient-payments', views.GetPatientPaymentList.as_view(), name='fetch-patient-payments'),
+
 ]
