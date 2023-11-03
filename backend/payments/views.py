@@ -134,7 +134,12 @@ class RazorpayOrderComplete(APIView):
 class GetExecutivePaymentList(APIView):
     def get(self, request):
         payments_obj = Payments.objects.filter(appointment_completion = True)
-        payments_data = [{'appointment': payment.appointment, 'staff_payment': payment.staff_payment, 'platform_fee': payment.platform_fee, 'amount': payment.amount} for payment in payments_obj]
+        payments_data = [{
+            'appointment': payment.appointment, 
+            'staff_payment': payment.staff_payment//100, 
+            'platform_fee': payment.platform_fee//100, 
+            'amount': payment.amount//100
+            } for payment in payments_obj]
         for payment_data in payments_data:
             appointment_id = payment_data['appointment']
             try:
@@ -153,7 +158,12 @@ class GetExecutivePaymentList(APIView):
 class GetDoctorPaymentList(APIView):
     def get(self, request):
         payments_obj = Payments.objects.filter(appointment_completion=True)
-        payments_data = [{'appointment': payment.appointment, 'staff_payment': payment.staff_payment, 'platform_fee': payment.platform_fee, 'amount': payment.amount} for payment in payments_obj]
+        payments_data = [{
+            'appointment': payment.appointment, 
+            'staff_payment': payment.staff_payment//100, 
+            'platform_fee': payment.platform_fee//100, 
+            'amount': payment.amount//100
+            } for payment in payments_obj]
         for payment_data in payments_data:
             appointment_id = payment_data['appointment']
             try:
@@ -175,7 +185,7 @@ class GetPatientPaymentList(APIView):
         appointments_obj = Appointments.objects.filter(patient=request.user)
         appointment_data = [{
             'appointment': appointment.appointment_id,
-            'amount': appointment.payment.amount/100, 
+            'amount': appointment.payment.amount//100, 
             'date': appointment.date, 
             'status': appointment.status
             } for appointment in appointments_obj]

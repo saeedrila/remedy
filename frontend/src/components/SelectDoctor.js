@@ -63,6 +63,7 @@ function SelectDoctor() {
         ...item,
         img: pic1
       }));
+      console.log('Day data: ',updatedSpecializations)
 
       if (requiredDate === dayZeroDate) {
         setCurrentDayData(updatedSpecializations)
@@ -73,8 +74,8 @@ function SelectDoctor() {
       } else {
         setCurrentDayData(updatedSpecializations)
       }
-      console.log('Date: ', requiredDate)
-      console.log('Doctors list of selected ID: ', updatedSpecializations)
+      // console.log('Date: ', requiredDate)
+      // console.log('Doctors list of selected ID: ', updatedSpecializations)
 
       changeProceedButtonData();
     } catch (error){
@@ -254,7 +255,7 @@ function SelectDoctor() {
                             ) : (
                               <p>Press Offline/Online to update appointment availability</p>
                             )}
-                            {proceedButtonData[cardIndex]?.time !== null ? (
+                            {proceedButtonData[cardIndex]?.time ? (
                               <Button
                                 variant="success"
                                 className="mt-3"

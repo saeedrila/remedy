@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Container,
   Row,
@@ -11,8 +11,32 @@ import {
   CardText,
   Progress
 } from 'reactstrap'
+import axios from '../../api/axios'
+
+const FETCH_DASHBOARD_DATA = '/fetch-executive-dashboard-data'
+
 
 function Dashboard() {
+  const [executiveDashboardData, setExecutiveDashboardData] = useState('')
+
+  const fetchExecutiveDashboardData = async ()=>{
+    try{
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(FETCH_DASHBOARD_DATA, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      setExecutiveDashboardData(response.data)
+      console.log('Dashboard', response.data)
+    } catch (error){
+      console.error('Error fetching data', error)
+    }
+  }
+  useEffect(()=> {
+    fetchExecutiveDashboardData();
+  }, [])
+
   return (
     <>
       <Container>
@@ -22,9 +46,9 @@ function Dashboard() {
               <Row className="no-gutters align-items-center">
                 <Col md={10}>
                   <CardBody>
-                    <CardTitle>Total appointments attended</CardTitle>
+                    <CardTitle>Total appointments catered</CardTitle>
                     <CardText>
-                      120
+                      {executiveDashboardData.total_appointments_catered}
                     </CardText>
                   </CardBody>
                 </Col>
@@ -39,9 +63,9 @@ function Dashboard() {
               <Row className="no-gutters align-items-center">
                 <Col md={10}>
                   <CardBody>
-                    <CardTitle>Revenue in last 7 days</CardTitle>
+                    <CardTitle>Revenue in last week</CardTitle>
                     <CardText>
-                      $ 50,000 *
+                    ₹ {executiveDashboardData.total_platform_fee_last_week}
                     </CardText>
                   </CardBody>
                 </Col>
@@ -77,11 +101,12 @@ function Dashboard() {
                   <Row>
                     <Col sm={6} className='text-center fs-4'>
                     <p>
-                      12*
+                    {executiveDashboardData.total_appointments_today}
                     </p>
                     </Col>
                     <Col sm={6} className='text-center fs-4'>
-                      6/12*
+                    {executiveDashboardData.total_appointments_today_completed}/
+                    {executiveDashboardData.total_appointments_today}
                     </Col>
                   </Row>
                   </Container>
@@ -93,14 +118,14 @@ function Dashboard() {
                   <p>Overall</p>
                   <div >
                     <Progress
-                      value={50}
+                      value={executiveDashboardData.total_appointment_today_completed_perc}
                       color="primary"
                       style={{ width: '100%' }}
                       animated
                     ></Progress>
                   </div>
                 </li>
-                <li className="list-group-item">
+                {/* <li className="list-group-item">
                   <p>In-Person</p>
                   <div >
                     <Progress
@@ -121,11 +146,12 @@ function Dashboard() {
                       animated
                     ></Progress>
                   </div>
-                  </li>
+                  </li> */}
               </ul>
             </Card>
           </Col>
-          <Col mg={6}>
+
+          {/* <Col mg={6}>
             <Card>
               <CardBody>
                 <CardTitle className="mt-0">Confirmed Appointments</CardTitle>
@@ -168,7 +194,8 @@ function Dashboard() {
                 </li>
               </ul>
             </Card>
-          </Col>
+          </Col> */}
+
         </Row>
       </Container>
     </>

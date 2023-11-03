@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from authentication.models import Account
 from rest_framework.response import Response
 from rest_framework import status
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 
 from authentication.serializers import AllAccountSerializer
@@ -76,7 +76,8 @@ class FetchAvailableTimingDoctor(APIView):
                 title = request.query_params.get('title', None)
                 required_date = request.query_params.get('date', None)
                 if title and required_date is not None:
-                    current_datetime = datetime.now()
+                    time_zone_offset = timedelta(hours=5, minutes=30)
+                    current_datetime = datetime.now() + time_zone_offset
                     current_date = current_datetime.strftime('%Y-%m-%d')
                     current_time = current_datetime.strftime('%I:%M %p')
 
@@ -97,10 +98,11 @@ class FetchAvailableTimingDoctor(APIView):
                                 "timings": []
                             }
                             for key, slot_data in doctor_availability.slots_details_online.items():
+                                slot_time = datetime.strptime(slot_data.get('time'), '%I:%M %p')
                                 if (
                                     slot_data.get('status') == 'available'
                                     and str(doctor_availability.date) == current_date
-                                    and slot_data.get('time') >= current_time
+                                    and slot_time >= current_datetime
                                 ):
                                     online_slots["timings"].append(slot_data.get('time'))
                                 elif (
@@ -118,10 +120,17 @@ class FetchAvailableTimingDoctor(APIView):
                                 "timings": []
                             }
                             for key, slot_data in doctor_availability.slots_details_offline.items():
+                                time_str = slot_data.get('time')
+                                time_format = '%I:%M %p'
+                                today_date = date.today()
+                                combined_datetime = datetime.combine(today_date, datetime.strptime(time_str, time_format).time())
+                                # print('Slot time: ', combined_datetime)
+                                # print('Current time: ', current_datetime)
+                                
                                 if (
                                     slot_data.get('status') == 'available'
                                     and str(doctor_availability.date) == current_date
-                                    and slot_data.get('time') >= current_time
+                                    and combined_datetime >= current_datetime
                                 ):
                                     offline_slots["timings"].append(slot_data.get('time'))
                                 elif (
@@ -135,7 +144,7 @@ class FetchAvailableTimingDoctor(APIView):
 
                         data.append(doctor_data)
 
-                    print('List of doctors serializer: ',data)
+                    # print('List of doctors serializer: ',data)
                     return Response(data, status=status.HTTP_200_OK)
                 else:
                     return Response({"detail": "Specialization not found"}, status=status.HTTP_404_NOT_FOUND)

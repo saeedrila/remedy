@@ -60,9 +60,9 @@ function Payments() {
                       <th scope="row">{index + 1}</th>
                       <td>{payment.appointment}</td>
                       <td>{payment.date}</td>
-                      <td>{payment.staff_payment}</td>
-                      <td>{payment.platform_fee}</td>
-                      <td>{payment.amount}</td>
+                      <td>₹{payment.staff_payment}</td>
+                      <td>₹{payment.platform_fee}</td>
+                      <td>₹{payment.amount}</td>
                     </tr>
                     ))}
                   </tbody>

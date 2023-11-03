@@ -40,7 +40,7 @@ function Appointments() {
         <Col md={12}>
           <Card>
             <CardBody>
-              <CardTitle className="h2">Documents </CardTitle>
+              <CardTitle className="h2">Appointments </CardTitle>
               <div className="table-responsive">
                 <Table className="table mb-0">
                   <thead>

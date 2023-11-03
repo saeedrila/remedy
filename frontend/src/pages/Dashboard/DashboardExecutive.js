@@ -53,7 +53,6 @@ function DashboardExecutive() {
                     <Col md="3">
                     <CardTitle className="h4">Executive's Dashboard</CardTitle>
                     <p className="card-title-desc">
-                      Doctor's Dashboard
                     </p>
                       <Nav pills className="flex-column">
                         <NavItem>

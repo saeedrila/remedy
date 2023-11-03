@@ -58,7 +58,7 @@ function Payments() {
                       <th scope="row">{index + 1}</th>
                       <td>{payment.appointment}</td>
                       <td>{payment.date}</td>
-                      <td>{payment.amount}</td>
+                      <td>₹{payment.amount}</td>
                       <td>{payment.status}</td>
                     </tr>
                     ))}
