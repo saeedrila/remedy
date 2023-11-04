@@ -66,26 +66,48 @@ function Login() {
 
       navigate(from, {replace: true})
     } catch (error){
-      if (!error?.response){
-        setErrorMsg('No Server Response')
-      } else if (error.response?.status === 400){
-        setErrorMsg('Email or Password missing');
+      if (error.response?.status === 400){
+        toast.error('Email or Password missing', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'light',
+        });
       } else if (error.response?.status === 401){
-        setErrorMsg('Not authorized');
-      } else if (error.response?.status === 404){
-        setErrorMsg('Server Error');
-      } else{
-        setErrorMsg('Login Failed');
+        toast.error('Not authorized', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'light',
+        });
+      } else if(error.response?.status === 403){
+        toast.error('Your account has been blocked, Please contact the manager', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'light',
+        });
       }
-      toast.error(errorMsg, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      else{
+        toast.error('Login Error', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: 'light',
+        });
+      }
     }
   };
 

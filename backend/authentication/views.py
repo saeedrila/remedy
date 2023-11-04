@@ -94,8 +94,8 @@ class AccountLogin(APIView):
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
-            login(request, user)
             account = Account.objects.get(email = email)
+            login(request, user)
             if not account.username:
                 username = account.email
             else:
@@ -125,6 +125,12 @@ class AccountLogin(APIView):
             }, status=status.HTTP_200_OK)
         
         else:
+            try:
+                account = Account.objects.get(email = email)
+                if not account.is_active:
+                    return Response({'error': 'Your account has been blocked'}, status=status.HTTP_403_FORBIDDEN)
+            except:
+                pass
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 @method_decorator(csrf_exempt, name='dispatch')

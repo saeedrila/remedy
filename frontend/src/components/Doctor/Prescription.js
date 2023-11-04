@@ -95,7 +95,11 @@ function Prescription() {
         },
       });
       if (response.status === 200) {
-        setPrescriptionDetails(response.data.prescription);
+        if (response.data.prescription === null) {
+          setPrescriptionDetails('');
+        } else {
+          setPrescriptionDetails(response.data.prescription);
+        }
       } else {
         console.error('Error:', response.data);
       }

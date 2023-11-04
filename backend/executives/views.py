@@ -7,6 +7,7 @@ from .serializers import (
     AccountApprovalSerializer,
     AccountApprovalPatchSerializer,
 )
+from appointments.models import Appointments
 
 
 class AccountApproval(APIView):
@@ -38,6 +39,8 @@ class AccountApproval(APIView):
                 "email": account.email,
                 "activation_status": activation_status,
             }
+            if not activation_status:
+                Appointments.objects.filter(doctor=account, status='Booked').update(status='Refused')
 
             return Response(response_data, status=status.HTTP_200_OK)
         

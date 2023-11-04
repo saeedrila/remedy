@@ -59,7 +59,7 @@ function Payments() {
                       <td>{payment.appointment}</td>
                       <td>{payment.date}</td>
                       <td>₹{payment.amount}</td>
-                      <td>{payment.status}</td>
+                      <td>{payment.status === 'Refused' ? 'Refunded' : payment.status}</td>
                     </tr>
                     ))}
                   </tbody>

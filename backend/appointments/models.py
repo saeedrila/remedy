@@ -27,4 +27,4 @@ class Appointments(models.Model):
             self.appointment_id = prefix + uuid_string
         super(Appointments, self).save(*args, **kwargs)
 
-    # Status can be: Draft, Booked, Completed, Cancelled
+    # Status can be: Draft, Booked, Completed, Cancelled, Refused

@@ -4,6 +4,7 @@ import {
   Col,
   Card,
   Table,
+  Modal,
 } from 'react-bootstrap'
 import {
   Button,
@@ -21,6 +22,8 @@ const ACCOUNT_APPROVAL_URL = 'account-approval'
 function Staff() {
   document.title = 'Executive Dashboard || Staff approval'
   const [listOfAccounts, setListOfAccounts] = useState([])
+  const [actionModal, setActionModal] = useState(false);
+  const [approvalSate, setApprovalState] = useState('')
 
   const getAccountForApproval = async () => {
     try {
@@ -78,6 +81,31 @@ function Staff() {
 
   return (
     <>
+      {/* Modal */}
+      <Modal 
+        show={actionModal} 
+        onHide={()=>setActionModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Caution</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Blocking an active staff will result in cancellation of all upcoming appointments.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setActionModal(false)}>
+            Close
+          </Button>
+          <Button 
+            variant="danger" 
+            onClick={() => {
+              setActionModal(false);
+              accountApprove("False", approvalSate);
+            }}
+          >
+            Block
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Row>
         <Col md={12}>
           <Card>
@@ -105,7 +133,13 @@ function Staff() {
                         <td>{account.is_active ? 'Approved' : 'Not Approved'}</td>
                         <td>
                           {account.is_active ?
-                          <Button color='danger' onClick={() => accountApprove("False", account.id)}>
+                          <Button 
+                            color='danger' 
+                            onClick={() => {
+                              setApprovalState(account.id);
+                              setActionModal(true);
+                            }}
+                          >
                           Block
                           </Button>
                           :<Button color='success' onClick={() => accountApprove("True", account.id)}>

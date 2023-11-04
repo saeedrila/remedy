@@ -91,8 +91,8 @@ class AppointmentPrescription(APIView):
             appointment.status = 'Completed'
             appointment.save()
             payment_obj = Payments.objects.get(appointment=appointment_id)
-            payment_obj.staff_payment = int((payment_obj.amount * 0.9)//100)
-            payment_obj.platform_fee = int((payment_obj.amount//100) - payment_obj.staff_payment)
+            payment_obj.staff_payment = int(payment_obj.amount * 0.9)
+            payment_obj.platform_fee = int(payment_obj.amount - payment_obj.staff_payment)
             payment_obj.appointment_completion = True
             payment_obj.save()
             return Response({"message": "Prescription updated successfully"}, status=status.HTTP_200_OK)
