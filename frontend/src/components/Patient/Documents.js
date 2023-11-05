@@ -37,10 +37,7 @@ function Documents() {
                       <td>id*</td>
                       <td>Megan*</td>
                       <td>Shared*</td>
-                      <td>
-                        <a href="#">View</a>{'  '}
-                        <a href="#">Delete</a>
-                      </td>
+                      <td>View Delete</td>
                       <td>Time*</td>
                     </tr>
                   </tbody>

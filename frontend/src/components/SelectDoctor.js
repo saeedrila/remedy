@@ -1,4 +1,4 @@
-import  React, { useState, useEffect } from 'react';
+import  React, { useState } from 'react';
 import { 
   Container,
   Card,
@@ -17,7 +17,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from '../api/axios';
 
 // Get doctor's list of selected specialization
-const DOCTORS_OF_SELECTED_SPECIALIZATION = '/doctors-at-specific-specialization/'
 const DOCTORS_OF_SELECTED_SPECIALIZATION_PER_DAY = '/fetch-per-day-availability-of-specialized-doctor/'
 
 
@@ -37,7 +36,6 @@ function SelectDoctor() {
   const secondDayAfterTomorrowDate = addDays(currentDate, 3);
   const dayThreeDate = format(secondDayAfterTomorrowDate, 'yyyy-MM-dd');
 
-  const [doctorList, setDoctorList] =useState([]);
   const [selectedLines, setSelectedLines] = useState([]);
   const [daySelection, setDaySelection] = useState(dayZeroDate);
   const [currentDayData, setCurrentDayData] =useState([]);
@@ -83,33 +81,6 @@ function SelectDoctor() {
     }
   }
 
-  const fetchDoctorListAtSpecialization = async () => {
-    try {
-      console.log('Specialization_tile stored: ', specialization_title)
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await axios.get(DOCTORS_OF_SELECTED_SPECIALIZATION, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          title: specialization_title,
-        },
-      });
-      const updatedSpecializations = response.data.map(item => ({
-        ...item,
-        img: pic1
-      }));
-      setDoctorList(updatedSpecializations)
-      console.log('Doctors list of selected ID: ', response.data )
-    } catch (error){
-      console.error('Error fetching data: ', error)
-    }
-  };
-
-  useEffect(() => {
-    fetchDoctorListAtSpecialization();
-    fetchDayDetails(dayZeroDate);
-  }, []);
 
   const changeProceedButtonData = () =>{
     setProceedButtonData(Array(currentDayData.length).fill({

@@ -12,30 +12,35 @@ import {
   Progress
 } from 'reactstrap'
 import axios from '../../api/axios'
+import useAuth from '../../hooks/useAuth'
 
+// API endpoint
 const FETCH_DASHBOARD_DATA = '/fetch-executive-dashboard-data'
 
 
-function Dashboard() {
+function Dashboard({ triggerFetch, setDashboardButtonPressed }) {
+  const { auth } = useAuth();
   const [executiveDashboardData, setExecutiveDashboardData] = useState('')
 
   const fetchExecutiveDashboardData = async ()=>{
     try{
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = auth.accessToken
       const response = await axios.get(FETCH_DASHBOARD_DATA, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
       setExecutiveDashboardData(response.data)
-      console.log('Dashboard', response.data)
+      console.log('Dashboard console', response.data)
     } catch (error){
       console.error('Error fetching data', error)
+    } finally{
+      setDashboardButtonPressed(false);
     }
   }
   useEffect(()=> {
     fetchExecutiveDashboardData();
-  }, [])
+  }, [triggerFetch])
 
   return (
     <>

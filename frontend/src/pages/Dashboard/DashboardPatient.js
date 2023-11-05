@@ -21,7 +21,6 @@ import Appointments from '../../components/Patient/Appointments'
 
 import classnames from "classnames";
 import Payments from '../../components/Patient/Payments'
-import Documents from '../../components/Patient/Documents'
 
 function DashboardPatient(props) {
   document.title = 'Doctors Dashboard'

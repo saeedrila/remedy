@@ -18,7 +18,6 @@ import {
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 import Dashboard from '../../components/Doctor/Dashboard'
-import Appointments from '../../components/Doctor/Appointments'
 
 import classnames from "classnames";
 import Availability from '../../components/Doctor/Availability'

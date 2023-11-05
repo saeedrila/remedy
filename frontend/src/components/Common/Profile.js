@@ -20,9 +20,6 @@ import user1 from '../../assets/images/users/avatar-1.png'
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 
-// Password validation
-const PWD_REGEX = /^.{4,23}$/;
-
 // API endpoints
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
 const UPDATE_PROFILE_DETAILS = '/patch-profile-details'

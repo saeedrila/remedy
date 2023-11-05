@@ -30,6 +30,11 @@ function DashboardExecutive() {
   document.title = 'Executive Dashboard'
 
   const [verticalActiveTab, setverticalActiveTab] = useState("1");
+  const [dashboardButtonPressed, setDashboardButtonPressed] = useState(false);
+  const [appointmentsButtonPressed, setAppointmentsButtonPressed] = useState(false);
+  const [staffButtonPressed, setStaffButtonPressed] = useState(false);
+  const [paymentsButtonPressed, setPaymentsButtonPressed] = useState(false);
+
   const toggleVertical = tab => {
     if (verticalActiveTab !== tab) {
       setverticalActiveTab(tab);
@@ -64,6 +69,7 @@ function DashboardExecutive() {
                             })}
                             onClick={() => {
                               toggleVertical("1");
+                              setDashboardButtonPressed(true);
                             }}
                           >
                             Dashboard
@@ -78,9 +84,10 @@ function DashboardExecutive() {
                             })}
                             onClick={() => {
                               toggleVertical("2");
+                              setAppointmentsButtonPressed(true);
                             }}
                           >
-                            Appointmets
+                            Appointments
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -92,6 +99,7 @@ function DashboardExecutive() {
                             })}
                             onClick={() => {
                               toggleVertical("3");
+                              setStaffButtonPressed(true);
                             }}
                           >
                             Staff
@@ -106,6 +114,7 @@ function DashboardExecutive() {
                             })}
                             onClick={() => {
                               toggleVertical("4");
+                              setPaymentsButtonPressed(true);
                             }}
                           >
                             Payments
@@ -118,25 +127,33 @@ function DashboardExecutive() {
                         activeTab={verticalActiveTab}
                         className="text-muted mt-4 mt-md-0"
                       >
-
                         {/* Dashboard */}
                         <TabPane tabId="1">
-                          <Dashboard />
+                          <Dashboard 
+                            triggerFetch={dashboardButtonPressed} 
+                            setDashboardButtonPressed={setDashboardButtonPressed} 
+                          />
                         </TabPane>
-
                         {/* Appointments */}
                         <TabPane tabId="2">
-                          <Appointments />
+                          <Appointments 
+                            triggerFetch={appointmentsButtonPressed} 
+                            setAppointmentsButtonPressed={setAppointmentsButtonPressed} 
+                            />
                         </TabPane>
-
                         {/* Staff */}
                         <TabPane tabId="3">
-                          <Staff />
+                          <Staff 
+                            triggerFetch={staffButtonPressed} 
+                            setStaffButtonPressed={setStaffButtonPressed} 
+                          />
                         </TabPane>
-
                         {/* Payments */}
                         <TabPane tabId="4">
-                          <Payments />
+                          <Payments 
+                            triggerFetch={paymentsButtonPressed} 
+                            setPaymentsButtonPressed={setPaymentsButtonPressed} 
+                          />
                         </TabPane>
                       </TabContent>
                     </Col>

@@ -4,18 +4,25 @@ import {
   Col,
   Card,
   Table,
+  Modal,
+  Container,
+  Button,
 } from 'react-bootstrap'
 import {
-  Button,
   CardBody,
   CardTitle,
 } from 'reactstrap'
 import axios from "../../api/axios";
 
 const FETCH_PATIENT_APPOINTMENTS = '/fetch-patient-appointments'
+const FETCH_PATIENT_PRESCRIPTION = '/fetch-patient-prescription'
 
 function Appointments() {
-  const [patientAppointmentList, setPatientAppointmentList] = useState([])
+  const [patientAppointmentList, setPatientAppointmentList] = useState([]);
+  const [prescriptionModalShow, setPrescriptionModalShow] = useState(false);
+  const [prescriptionDetails, setPrescriptionDetails] = useState([]);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState('');
+
   const fetchPatientAppointmentDetails = async ()=> {
     try{
       const accessToken = localStorage.getItem('accessToken');
@@ -30,12 +37,68 @@ function Appointments() {
     }
   }
 
+  const fetchPrescription = async (appointmentId) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.get(FETCH_PATIENT_PRESCRIPTION, {
+        params: { appointment_id: appointmentId },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (response.status === 200) {
+        if (response.data.prescription === null) {
+          setPrescriptionDetails('');
+        } else {
+          setPrescriptionDetails(response.data.prescription);
+        }
+      } else {
+        console.error('Error:', response.data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    setPrescriptionModalShow(true);
+  };
+
   useEffect(()=> {
     fetchPatientAppointmentDetails();
   }, [])
 
   return (
     <>
+      {/* Profile Edit Modal */}
+      <Modal
+        show={prescriptionModalShow}
+        onHide={() => setPrescriptionModalShow(false)}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Prescription</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <div>
+              <p>Appointment ID: {selectedAppointmentId}</p>
+            </div>
+            <textarea 
+              className="container-fluid full-width" 
+              rows="10" 
+              placeholder="Enter your text here..."
+              value={prescriptionDetails}
+              onChange={(e) => setPrescriptionDetails(e.target.value)}
+            >
+            </textarea>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setPrescriptionModalShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       <Row>
         <Col md={12}>
           <Card>
@@ -52,6 +115,7 @@ function Appointments() {
                       <th>Doctor/Lab</th>
                       <th>Appointment ID</th>
                       <th>Status</th>
+                      <th>Prescription</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -64,6 +128,13 @@ function Appointments() {
                       <td>{appointment.doctor_email}</td>
                       <td>{appointment.appointment_id}</td>
                       <td>{appointment.status}</td>
+                      <td><Button 
+                        disabled={appointment.status !== 'Completed'}
+                        onClick={()=>{
+                          fetchPrescription(appointment.appointment_id);
+                          setSelectedAppointmentId(appointment.appointment_id)
+                        }}>Open</Button>
+                      </td>
                     </tr>
                     ))}
                   </tbody>

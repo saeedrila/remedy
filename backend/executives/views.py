@@ -17,7 +17,9 @@ class AccountApproval(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def patch(self, request):
-        if not request.user.is_executive:
+        print('Requst', request.user)
+        account_executive = Account.objects.get(email = request.user.email)
+        if not account_executive.is_executive:
             return Response({"detail": "You are not authorized to do this operation"}, status=status.HTTP_403_FORBIDDEN)
         
         serializer = AccountApprovalPatchSerializer(data=request.data)

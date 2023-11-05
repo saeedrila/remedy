@@ -28,7 +28,6 @@ function Login() {
 
   const from = location.state?.from?.pathname || "/";
 
-  const [errorMsg, setErrorMsg] = useState('')
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
 
@@ -67,46 +66,14 @@ function Login() {
       navigate(from, {replace: true})
     } catch (error){
       if (error.response?.status === 400){
-        toast.error('Email or Password missing', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.error('Email or Password missing');
       } else if (error.response?.status === 401){
-        toast.error('Not authorized', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.error('Not authorized');
       } else if(error.response?.status === 403){
-        toast.error('Your account has been blocked, Please contact the manager', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.error('Your account has been blocked, Please contact the manager');
       }
       else{
-        toast.error('Login Error', {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.error('Login Error');
       }
     }
   };

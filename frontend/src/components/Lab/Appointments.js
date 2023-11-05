@@ -11,7 +11,6 @@ import {
 } from 'reactstrap'
 
 function Appointments() {
-  {/* Appointment related */}
   const todayAppointmentButtons = [];
   const tomorrowAppointmentButtons = [];
   const dayAfterTomorrowAppointmentButtons = [];

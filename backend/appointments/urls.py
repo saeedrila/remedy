@@ -9,6 +9,8 @@ urlpatterns = [
     # Get and patch prescription
     path('fetch-prescription', views.AppointmentPrescription.as_view(), name='fetch-prescription'),
     path('patch-prescription', views.AppointmentPrescription.as_view(), name='fetch-prescription'),
+    path('fetch-patient-prescription', views.AppointmentPrescription.as_view(), name='fetch-patient-prescription'),
+
     
     # Get data for dashboard
     path('fetch-executive-dashboard-data',views.FetchExecutiveDashboardData.as_view(), name='fetch-executive-dashboard-data'),

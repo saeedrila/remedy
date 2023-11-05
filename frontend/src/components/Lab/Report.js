@@ -38,9 +38,7 @@ function Report() {
                       <td>Megan*</td>
                       <td>Shared*</td>
                       <td>
-                        <a href="#">View</a>{'  '}
-                        <a href="#">Edit</a>{'  '}
-                        <a href="#">Delete</a>
+                        View Edit Delete
                       </td>
                       <td>Time*</td>
                     </tr>

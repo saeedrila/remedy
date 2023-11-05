@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Button,
   Row,
   Col,
   Card,
@@ -11,14 +10,17 @@ import {
   CardTitle,
 } from 'reactstrap'
 import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth'
 
+// API endpoint
 const FETCH_ALL_APPOINTMENTS = '/fetch-all-appointments'
 
-function Appointments() {
+function Appointments({ triggerFetch, setAppointmentsButtonPressed }) {
+  const { auth } = useAuth();
   const [appointmentList, setAppointmentList] = useState([])
   const fetchAppointmentList = async ()=> {
     try{
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = auth.accessToken
       const response = await axios.get(FETCH_ALL_APPOINTMENTS, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -28,11 +30,14 @@ function Appointments() {
       console.log('Appointment list: ', response.data)
     } catch (error){
       console.error('Error fetching data', error)
+    }finally {
+      setAppointmentsButtonPressed(false);
     }
+
   }
   useEffect(()=> {
     fetchAppointmentList();
-  }, [])
+  }, [triggerFetch])
   
   return (
     <>

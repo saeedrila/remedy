@@ -8,7 +8,6 @@ import {
 } from 'react-bootstrap';
 import { Container } from 'reactstrap';
 import axios from '../api/axios';
-import useRazorpay from 'react-razorpay';
 
 import pic1 from '../assets/images/medical/online-doctor.svg'
 import Header from '../components/Common/Header';
@@ -24,7 +23,6 @@ function DoctorAppointmentConfirmation() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
-  const Razorpay = useRazorpay();
 
   const doctor_email = queryParams.get('email');
   const date = queryParams.get('date');

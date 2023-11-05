@@ -82,7 +82,7 @@ class FetchAvailableTimingDoctor(APIView):
                     current_time = current_datetime.strftime('%I:%M %p')
 
                     title = title.replace('-', ' ')
-                    list_of_doctors = DoctorSpecializations.objects.filter(specialization_title=title).values('doctor')
+                    list_of_doctors = DoctorSpecializations.objects.filter(specialization_title=title, doctor__is_active=True).values('doctor')
                     doctors_availability_per_day = DoctorAvailability.objects.filter(doctor__in=list_of_doctors, date=required_date)
 
                     data = []
