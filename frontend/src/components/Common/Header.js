@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../Context/AuthProvider'
@@ -10,7 +10,6 @@ import { useAuth } from '../../Context/AuthProvider'
 import ProfileMenu from "../Common/ProfileMenu"
 
 const Header = (props) => {
-  const [isSearch, setSearch] = useState(false);
   const navigate = useNavigate()
   const { auth } = useAuth();
   const isLoggedIn = !!auth.accessToken;
@@ -50,62 +49,14 @@ const Header = (props) => {
             >
               <i className="fa fa-fw fa-bars" />
             </button>
-
-            {/* <form className="app-search d-none d-lg-block">
-              <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                />
-                <span className="bx bx-search-alt" />
-              </div>
-            </form> */}
           </div>
 
           <div className="d-flex">
-            {/* <div className="dropdown d-inline-block d-lg-none ms-2">
-              <button
-                type="button"
-                className="btn header-item noti-icon "
-                id="page-header-search-dropdown"
-                onClick={() => setSearch(!isSearch)}
-              >
-                <i className="mdi mdi-magnify" />
-              </button>
-              <div
-                className={
-                  isSearch
-                    ? "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 show"
-                    : "dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                }
-                aria-labelledby="page-header-search-dropdown"
-              >
-                <form className="p-3">
-                  <div className="form-group m-0">
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Search ..."
-                        aria-label="Recipient's username"
-                      />
-                      <div className="input-group-append">
-                        <button className="btn btn-primary" type="submit">
-                          <i className="mdi mdi-magnify" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div> */}
             {isLoggedIn ? (
               <ProfileMenu />
             ) : (
               <div className='hand-cursor' onClick={() => navigate('/login')}>Login/Signup</div>
             )}
-
           </div>
         </div>
       </header>

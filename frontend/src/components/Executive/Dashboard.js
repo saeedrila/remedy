@@ -18,7 +18,7 @@ import useAuth from '../../hooks/useAuth'
 const FETCH_DASHBOARD_DATA = '/fetch-executive-dashboard-data'
 
 
-function Dashboard({ triggerFetch, setDashboardButtonPressed }) {
+function Dashboard({ triggerFetch }) {
   const { auth } = useAuth();
   const [executiveDashboardData, setExecutiveDashboardData] = useState('')
 
@@ -34,12 +34,11 @@ function Dashboard({ triggerFetch, setDashboardButtonPressed }) {
       console.log('Dashboard console', response.data)
     } catch (error){
       console.error('Error fetching data', error)
-    } finally{
-      setDashboardButtonPressed(false);
     }
   }
   useEffect(()=> {
     fetchExecutiveDashboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerFetch])
 
   return (

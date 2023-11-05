@@ -13,7 +13,7 @@ import {
   Table,
 } from 'reactstrap'
 import axios from '../../api/axios'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
 // API Endpoints
 const GET_ACCOUNT_DETAILS = '/get-doctor-account-details'
@@ -21,7 +21,7 @@ const UPDATE_ACCOUNT_DETAILS = '/get-doctor-account-details'
 const DOCTOR_SPECIALIZATION_SPECIFIC ='/doctor-specialization-specific'
 const DOCTOR_SPECIALIZATION_GENERIC ='/doctor-specialization-generic-url'
 
-function AccountDoctor() {
+function AccountDoctor({ triggerFetch }) {
   const [accountDetails, setAccountDetails] = useState([]);
   const [specializationDetails, setSpecializationDetails] = useState([]);
   const [doctorSpecificSpecialization, setDoctorSpecificSpecialization] = useState([]);
@@ -54,7 +54,7 @@ function AccountDoctor() {
         },
       })
       setSpecializationDetails(response.data)
-      console.log('Doctors specializations: ', response.data)
+      // console.log('Doctors specializations: ', response.data)
     } catch(error) {
       console.error('Error fetching data', error)
     }
@@ -68,7 +68,7 @@ function AccountDoctor() {
         },
       })
       setDoctorSpecificSpecialization(response.data)
-      console.log('Doctors specializations: ', response.data)
+      // console.log('Doctors specializations: ', response.data)
     } catch(error) {
       console.error('Error fetching data', error)
     }
@@ -77,7 +77,7 @@ function AccountDoctor() {
     fetchAccountData();
     fetchDoctorSpecializationData();
     fetchDoctorSpecificSpecialization();
-  }, []);
+  }, [triggerFetch]);
 
   // Form data storage
   const [formData, setFormData] = useState({
@@ -99,17 +99,9 @@ function AccountDoctor() {
       }
     }
     try {
-      const response = await axios.patch(UPDATE_ACCOUNT_DETAILS, updatedData);
+      await axios.patch(UPDATE_ACCOUNT_DETAILS, updatedData);
       fetchAccountData();
-      toast.success('Successfully updated', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.success('Successfully updated');
       setFormData({
         username: '',
         mobile: '',
@@ -120,15 +112,7 @@ function AccountDoctor() {
       });
     } catch (error) {
       if (error.response){
-        toast.error('Error', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.error('Error');
       }
     }
     console.log('Updated data:', updatedData)
@@ -150,56 +134,66 @@ function AccountDoctor() {
       if (response.status === 201) {
         setNewSpecialization('');
         setChangeSpecializationModalShow(false);
-        toast.success('Successfully created a new specialization', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.success('Successfully created a new specialization');
       } else if (response.status === 200) {
         setNewSpecialization('');
         setChangeSpecializationModalShow(false);
-        toast.success('Specialization already present', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-      });}else {
-        toast.error('Error creating a new specialization', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.success('Specialization already present');
+      } else {
+        toast.error('Error creating a new specialization');
       }
     } catch (error) {
       // Handle network or request-related errors
       console.error('Error:', error);
       // Display an error message to the user
-      toast.error('Error creating a new specialization', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.error('Error creating a new specialization');
     }
   };
+
+  const handleDocumentUpload = async () => {
+
+  }
 
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Upload document Modal */}
+      <Modal
+        show={uploadDocumentModalShow}
+        onHide={() => setUploadDocumentModalShow(false)}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Specialization</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Row>
+              <Col>Document</Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setUploadDocumentModalShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => handleDocumentUpload()}>*Save</Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* Specialization Edit Modal */}
       <Modal
         show={changeSpecializationModalShow}

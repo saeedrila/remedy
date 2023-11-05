@@ -19,7 +19,7 @@ const ACCOUNT_APPROVAL_URL = 'account-approval'
 
 
 
-function Staff({ triggerFetch, setStaffButtonPressed }) {
+function Staff({ triggerFetch }) {
   document.title = 'Executive Dashboard || Staff approval'
   const [listOfAccounts, setListOfAccounts] = useState([])
   const [actionModal, setActionModal] = useState(false);
@@ -37,8 +37,6 @@ function Staff({ triggerFetch, setStaffButtonPressed }) {
       console.log('List of accounts', response.data);
     } catch (error) {
       console.error('Error fetching data', error);
-    } finally {
-      setStaffButtonPressed(false);
     }
   };
 

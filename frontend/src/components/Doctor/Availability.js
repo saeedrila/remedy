@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from '../../api/axios';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Button,
   Row,
@@ -19,7 +19,7 @@ const DOCTOR_AVAILABILITY_GET_URL = 'doctor-availability-get-url'
 const DOCTOR_AVAILABILITY_TOGGLE_URL = 'doctor-availability-get-url'
 
 
-function Availability() {
+function Availability({ triggerFetch }) {
   document.title = 'Doctor Dashboard || Availability'
   const [slotsAvailable, setSlotsAvailable] = useState({
     dayZeroOfflineSlots: {},
@@ -54,24 +54,20 @@ function Availability() {
         dayThreeOfflineSlots: response.data[3].slots_details_offline,
         dayThreeOnlineSlots: response.data[3].slots_details_online,
       });
-      console.log('Response.data: ', response.data)
-      console.log('Get slots available Try completed')
+      // console.log('Response.data: ', response.data)
+      // console.log('Get slots available Try completed')
       console.log('slotsAvailable updated:', slotsAvailable);
-      console.log('Day zero offline slots:', slotsAvailable.dayZeroOfflineSlots);
+      // console.log('Day zero offline slots:', slotsAvailable.dayZeroOfflineSlots);
     } catch(error) {
       console.log('Get slots available Catch completed')
     }
   }
 
-  useEffect(() =>{
-    console.log('slotsAvailable updated:', slotsAvailable);
-  }, [slotsAvailable])
-
   const toggleAvailability = async (status, slot_id, date, line, time) => {
     console.log('Status: ', status, 'Slot_id: ', slot_id, 'Date: ', date, 'Time: ', time, 'Line: ', line);
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await axios.patch(DOCTOR_AVAILABILITY_TOGGLE_URL, {
+      await axios.patch(DOCTOR_AVAILABILITY_TOGGLE_URL, {
         status: status,
         slot_id: slot_id,
         date: date,
@@ -82,26 +78,18 @@ function Availability() {
         },
       });
       const successMessage = `Date: ${date}, Time: ${time}, Successfully updated to: ${status === 'True' ? 'Available for booking' : 'Not available'}`;
-      toast.success(successMessage, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.success(successMessage);
       getSlotsAvailable();
     } catch(error) {
-
+      toast.error(error);
     }
-
-    // Status toggle carriedout from here!
   }
 
   useEffect(() => {
     getSlotsAvailable();
-  }, []);
+    console.log('slotsAvailable updated:', slotsAvailable);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slotsAvailable, triggerFetch])
 
   // Today's date
   const currentDate = new Date();
@@ -120,6 +108,18 @@ function Availability() {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {/* DayZero */}
       <Row>
         <Col sm={6}>

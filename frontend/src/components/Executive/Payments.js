@@ -13,7 +13,7 @@ import axios from '../../api/axios'
 
 const FETCH_PAYMENTS = '/fetch-executive-payments'
 
-function Payments({ triggerFetch, setPaymentsButtonPressed }) {
+function Payments({ triggerFetch }) {
   const [executivePaymentList, setExecutivePaymentList] = useState([])
 
   // Fetch payments list
@@ -29,8 +29,6 @@ function Payments({ triggerFetch, setPaymentsButtonPressed }) {
       console.log('Payments tab pressed')
     } catch (error){
       console.error('Error fetching data', error)
-    } finally {
-      setPaymentsButtonPressed(false);
     }
   }
   useEffect(()=> {

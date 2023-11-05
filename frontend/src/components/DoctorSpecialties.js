@@ -17,6 +17,8 @@ import pic1 from '../assets/images/medical/doctor-specialty.svg'
 // API Endpoints
 const DOCTOR_SPECIALIZATION_GENERIC ='/doctor-specialization-generic-url'
 
+
+
 function DoctorSpecialties() {
   const [specializationDetails, setSpecializationDetails] = useState([]);
 
@@ -51,10 +53,10 @@ function DoctorSpecialties() {
             {specializationDetails.map((data, idx) => (
               <Col key={idx}>
                 <Card className="border" 
-                onClick={() => {
-                  const title = data.specialization_title.replace(/ /g, '-');
-                  console.log('Title:', title); 
-                  navigate(`/doctor-at-specialization/${title}`)}}
+                  onClick={() => {
+                    const title = data.specialization_title.replace(/ /g, '-');
+                    navigate(`/doctor-at-specialization/${title}`)
+                  }}
                 >
                   <Card.Img variant="top" src={data.img} />
                   <Card.Body>

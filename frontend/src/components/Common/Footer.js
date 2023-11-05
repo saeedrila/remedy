@@ -51,12 +51,14 @@ const Footer = () => {
               <div className="text-center">
               <a href='https://www.linkedin.com/in/saeedrila/' target="_blank" rel="noopener noreferrer">
                 <img
+                alt='linkedin'
                   className="header-profile-user"
                   src={linkedin}
                 />
               </a>
               <a href='https://github.com/saeedrila/remedy' target="_blank" rel="noopener noreferrer">
                 <img
+                  alt='github'
                   className="header-profile-user"
                   src={github}
                 />

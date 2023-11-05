@@ -13,7 +13,7 @@ import axios from '../../api/axios'
 
 const FETCH_PAYMENTS = '/fetch-patient-payments'
 
-function Payments() {
+function Payments({ triggerFetch }) {
   const [patientPaymentList, setPatientPaymentList] = useState([])
   // Fetch payments list
   const fetchPatientPaymentList = async ()=>{
@@ -31,7 +31,7 @@ function Payments() {
   }
   useEffect(()=> {
     fetchPatientPaymentList();
-  }, [])
+  }, [triggerFetch])
 
 
   return (

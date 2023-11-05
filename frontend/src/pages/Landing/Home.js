@@ -76,7 +76,6 @@ function Home() {
                 </Card>
               </Link>
             </Col>
-            
           </Row>
         </div>
       </Container>

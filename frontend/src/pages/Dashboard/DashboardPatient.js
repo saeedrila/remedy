@@ -26,6 +26,10 @@ function DashboardPatient(props) {
   document.title = 'Doctors Dashboard'
 
   const [verticalActiveTab, setverticalActiveTab] = useState("1");
+  const [appointmentsButtonPressed, setAppointmentsButtonPressed] = useState(0);
+  const [paymentsButtonPressed, setPaymentsButtonPressed] = useState(0);
+
+
   const toggleVertical = tab => {
     if (verticalActiveTab !== tab) {
       setverticalActiveTab(tab);
@@ -61,6 +65,7 @@ function DashboardPatient(props) {
                             })}
                             onClick={() => {
                               toggleVertical("1");
+                              setAppointmentsButtonPressed(appointmentsButtonPressed + 1);
                             }}
                           >
                             My Appointments
@@ -75,6 +80,7 @@ function DashboardPatient(props) {
                             })}
                             onClick={() => {
                               toggleVertical("2");
+                              setPaymentsButtonPressed(paymentsButtonPressed + 1);
                             }}
                           >
                             Payments
@@ -91,12 +97,12 @@ function DashboardPatient(props) {
 
                         {/* My Appointments */}
                         <TabPane tabId="1">
-                          <Appointments />
+                          <Appointments triggerFetch={appointmentsButtonPressed} />
                         </TabPane>
 
                         {/* Payments */}
                         <TabPane tabId="2">
-                          <Payments />
+                          <Payments triggerFetch={paymentsButtonPressed} />
                         </TabPane>
 
                       </TabContent>

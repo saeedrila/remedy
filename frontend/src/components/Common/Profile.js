@@ -13,7 +13,7 @@ import {
   CardBody,
   Table,
 } from 'reactstrap'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import axios from '../../api/axios'
 
 import user1 from '../../assets/images/users/avatar-1.png'
@@ -42,27 +42,11 @@ function Profile() {
   const handleChangePasswordSubmit = async (e) => {
     e.preventDefault();
     if (!pwd || !matchPwd || !newPwd) {
-      toast.error('Please enter details', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.error('Please enter details');
       return;
     }
     if (newPwd !== matchPwd){
-      toast.error('Password does not match', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      })
+      toast.error('Password does not match')
       return;
     }
     try {
@@ -77,27 +61,11 @@ function Profile() {
       setMatchPwd('');
       setNewPwd('');
 
-      toast.success('Password changed successfully', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.success('Password changed successfully');
   
     } catch (error) {
       console.error('Error changing password:', error);
-      toast.error('An error occurred while changing the password', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.error('An error occurred while changing the password');
     }
   };
 
@@ -129,35 +97,18 @@ function Profile() {
     },
     onSubmit: async(values) => {
       try {
-        const response = await axios.patch(UPDATE_PROFILE_DETAILS, values);
+        await axios.patch(UPDATE_PROFILE_DETAILS, values);
         fetchProfileData();
-        toast.success('Successfully updated', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: 'light',
-        });
+        toast.success('Successfully updated');
       } catch (error) {
         if (error.response){
-          toast.error('Error', {
-            position: 'top-right',
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: 'light',
-          });
+          toast.error('Error');
         }
       }
       setProfileEditModalShow(false)
     },
     validate: (values) => {
       let errors = {};
-    
       if (values.username && values.username.trim() === '') {
         errors.username = 'Username cannot be blank';
       }
@@ -169,25 +120,20 @@ function Profile() {
           errors.mobile = 'Mobile number must be exactly 10 digits';
         }
       }
-    
       if (values.gender && !['Male', 'Female'].includes(values.gender)) {
         errors.gender = 'Gender must be either Male or Female';
       }
-    
       if (values.age !== '' && (values.age < 0 || values.age > 100)) {
         errors.age = 'Age must be between 0 and 100';
       }
-    
       if (values.blood_group) {
         if (!/^(A|B|AB|O)[+-]$/.test(values.blood_group)) {
           errors.blood_group = 'Invalid blood group';
         }
       }
-    
       if (values.address && values.address.length > 200) {
         errors.address = 'Address should be at most 200 characters';
       }
-    
       return errors;
     },
   })
@@ -195,6 +141,18 @@ function Profile() {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {/* Change Password Modal */}
       <Modal
         show={ChangePasswordModalShow}
@@ -447,7 +405,6 @@ function Profile() {
           </Row>
         </Container>
       </div>
-
 
       {/* Footer section */}
       <Footer />

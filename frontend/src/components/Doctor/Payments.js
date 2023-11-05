@@ -13,7 +13,7 @@ import axios from '../../api/axios'
 
 const FETCH_PAYMENTS = '/fetch-doctor-payments'
 
-function Payments() {
+function Payments({ triggerFetch }) {
   const [doctorPaymentList, setDoctorPaymentList] = useState([])
     // Fetch payments list
     const fetchDoctorPaymentList = async ()=>{
@@ -25,13 +25,14 @@ function Payments() {
           },
         });
         setDoctorPaymentList(response.data)
+        console.log('Payments API called')
       } catch (error){
         console.error('Error fetching data', error)
       }
     }
     useEffect(()=> {
       fetchDoctorPaymentList();
-    }, [])
+    }, [triggerFetch])
 
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Container,
   Row,
@@ -24,17 +24,14 @@ const PatientRegister = () => {
   const [matchPwd, setMatchPwd] = useState('');
   const navigate = useNavigate();
 
-  const [errorMsg, setErrorMsg] = useState('');
-  const [success, setSuccess] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if button enabled with JS hack
     const v1 = EMAIL_REGEX.test(email);
     const v2 = PWD_REGEX.test(pwd);
     if (!v1 || !v2) {
-        setErrorMsg("Invalid Entry");
-        return;
+      toast.error("Invalid Entry");
+      return;
     }
     try {
       const response = await axios.post(REGISTER_URL, {
@@ -44,35 +41,38 @@ const PatientRegister = () => {
       });
       console.log(response.data);
       console.log(response.accessToken);
-      setSuccess(true);
       setEmail('');
       setPwd('');
       setMatchPwd('');
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {
-          setErrorMsg('Email already exists');
+          toast.error('Email already exists');
         } else {
-          setErrorMsg('Registration Failed');
+          toast.error('Registration Failed');
         }
       } else {
-        setErrorMsg('No Server Response');
+        toast.error('No Server Response');
       }
-      toast.error(errorMsg, {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
     }
   }
 
 
+
   return (
     <React.Fragment>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="account-pages my-5 pt-sm-5">
       <Container>
           <Row className="justify-content-center">

@@ -15,7 +15,7 @@ import useAuth from '../../hooks/useAuth'
 // API endpoint
 const FETCH_ALL_APPOINTMENTS = '/fetch-all-appointments'
 
-function Appointments({ triggerFetch, setAppointmentsButtonPressed }) {
+function Appointments({ triggerFetch }) {
   const { auth } = useAuth();
   const [appointmentList, setAppointmentList] = useState([])
   const fetchAppointmentList = async ()=> {
@@ -30,13 +30,11 @@ function Appointments({ triggerFetch, setAppointmentsButtonPressed }) {
       console.log('Appointment list: ', response.data)
     } catch (error){
       console.error('Error fetching data', error)
-    }finally {
-      setAppointmentsButtonPressed(false);
     }
-
   }
   useEffect(()=> {
     fetchAppointmentList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerFetch])
   
   return (

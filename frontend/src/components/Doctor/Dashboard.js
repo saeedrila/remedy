@@ -15,7 +15,7 @@ import axios from '../../api/axios'
 
 const FETCH_DASHBOARD_DATA = '/fetch-doctor-dashboard-data'
 
-function Dashboard() {
+function Dashboard({ triggerFetch }) {
   const [doctorDashboardData, setDoctorDashboardData] = useState({})
 
   const fetchDoctorDashboardData = async ()=>{
@@ -27,13 +27,14 @@ function Dashboard() {
         },
       });
       setDoctorDashboardData(response.data)
+      console.log('Dashboard API called')
     } catch (error){
       console.error('Error fetching data', error)
     }
   }
   useEffect(()=> {
     fetchDoctorDashboardData();
-  }, [])
+  }, [triggerFetch])
 
   return (
     <>

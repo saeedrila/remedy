@@ -17,7 +17,7 @@ import axios from "../../api/axios";
 const FETCH_PATIENT_APPOINTMENTS = '/fetch-patient-appointments'
 const FETCH_PATIENT_PRESCRIPTION = '/fetch-patient-prescription'
 
-function Appointments() {
+function Appointments({ triggerFetch }) {
   const [patientAppointmentList, setPatientAppointmentList] = useState([]);
   const [prescriptionModalShow, setPrescriptionModalShow] = useState(false);
   const [prescriptionDetails, setPrescriptionDetails] = useState([]);
@@ -63,7 +63,7 @@ function Appointments() {
 
   useEffect(()=> {
     fetchPatientAppointmentDetails();
-  }, [])
+  }, [triggerFetch])
 
   return (
     <>
