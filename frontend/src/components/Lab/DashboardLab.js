@@ -15,15 +15,15 @@ import {
     TabPane,
   } from 'reactstrap'
 
-import Header from '../../components/Common/Header'
-import Footer from '../../components/Common/Footer'
-import Dashboard from '../../components/Lab/Dashboard'
-import Appointments from '../../components/Lab/Appointments'
+import Header from '../Common/Header'
+import Footer from '../Common/Footer'
+import Dashboard from './Dashboard'
+import Appointments from './Appointments'
 
 import classnames from "classnames";
-import Availability from '../../components/Lab/Availability'
-import Report from '../../components/Lab/Report'
-import Payments from '../../components/Lab/Payments'
+import Availability from './Availability'
+import Report from './Report'
+import Payments from './Payments'
 
 function DashboardLab(props) {
   document.title = 'Labs Dashboard'

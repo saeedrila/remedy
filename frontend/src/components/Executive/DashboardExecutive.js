@@ -15,32 +15,32 @@ import {
     TabPane,
   } from 'reactstrap'
 
-import Header from '../../components/Common/Header'
-import Footer from '../../components/Common/Footer'
-import Dashboard from '../../components/Doctor/Dashboard'
+import Header from '../Common/Header'
+import Footer from '../Common/Footer'
+import Dashboard from './Dashboard'
 
 import classnames from "classnames";
-import Availability from '../../components/Doctor/Availability'
-import Appointments from '../../components/Doctor/Appointments'
-import Payments from '../../components/Doctor/Payments'
-import AccountDoctor from '../../components/Doctor/AccountDoctor'
+import Payments from './Payments'
+import Appointments from './Appointments'
+import Staff from './Staff'
 
-function DashboardDoctor() {
-  document.title = 'Doctors Dashboard'
+
+
+function DashboardExecutive() {
+  document.title = 'Executive Dashboard'
 
   const [verticalActiveTab, setverticalActiveTab] = useState("1");
   const [dashboardButtonPressed, setDashboardButtonPressed] = useState(0);
-  const [accountButtonPressed, setAccountButtonPressed] = useState(0);
-  const [availabilityButtonPressed, setAvailabilityButtonPressed] = useState(0);
   const [appointmentsButtonPressed, setAppointmentsButtonPressed] = useState(0);
+  const [staffButtonPressed, setStaffButtonPressed] = useState(0);
   const [paymentsButtonPressed, setPaymentsButtonPressed] = useState(0);
-
 
   const toggleVertical = tab => {
     if (verticalActiveTab !== tab) {
       setverticalActiveTab(tab);
     }
   };
+
 
 
   return (
@@ -54,12 +54,10 @@ function DashboardDoctor() {
             <Col lg={12}>
               <Card>
                 <CardBody>
-
                   <Row>
                     <Col md="3">
-                    <CardTitle className="h4">Doctor's Dashboard</CardTitle>
+                    <CardTitle className="h4">Executive's Dashboard</CardTitle>
                     <p className="card-title-desc">
-                      Doctor's Dashboard
                     </p>
                       <Nav pills className="flex-column">
                         <NavItem>
@@ -86,36 +84,6 @@ function DashboardDoctor() {
                             })}
                             onClick={() => {
                               toggleVertical("2");
-                              setAccountButtonPressed(accountButtonPressed + 1);
-                            }}
-                          >
-                            Account
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            style={{ cursor: "pointer" }}
-                            className={classnames({
-                              "mb-2": true,
-                              active: verticalActiveTab === "3",
-                            })}
-                            onClick={() => {
-                              toggleVertical("3");
-                              setAvailabilityButtonPressed(availabilityButtonPressed + 1);
-                            }}
-                          >
-                            Availability
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            style={{ cursor: "pointer" }}
-                            className={classnames({
-                              "mb-2": true,
-                              active: verticalActiveTab === "4",
-                            })}
-                            onClick={() => {
-                              toggleVertical("4");
                               setAppointmentsButtonPressed(appointmentsButtonPressed + 1);
                             }}
                           >
@@ -127,10 +95,25 @@ function DashboardDoctor() {
                             style={{ cursor: "pointer" }}
                             className={classnames({
                               "mb-2": true,
-                              active: verticalActiveTab === "5",
+                              active: verticalActiveTab === "3",
                             })}
                             onClick={() => {
-                              toggleVertical("5");
+                              toggleVertical("3");
+                              setStaffButtonPressed(staffButtonPressed + 1);
+                            }}
+                          >
+                            Staff
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            style={{ cursor: "pointer" }}
+                            className={classnames({
+                              "mb-2": true,
+                              active: verticalActiveTab === "4",
+                            })}
+                            onClick={() => {
+                              toggleVertical("4");
                               setPaymentsButtonPressed(paymentsButtonPressed + 1);
                             }}
                           >
@@ -144,30 +127,29 @@ function DashboardDoctor() {
                         activeTab={verticalActiveTab}
                         className="text-muted mt-4 mt-md-0"
                       >
-
                         {/* Dashboard */}
                         <TabPane tabId="1">
-                          <Dashboard triggerFetch={dashboardButtonPressed} />
+                          <Dashboard 
+                            triggerFetch={dashboardButtonPressed} 
+                          />
                         </TabPane>
-
-                        {/* My Account */}
+                        {/* Appointments */}
                         <TabPane tabId="2">
-                        <AccountDoctor triggerFetch={accountButtonPressed} />
+                          <Appointments 
+                            triggerFetch={appointmentsButtonPressed} 
+                          />
                         </TabPane>
-
-                        {/* My availability */}
+                        {/* Staff */}
                         <TabPane tabId="3">
-                          <Availability triggerFetch={availabilityButtonPressed} />
+                          <Staff 
+                            triggerFetch={staffButtonPressed} 
+                          />
                         </TabPane>
-
-                        {/* My prescription */}
-                        <TabPane tabId="4">
-                          <Appointments triggerFetch={appointmentsButtonPressed} />
-                        </TabPane>
-
                         {/* Payments */}
-                        <TabPane tabId="5">
-                          <Payments triggerFetch={paymentsButtonPressed} />
+                        <TabPane tabId="4">
+                          <Payments 
+                            triggerFetch={paymentsButtonPressed} 
+                          />
                         </TabPane>
                       </TabContent>
                     </Col>
@@ -185,4 +167,4 @@ function DashboardDoctor() {
   )
 }
 
-export default DashboardDoctor
+export default DashboardExecutive

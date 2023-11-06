@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
 import "./assets/scss/theme.scss";
@@ -13,34 +13,34 @@ import Login from './components/Authentication/Login';
 import Profile from '../src/components/Common/Profile'
 
 // Registration Pages
-import ExecutiveRegisterPage from './pages/Authentication/ExecutiveRegisterPage';
-import DoctorRegisterPage from './pages/Authentication/DoctorRegisterPage';
-import LabRegisterPage from './pages/Authentication/LabRegisterPage';
-import PatientRegisterPage from './pages/Authentication/PatientRegisterPage';
+import ExecutiveRegister from './components/Authentication/ExecutiveRegister'
+import DoctorRegister from './components/Authentication/DoctorRegister';
+import LabRegister from './components/Authentication/LabRegister';
+import PatientRegister from './components/Authentication/PatientRegister';
 
-import Home from './pages/Landing/Home';
+import Home from './components/Common/Home';
 import DoctorSpecialties from './components/DoctorSpecialties';
 import SelectDoctor from './components/SelectDoctor';
 
 import LabTests from './components/LabTests';
-import DoctorAppointmentConfirmation from './pages/DoctorAppointmentConfirmation';
-import DoctorAppointmentPaymentConfirmation from './pages/DoctorAppointmentPaymentConfirmation';
+import DoctorAppointmentConfirmation from './components/Patient/DoctorAppointmentConfirmation';
+import DoctorAppointmentPaymentConfirmation from './components/Patient/DoctorAppointmentPaymentConfirmation';
 
 // Dashboards
-import DashboardDoctor from './pages/Dashboard/DashboardDoctor';
-import DashboardLab from './pages/Dashboard/DashboardLab';
-import DashboardPatient from './pages/Dashboard/DashboardPatient';
-import DashboardExecutive from './pages/Dashboard/DashboardExecutive';
+import DashboardDoctor from './components/Doctor/DashboardDoctor';
+import DashboardLab from './components/Lab/DashboardLab';
+import DashboardPatient from './components/Patient/DashboardPatient';
+import DashboardExecutive from './components/Executive/DashboardExecutive';
 
 // Error 404,401
-import Error404 from './pages/Error404';
-import Error401 from './pages/Error401';
+import Error404 from './components/Common/Error404';
+import Error401 from './components/Common/Error401';
 
 //Chat
 import Chat from '../src/components/Common/Chat'
 
 // Sitemap
-import SiteMap from './pages/SiteMap';
+import SiteMap from './components/Common/SiteMap';
 
 
 function App() {
@@ -81,10 +81,10 @@ function App() {
           <Route path="login" element={<Login />} />
 
           {/* Account registration */}
-          <Route path='executive-register' element={<ExecutiveRegisterPage />} />
-          <Route path='doctor-register' element={<DoctorRegisterPage />} />
-          <Route path='lab-register' element={<LabRegisterPage />} />
-          <Route path='register' element={<PatientRegisterPage />} />
+          <Route path='executive-register' element={<ExecutiveRegister />} />
+          <Route path='doctor-register' element={<DoctorRegister />} />
+          <Route path='lab-register' element={<LabRegister />} />
+          <Route path='register' element={<PatientRegister />} />
 
           {/* Landing page */}
           <Route path='/' element={<Home />} />

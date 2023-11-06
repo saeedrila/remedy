@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PaymentConfirmationPage from '../components/Common/PaymentConfirmationPage'
+import PaymentConfirmationPage from '../Common/PaymentConfirmationPage'
 
 function DoctorAppointmentPaymentConfirmation() {
   return (

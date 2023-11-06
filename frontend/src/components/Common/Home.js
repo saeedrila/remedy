@@ -8,9 +8,9 @@ import {
 import { Link } from 'react-router-dom'
 import axios from '../../api/axios'
 
-import Footer from '../../components/Common/Footer'
-import Header from '../../components/Common/Header'
-import SmallCard from '../../components/Common/SmallCard'
+import Footer from './Footer'
+import Header from './Header'
+import SmallCard from './SmallCard'
 
 import pic1 from '../../assets/images/medical/medical-prescription-logo.svg'
 import pic2 from '../../assets/images/medical/blood-test-logo.svg'

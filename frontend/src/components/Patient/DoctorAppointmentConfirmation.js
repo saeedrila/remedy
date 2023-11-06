@@ -7,11 +7,11 @@ import {
   Button,
 } from 'react-bootstrap';
 import { Container } from 'reactstrap';
-import axios from '../api/axios';
+import axios from '../../api/axios';
 
-import pic1 from '../assets/images/medical/online-doctor.svg'
-import Header from '../components/Common/Header';
-import Footer from '../components/Common/Footer';
+import pic1 from '../../assets/images/medical/online-doctor.svg'
+import Header from '../Common/Header';
+import Footer from '../Common/Footer';
 
 
 

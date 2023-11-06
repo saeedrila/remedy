@@ -6,9 +6,9 @@ import {
 } from 'react-bootstrap'
 import { ToastContainer, toast } from 'react-toastify'
 
-import Header from '../components/Common/Header'
-import Footer from '../components/Common/Footer'
-import useRefreshToken from '../hooks/useRefreshToken'
+import Header from './Header'
+import Footer from './Footer'
+import useRefreshToken from '../../hooks/useRefreshToken'
 
 
 

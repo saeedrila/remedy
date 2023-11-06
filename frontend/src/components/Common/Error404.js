@@ -2,10 +2,10 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap"
 
-import Header from '../components/Common/Header';
-import Footer from '../components/Common/Footer';
+import Header from './Header';
+import Footer from './Footer';
 
-import error from '../assets/images/error-img.png'
+import error from '../../assets/images/error-img.png'
 
 
 function Error404() {
