@@ -89,7 +89,7 @@ function DashboardDoctor() {
                               setAccountButtonPressed(accountButtonPressed + 1);
                             }}
                           >
-                            My Account
+                            Account
                           </NavLink>
                         </NavItem>
                         <NavItem>
@@ -104,7 +104,7 @@ function DashboardDoctor() {
                               setAvailabilityButtonPressed(availabilityButtonPressed + 1);
                             }}
                           >
-                            My Availability
+                            Availability
                           </NavLink>
                         </NavItem>
                         <NavItem>

@@ -129,7 +129,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=7),
     'SLIDING_TOKEN_TYPES': {
-        'access': timedelta(minutes=300),
+        'access': timedelta(seconds=15),
         'refresh': timedelta(days=1),
     },
     'ROTATE_REFRESH_TOKENS': False,

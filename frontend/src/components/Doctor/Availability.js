@@ -56,7 +56,7 @@ function Availability({ triggerFetch }) {
       });
       // console.log('Response.data: ', response.data)
       // console.log('Get slots available Try completed')
-      console.log('slotsAvailable updated:', slotsAvailable);
+      // console.log('slotsAvailable updated:', slotsAvailable);
       // console.log('Day zero offline slots:', slotsAvailable.dayZeroOfflineSlots);
     } catch(error) {
       console.log('Get slots available Catch completed')
@@ -87,9 +87,9 @@ function Availability({ triggerFetch }) {
 
   useEffect(() => {
     getSlotsAvailable();
-    console.log('slotsAvailable updated:', slotsAvailable);
+    // console.log('slotsAvailable updated from useEffect:', slotsAvailable);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slotsAvailable, triggerFetch])
+  }, [triggerFetch])
 
   // Today's date
   const currentDate = new Date();

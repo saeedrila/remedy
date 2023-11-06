@@ -14,11 +14,13 @@ import {
   CardTitle,
 } from 'reactstrap'
 import { ToastContainer, toast } from 'react-toastify';
-
+import { format } from 'date-fns';
 
 const FETCH_DOCTOR_APPOINTMENTS = '/fetch-doctor-appointments'
 const FETCH_PRESCRIPTOIN = '/patch-prescription'
 const PATCH_PRESCRIPTION = '/patch-prescription'
+
+
 
 function Appointments({ triggerFetch }) {
   const [doctorAppointmentList, setDoctorAppointmentList] = useState([]);
@@ -27,6 +29,9 @@ function Appointments({ triggerFetch }) {
   const [prescriptionModalShow, setPrescriptionModalShow] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState('');
   const [prescriptionDetails, setPrescriptionDetails] = useState('');
+
+  // Today's date
+  const dayZeroDate = format(new Date(), 'yyyy-MM-dd');
 
   const fetchDoctorAppointmentList = async ()=>{
     try{
@@ -176,7 +181,9 @@ function Appointments({ triggerFetch }) {
                             console.log('Appointment ID: ',appointment.appointment_id)
                             setSelectedAppointmentId(appointment.appointment_id);
                             fetchPrescription(appointment.appointment_id);
-                            }}>
+                            }}
+                            disabled={appointment.date !== dayZeroDate}
+                            >
                             Prescribe
                           </Button>
                         </td>

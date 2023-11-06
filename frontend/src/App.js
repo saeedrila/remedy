@@ -1,6 +1,6 @@
 import './App.css';
 import { useEffect } from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import RequireAuth from './components/RequireAuth';
 import Layout from './components/Layout';
 import "./assets/scss/theme.scss";
@@ -53,6 +53,7 @@ function App() {
       const email = localStorage.getItem('email');
       const rolesJSON = localStorage.getItem('roles');
       const username = localStorage.getItem('username');
+
       if (accessToken && refreshToken && email && rolesJSON) {
         const roles = JSON.parse(rolesJSON);
         setAuth({
@@ -68,6 +69,9 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
+
   return (
     <>
       <Routes>
@@ -96,14 +100,11 @@ function App() {
           <Route element={<RequireAuth allowedRoles={['is_patient']}/>}>
             <Route path='dashboard-patient' element={<DashboardPatient/>} />
             <Route path='doctor-at-specialization' element={<DoctorSpecialties/>} />
-            
-            <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
-            <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+             
+            <Route path='doctor-at-specialization/:specialization_title' element={<SelectDoctor/>} />
+            <Route path='doctor-at-specialization/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
+            <Route path='payment-confirmation/' element={<DoctorAppointmentPaymentConfirmation/>} />
           </Route>
-          {/* For testing. This should go inside Patient specific */}
-          <Route path='doctor-at-specialization/:specialization_title' element={<SelectDoctor/>} />
-          <Route path='doctor-at-specialization/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
-          <Route path='payment-confirmation/' element={<DoctorAppointmentPaymentConfirmation/>} />
 
           {/* Doctor specific pages */}
           <Route element={<RequireAuth allowedRoles={['is_doctor']}/>}>
@@ -129,6 +130,13 @@ function App() {
 
           {/* Sitemap */}
           <Route path='sitemap' element={<SiteMap />} />
+
+          {/* used while testing*/}
+          
+          <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation' element={<DoctorAppointmentConfirmation/>} />
+          <Route path='doctor-specialties/1/select-doctor/doctor-appointment-confirmation/payment-confirmation' element={<DoctorAppointmentPaymentConfirmation/>} />
+
+
         </Route>
       </Routes>
     </>

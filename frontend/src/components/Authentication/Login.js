@@ -54,6 +54,8 @@ function Login() {
       const username = response?.data?.username
       const roles = response?.data?.roles;
       setAuth({email, roles, accessToken, refreshToken, username});
+      console.log('Access Token: ',response?.data?.accessToken)
+      console.log('Refresh Token: ',response?.data?.refreshToken)
       
       localStorage.clear();
       localStorage.setItem('accessToken', accessToken);
@@ -69,10 +71,7 @@ function Login() {
         toast.error('Email or Password missing');
       } else if (error.response?.status === 401){
         toast.error('Not authorized');
-      } else if(error.response?.status === 403){
-        toast.error('Your account has been blocked, Please contact the manager');
-      }
-      else{
+      }else{
         toast.error('Login Error');
       }
     }

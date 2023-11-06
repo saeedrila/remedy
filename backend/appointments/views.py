@@ -149,7 +149,9 @@ class FetchDoctorDashboardData(APIView):
 
         total_appointments_today = Appointments.objects.filter(date=datetime.now(), doctor=account).count()
         total_appointments_today_completed = Appointments.objects.filter(status='Completed', date=datetime.now(), doctor=account).count()
-        total_appointment_today_completed_perc = int((total_appointments_today_completed/total_appointments_today)*100)
+        total_appointment_today_completed_perc = 0
+        if total_appointments_today != 0:
+            total_appointment_today_completed_perc = int((total_appointments_today_completed / total_appointments_today) * 100)
 
         data = {
             'total_appointments_catered': total_appointments_catered,

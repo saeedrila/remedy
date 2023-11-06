@@ -128,7 +128,7 @@ class AccountLogin(APIView):
             try:
                 account = Account.objects.get(email = email)
                 if not account.is_active:
-                    return Response({'error': 'Your account has been blocked'}, status=status.HTTP_403_FORBIDDEN)
+                    return Response({'error': 'Your account has been blocked'}, status=status.HTTP_401_UNAUTHORIZED)
             except:
                 pass
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)

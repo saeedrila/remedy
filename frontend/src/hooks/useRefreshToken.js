@@ -1,8 +1,6 @@
 import axios from '../api/axios'
 import useAuth from './useAuth'
 
-
-
 const useRefreshToken = () => {
   const { setAuth } = useAuth();
 
@@ -20,9 +18,10 @@ const useRefreshToken = () => {
         'Content-Type': 'application/json',
       },
     });
+    console.log("Response from useRefreshToken:", response.data);
+    const accessToken = response?.data?.access;
+    localStorage.setItem('accessToken', accessToken);
     setAuth(prev => {
-      console.log("Prev:", JSON.stringify(prev));
-      console.log("Response.data.access:", response.data.access);
       return {...prev, accessToken: response.data.accessToken}
     });
     return response.data.accessToken;

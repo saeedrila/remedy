@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from 'reactstrap'
 import axios from '../../api/axios'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
 // API Endpoint
 const ACCOUNT_APPROVAL_URL = 'account-approval'
@@ -50,27 +50,11 @@ function Staff({ triggerFetch }) {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      toast.success(response.data.detail, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.success(response.data.detail);
       getAccountForApproval();
     } catch (error) {
       console.log('Error submitting data', error);
-      toast.error('Error submitting data', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-      });
+      toast.error('Error submitting data');
     }
   };
 
@@ -81,6 +65,18 @@ function Staff({ triggerFetch }) {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {/* Modal */}
       <Modal 
         show={actionModal} 

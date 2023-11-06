@@ -2,41 +2,43 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Container,
+  Button,
 } from 'react-bootstrap'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
 import Header from '../components/Common/Header'
 import Footer from '../components/Common/Footer'
+import useRefreshToken from '../hooks/useRefreshToken'
 
 
 
 function SiteMap() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const refresh = useRefreshToken();
+
+
   const handleClick = () => {
     // window.alert('Clicked');
-    toast.success('Clicked', {
-      position: 'top-right',
-      autoClose: 3000, // Display for 3 seconds
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: 'light',
-    });
-    toast('Wow so easy!', {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      });
+    toast.success('Clicked');
+    toast.error('Clicked');
+    toast.info('Clicked');
+    toast('Wow so easy!');
   }
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {/* Header section */}
       <Header />
       <div className="mt-3">
@@ -76,7 +78,9 @@ function SiteMap() {
                 <h4 className='hand-cursor' onClick={() => navigate('/profile-executive')}>Profile</h4>
                 <h4 className='hand-cursor' onClick={() => navigate('/dashboard-executive')}>Dashboard</h4>
               </div>
-            <button onClick={handleClick}>Click</button>
+            <Button onClick={handleClick}>Click for toast</Button>
+            <br />
+            <Button onClick={()=> refresh()}>Refresh Token</Button>
         </Container>
         
       </div>
