@@ -15,6 +15,7 @@ import {
 } from 'reactstrap'
 import { ToastContainer, toast } from 'react-toastify'
 import axios from '../../api/axios'
+import Dropzone from "react-dropzone";
 
 import user1 from '../../assets/images/users/avatar-1.png'
 import Header from '../../components/Common/Header'
@@ -23,6 +24,7 @@ import Footer from '../../components/Common/Footer'
 // API endpoints
 const GET_PROFILE_DETAILS = '/get-patient-profile-details'
 const UPDATE_PROFILE_DETAILS = '/patch-profile-details'
+const UPLOAD_PROFILE_IMAGE = '/upload-profile-image'
 const CHANGE_PASSWORD = '/change-password'
 
 
@@ -35,8 +37,10 @@ function Profile() {
   const [matchPwd, setMatchPwd] = useState('');
   const [newPwd, setNewPwd] = useState('');
 
-  // Profile edit modal show/hide state
-  const [ProfileEditModalShow, setProfileEditModalShow] = useState(false);
+  // Profile edit, Profile image, Password modal show/hide state
+  const [profileEditModalShow, setProfileEditModalShow] = useState(false);
+  const [profileImageEditModalShow, setProfileImageEditModalShow] = useState(false);
+  const [selectedFiles, setselectedFiles] = useState([]);
   const [ChangePasswordModalShow, setChangePasswordModalShow] = useState(false);
 
   const handleChangePasswordSubmit = async (e) => {
@@ -138,7 +142,50 @@ function Profile() {
     },
   })
 
+  function handleAcceptedFiles(files) {
+    files.map(file =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+        formattedSize: formatBytes(file.size),
+      })
+    )
+    setselectedFiles(files)
+  }
+  function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return "0 Bytes"
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
 
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
+  }
+
+  const handleProfileImageSubmit = async () => {
+    try {
+      if (selectedFiles.length === 0) {
+        return;
+      }
+      const formData = new FormData();
+      formData.append('profileImage', selectedFiles[0]);
+  
+      const response = await axios.post(UPLOAD_PROFILE_IMAGE, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log(response.data)
+      setProfileImageEditModalShow(false);
+      toast.success('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast.error('An error occurred while uploading file');
+    }
+  };
+
+
+ 
   return (
     <>
       <ToastContainer
@@ -153,6 +200,52 @@ function Profile() {
         pauseOnHover
         theme="light"
       />
+      {/* Profile Image Modal */}
+      <Modal
+        show={profileImageEditModalShow}
+        onHide={() => setProfileImageEditModalShow(false)}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Upload Image</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Container>
+          <Row>
+            <Col>
+              <Dropzone
+                onDrop={acceptedFiles => {
+                  handleAcceptedFiles(acceptedFiles)
+                }}
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <div className="dropzone">
+                    <div
+                      className="dz-message needsclick mt-2"
+                      {...getRootProps()}
+                    >
+                      <input {...getInputProps()} />
+                      <div className="mb-3">
+                        <i className="display-4 text-muted bx bxs-cloud-upload" />
+                      </div>
+                      <h4>Drop files here or click to upload.</h4>
+                    </div>
+                  </div>
+                )}
+              </Dropzone>
+            </Col>
+          </Row>
+        </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setProfileImageEditModalShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleProfileImageSubmit}>Upload</Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* Change Password Modal */}
       <Modal
         show={ChangePasswordModalShow}
@@ -214,7 +307,7 @@ function Profile() {
 
       {/* Profile Edit Modal */}
       <Modal
-        show={ProfileEditModalShow}
+        show={profileEditModalShow}
         onHide={() => setProfileEditModalShow(false)}
         backdrop="static"
         keyboard={false}
@@ -351,10 +444,10 @@ function Profile() {
                   <Col>
                       <img
                         className="rounded-circle profile-image"
-                        src={user1}
+                        src='https://remedy-development.s3.ap-south-1.amazonaws.com/media/profile_pic/7e813d1228.png'
                         alt="Header Avatar"
                       />
-                      <Button className='m-2'>
+                      <Button className='m-2' onClick={() => setProfileImageEditModalShow(true)}>
                         Edit profile image
                       </Button>
                   </Col>

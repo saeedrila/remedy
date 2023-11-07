@@ -31,6 +31,10 @@ __pycache__/
 # Migrations related files
 migrations/
 
+# Media files
+backend/media/
+
+
 
 
 #React

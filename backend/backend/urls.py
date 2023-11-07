@@ -7,7 +7,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    #
+    # Path for apps
     path('api/', include('api_v1.urls')),
     path('api/', include('appointments.urls')),
     path('api/', include('authentication.urls')),
@@ -16,6 +16,6 @@ urlpatterns = [
     path('api/', include('executives.urls')),
     path('api/', include('patients.urls')),
     path('api/', include('payments.urls')),
-    # path('api/', include('reports.urls')),
+    path('api/', include('reports.urls')),
     # path('api/', include('video_call.urls')),
 ]

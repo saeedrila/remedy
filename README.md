@@ -254,6 +254,11 @@ Install Pusher for chat
 ```
 npm install pusher-js
 ```
+Install react drop-zone
+```
+npm install --save react-dropzone
+```
+
 
 Thanks to:
 

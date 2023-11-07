@@ -37,7 +37,7 @@ const Header = (props) => {
                 <h1 className="hand-cursor" onClick={() => navigate('/')}>Remedy</h1>
               </div>
             </div>
-
+            
             <button
               type="button"
               className="btn btn-sm px-3 font-size-16 d-lg-none header-item"
@@ -50,7 +50,7 @@ const Header = (props) => {
               <i className="fa fa-fw fa-bars" />
             </button>
           </div>
-
+          
           <div className="d-flex">
             {isLoggedIn ? (
               <ProfileMenu />
