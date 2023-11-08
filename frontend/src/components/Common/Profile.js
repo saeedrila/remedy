@@ -17,7 +17,6 @@ import { ToastContainer, toast } from 'react-toastify'
 import axios from '../../api/axios'
 import Dropzone from "react-dropzone";
 
-import user1 from '../../assets/images/users/avatar-1.png'
 import Header from '../../components/Common/Header'
 import Footer from '../../components/Common/Footer'
 
