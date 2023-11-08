@@ -8,6 +8,7 @@ from rest_framework_simplejwt.tokens import Token, RefreshToken
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from rest_framework.views import APIView
+import os
 
 # From files
 from .import views
@@ -109,6 +110,17 @@ class AccountLogin(APIView):
             refresh_token = RefreshToken.for_user(user)
             refresh_token.set_exp(lifetime=settings.SIMPLE_JWT['SLIDING_TOKEN_REFRESH_LIFETIME'])
 
+            aws_public_url = 'https://remedy-development.s3.ap-south-1.amazonaws.com'
+            if account.profile_pic_url:
+                file_name_within_bucket = account.profile_pic_url
+            else: 
+                file_name_within_bucket = 'media/profile_pic/avatar-1.png'
+
+            profile_pic_url = os.path.join(
+                aws_public_url,
+                file_name_within_bucket
+            )
+
             # Determine user roles
             roles = {
                 'is_patient': user.is_patient,
@@ -122,6 +134,7 @@ class AccountLogin(APIView):
                 'refreshToken': str(refresh_token),
                 'roles': roles,
                 'username': username,
+                'profilePicURL': profile_pic_url
             }, status=status.HTTP_200_OK)
         
         else:

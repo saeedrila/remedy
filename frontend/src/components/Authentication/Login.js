@@ -53,9 +53,9 @@ function Login() {
       const refreshToken = response?.data?.refreshToken;
       const username = response?.data?.username
       const roles = response?.data?.roles;
+      const profilePicURL = response?.data?.profilePicURL
       setAuth({email, roles, accessToken, refreshToken, username});
-      console.log('Access Token: ',response?.data?.accessToken)
-      console.log('Refresh Token: ',response?.data?.refreshToken)
+      console.log('Response: ',response?.data)
       
       localStorage.clear();
       localStorage.setItem('accessToken', accessToken);
@@ -63,6 +63,7 @@ function Login() {
       localStorage.setItem('username', username)
       localStorage.setItem('email', email)
       localStorage.setItem('roles', JSON.stringify(roles))
+      localStorage.setItem('profilePicURL', profilePicURL)
       axios.defaults.headers.common['Authorization'] =`Bearer ${accessToken}`;
 
       navigate(from, {replace: true})

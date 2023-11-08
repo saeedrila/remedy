@@ -9,6 +9,8 @@ import tempfile
 from botocore.exceptions import ClientError
 import logging
 
+from authentication.models import Account
+
 
 
 
@@ -58,12 +60,25 @@ class ProfileImage(APIView):
             logging.getLogger('django').debug('File upload process completed')
             os.remove(temp_file_name)
             aws_public_url = 'https://remedy-development.s3.ap-south-1.amazonaws.com'
-            profile_public_url = file_path_within_bucket = os.path.join(
+            profile_public_url = os.path.join(
                 aws_public_url,
                 file_path_within_bucket
             )
+            try:
+                account_obj = Account.objects.get(email = request.user.email)
+                account_obj.profile_pic_url = file_path_within_bucket
+                account_obj.save()
+                print('url saved to database')
+            except:
+                print('Request', request.user)
+                print('Could not get account and did not saved to database')
+
             print('Public URL: ', profile_public_url)
-            return Response({'message': 'File uploaded and saved successfully'}, status=status.HTTP_201_CREATED)
+            response_data = {
+                'message': 'File uploaded and saved successfully',
+                'profilePublicUrl': profile_public_url,
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
         except Exception as e:
             logging.getLogger('django').error('An error occurred during file upload: %s', str(e))
             return Response({'error': 'An error occurred while processing the file'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

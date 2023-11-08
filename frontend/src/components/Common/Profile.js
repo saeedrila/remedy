@@ -42,6 +42,8 @@ function Profile() {
   const [selectedFiles, setselectedFiles] = useState([]);
   const [ChangePasswordModalShow, setChangePasswordModalShow] = useState(false);
 
+  const [profilePicURL, setProfilePicURL] = useState('');
+
   const handleChangePasswordSubmit = async (e) => {
     e.preventDefault();
     if (!pwd || !matchPwd || !newPwd) {
@@ -88,6 +90,16 @@ function Profile() {
   useEffect(() => {
     fetchProfileData();
   }, []);
+
+  useEffect(() => {
+    try{
+      const url = localStorage.getItem('profilePicURL');
+      setProfilePicURL(url)
+    } catch (error){
+      const url = 'example.com'
+      setProfilePicURL(url)
+    }
+  }, [profilePicURL]);
 
   const formik = useFormik({
     initialValues: {
@@ -169,12 +181,12 @@ function Profile() {
       formData.append('profileImage', selectedFiles[0]);
   
       const response = await axios.post(UPLOAD_PROFILE_IMAGE, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       });
   
-      console.log(response.data)
+      console.log('Response data: ', response.data)
+      const returnUrl = response.data?.profilePublicUrl
+      localStorage.setItem('profilePicURL', returnUrl)
+      setProfilePicURL(returnUrl)
       setProfileImageEditModalShow(false);
       toast.success('File uploaded successfully');
     } catch (error) {
@@ -443,7 +455,7 @@ function Profile() {
                   <Col>
                       <img
                         className="rounded-circle profile-image"
-                        src='https://remedy-development.s3.ap-south-1.amazonaws.com/media/profile_pic/7e813d1228.png'
+                        src={profilePicURL}
                         alt="Header Avatar"
                       />
                       <Button className='m-2' onClick={() => setProfileImageEditModalShow(true)}>

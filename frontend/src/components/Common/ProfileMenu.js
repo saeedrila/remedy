@@ -10,12 +10,13 @@ import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 
-// users
-import user1 from "../../assets/images/users/avatar-1.png";
+
 
 const ProfileMenu = props => {
   const [menu, setMenu] = useState(false);
   const [username, setUsername] = useState("User");
+  const [profilePicURL, setProfilePicURL] = useState('');
+
   const navigate = useNavigate()
   const { auth, setAuth } = useAuth();
 
@@ -38,6 +39,15 @@ const ProfileMenu = props => {
       setUsername(storedUsername);
     }
   }, []);
+  useEffect(() => {
+    try{
+      const url = localStorage.getItem('profilePicURL');
+      setProfilePicURL(url)
+    } catch (error){
+      const url = 'example.com'
+      setProfilePicURL(url)
+    }
+  }, [profilePicURL]);
 
   const handleDashboard = () => {
     if (auth.roles.is_executive){
@@ -68,7 +78,7 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-            src={user1}
+            src={profilePicURL}
             alt="Header Avatar"
           />
           <span className="d-none d-lg-inline-block ms-2 me-1">{username}</span>
