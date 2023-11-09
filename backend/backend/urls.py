@@ -21,7 +21,7 @@ from authentication.views import (
     ChangePassword,
     ActivateUser,
 )
-from chat.views import ChatAPIView
+from chat.views import ChatAPI
 from doctors_and_labs.views import (
     DoctorAvailabilityRegistration,
     DoctorAccountDetails,
@@ -85,7 +85,7 @@ urlpatterns = [
     path('api/fetch-doctor-dashboard-data', FetchDoctorDashboardData.as_view(), name='fetch-doctor-dashboard-data'),
 
 #Chat
-    path('api/chat', ChatAPIView.as_view(), name='chat-api-view'),
+    path('api/chat', ChatAPI.as_view(), name='chat-api-view'),
 
 #Doctors and Labs
     # Get doctor availability

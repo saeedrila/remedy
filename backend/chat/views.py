@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 
 
-class ChatAPIView(APIView):
+class ChatAPI(APIView):
     def post(self, request):
         sender_email = request.data['senderEmail']
         recipient_email = request.data['recipientEmail']
