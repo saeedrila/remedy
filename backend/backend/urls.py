@@ -21,7 +21,12 @@ from authentication.views import (
     ChangePassword,
     ActivateUser,
 )
-from chat.views import ChatAPI
+from chat.views import (
+    ChatAPI,
+    MyInbox,
+    GetMessages,
+    SendMessages
+)
 from doctors_and_labs.views import (
     DoctorAvailabilityRegistration,
     DoctorAccountDetails,
@@ -86,6 +91,9 @@ urlpatterns = [
 
 #Chat
     path('api/chat', ChatAPI.as_view(), name='chat-api-view'),
+    path('api/my-messages/<user_email>', MyInbox.as_view()),
+    path("api/get-messages/<sender_id>/<reciever_id>/", GetMessages.as_view()),
+    path("api/send-messages/", SendMessages.as_view()),
 
 #Doctors and Labs
     # Get doctor availability

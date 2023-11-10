@@ -33,7 +33,7 @@ function Chat() {
     var channel = pusher.subscribe('Remedy-development');
     channel.bind('message', function(data) {
       allMessages.push(data);
-      setMessages(allMessages)
+      setMessages(prevMessages => [...prevMessages, data])
     });
   }, [])
 
