@@ -42,14 +42,18 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'api_v1.middleware.CsrfExemptMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_SAVE_EVERY_REQUEST = False
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -124,7 +128,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=7),

@@ -11,7 +11,7 @@ from .serializers import MessageSerializer
 
 
 
-
+# Developed for Pusher. Not using anymore
 class ChatAPI(APIView):
     def post(self, request):
         sender_email = request.data['senderEmail']
@@ -24,6 +24,7 @@ class ChatAPI(APIView):
         })
 
         return Response(['Message recieved'])
+
 
 class MyInbox(generics.ListAPIView):
     serializer_class = MessageSerializer

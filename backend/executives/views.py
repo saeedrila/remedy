@@ -12,12 +12,14 @@ from appointments.models import Appointments
 
 class AccountApproval(APIView):
     def get(self, request):
+        print('Session information:',request.session.items())
+
         account = Account.objects.filter(Q(is_doctor=True) | Q(is_lab=True) | Q(is_executive=True)).order_by('-id')
         serializer = AccountApprovalSerializer(account, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def patch(self, request):
-        print('Requst', request.user)
+        print('Requst: ', request.user)
         account_executive = Account.objects.get(email = request.user.email)
         if not account_executive.is_executive:
             return Response({"detail": "You are not authorized to do this operation"}, status=status.HTTP_403_FORBIDDEN)

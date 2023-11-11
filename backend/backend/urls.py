@@ -3,6 +3,7 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenObtainPairView,
+    TokenVerifyView,
 )
 from appointments.views import (
     FetchPatientAppointData,
@@ -34,6 +35,7 @@ from doctors_and_labs.views import (
     DoctorSpecificSpecialization,
     DoctorsListAtSpecialization,
 )
+from executives.views import AccountApproval
 from patients.views import (
     GetPatientProfileDetails,
     PatchProfileDetails,
@@ -57,6 +59,7 @@ urlpatterns = [
 #JWT Refresh and access tokens
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # for obtaining access tokens
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # for refreshing tokens
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
 #Authentication
     # View all user data
@@ -72,6 +75,9 @@ urlpatterns = [
 
     # Activate user by Executive
     path('api/activate-user', ActivateUser.as_view(), name='activate-user'),
+
+#Executive
+    path('api/account-approval', AccountApproval.as_view(), name='account_approval'),
 
 
 #Appointments
