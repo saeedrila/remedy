@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from django.db.models import OuterRef, Subquery
 from django.db.models import Q
 from rest_framework import generics
+from rest_framework import status
+
 
 from .models import ChatMessage
 from authentication.models import Account
@@ -52,7 +54,7 @@ class MyInbox(generics.ListAPIView):
     
 class GetMessages(generics.ListAPIView):
     serializer_class = MessageSerializer
-    
+
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']
         reciever_id = self.kwargs['reciever_id']

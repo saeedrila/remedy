@@ -12,6 +12,8 @@
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "formik": "^2.4.5",
+    "jwt-decode": "^4.0.0",
+    "moment": "^2.29.4",
     "node-sass": "^7.0.3",
     "postcss-loader": "^7.3.3",
     "prop-types": "^15.8.1",

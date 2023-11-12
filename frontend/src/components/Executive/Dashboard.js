@@ -11,7 +11,7 @@ import {
   CardText,
   Progress
 } from 'reactstrap'
-import axios from '../../api/axios'
+import axiosPrivate from '../../api/axios'
 import useAuth from '../../hooks/useAuth'
 
 // API endpoint
@@ -25,9 +25,8 @@ function Dashboard({ triggerFetch }) {
   const fetchExecutiveDashboardData = async ()=>{
     try{
       const accessToken = auth.accessToken
-      const response = await axios.get(FETCH_DASHBOARD_DATA, {
+      const response = await axiosPrivate.get(FETCH_DASHBOARD_DATA, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
         },
       });
       setExecutiveDashboardData(response.data)

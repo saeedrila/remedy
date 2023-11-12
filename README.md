@@ -258,6 +258,14 @@ Install react drop-zone
 ```
 npm install --save react-dropzone
 ```
+Install JWT Decode for decoding accessToken
+```
+npm install jwt-decode
+```
+Install moment for time related actions
+```
+npm install moment
+```
 
 
 Thanks to:

@@ -5,14 +5,15 @@ import {
   Card,
   Table,
   Modal,
+  Button,
 } from 'react-bootstrap'
 import {
-  Button,
   CardBody,
   CardTitle,
 } from 'reactstrap'
 import axios from '../../api/axios'
 import { ToastContainer, toast } from 'react-toastify'
+import useAuth from '../../hooks/useAuth'
 
 // API Endpoint
 const ACCOUNT_APPROVAL_URL = 'account-approval'
@@ -24,13 +25,13 @@ function Staff({ triggerFetch }) {
   const [listOfAccounts, setListOfAccounts] = useState([])
   const [actionModal, setActionModal] = useState(false);
   const [approvalSate, setApprovalState] = useState('')
+  const { auth } = useAuth();
 
   const getAccountForApproval = async () => {
     try {
       const accessToken = localStorage.getItem('accessToken');
       const response = await axios.get(ACCOUNT_APPROVAL_URL, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
         },
       });
       setListOfAccounts(response.data);
@@ -42,16 +43,19 @@ function Staff({ triggerFetch }) {
 
   const accountApprove = async (status, account_id) => {
     try {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = auth.accessToken
+      console.log('AccessToken from auth: ', auth.accessToken);
       const response = await axios.patch(ACCOUNT_APPROVAL_URL, {
         id: account_id,
         status: status,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        withCredentials: true
       });
       toast.success(response.data.detail);
       getAccountForApproval();
+      console.log('AccessToken: ', accessToken);
     } catch (error) {
       console.log('Error submitting data', error);
       toast.error('Error submitting data');
@@ -130,7 +134,7 @@ function Staff({ triggerFetch }) {
                         <td>
                           {account.is_active ?
                           <Button 
-                            color='danger' 
+                            variant='danger' 
                             onClick={() => {
                               setApprovalState(account.id);
                               setActionModal(true);
@@ -138,7 +142,10 @@ function Staff({ triggerFetch }) {
                           >
                           Block
                           </Button>
-                          :<Button color='success' onClick={() => accountApprove("True", account.id)}>
+                          :<Button 
+                          variant='success' 
+                          onClick={() => accountApprove("True", account.id)}
+                          >
                           Approve Now
                           </Button>
                           }
